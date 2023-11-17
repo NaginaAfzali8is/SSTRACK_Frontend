@@ -28,7 +28,7 @@ function Footer() {
                     {/* <p>Privacy</p> */}
                 </div>
                 <div>
-                    <p className="text-white fs-8 mb-1">info@screenshottime.com</p>
+                    <p className="text-white fs-8 mb-1">info@ss-tracker.com</p>
                     <div className="footerSocialMedia">
                         <img src={linkedin} alt="LinkdinIcon.png" />
                         <img src={facebook} alt="FacebookIcon.png" />
