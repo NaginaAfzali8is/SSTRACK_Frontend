@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from '../../images/popHeadLogo.png';
+import logo from '../../images/ss-track-logo.svg';
 import line from '../../images/line.webp';
 import dashboard from "../../images/dashboard.webp";
 import account from "../../images/myaccount.webp";
