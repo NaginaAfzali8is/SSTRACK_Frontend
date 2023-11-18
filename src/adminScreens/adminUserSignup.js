@@ -122,10 +122,9 @@ function AdminUserSignup() {
 
     useEffect(() => {
         const defaultTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const defaultTimezoneOffset = moment.tz(defaultTimezone).format('Z');
         setSelectedTimezone(defaultTimezone);
         setCurrentTimeZone(defaultTimezone);
-        fillModel("timezoneOffset", defaultTimezoneOffset);
+        fillModel("timezoneOffset", 5);
         fillModel("timezone", defaultTimezone);
         fillModel("company", "i8is");
     }, []);

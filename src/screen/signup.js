@@ -118,10 +118,9 @@ function Signup() {
 
     useEffect(() => {
         const defaultTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const defaultTimezoneOffset = moment.tz(defaultTimezone).format('Z');
         setSelectedTimezone(defaultTimezone);
         setCurrentTimeZone(defaultTimezone);
-        fillModel("timezoneOffset", defaultTimezoneOffset);
+        fillModel("timezoneOffset", 5);
         fillModel("timezone", defaultTimezone);
     }, []);
 
@@ -157,7 +156,7 @@ function Signup() {
                         <div className="inputDiv2">
                             {/* <div><img src={clock} /></div> */}
                             {/* <div> */}
-                                <TimezoneSelect value={timezone} onChange={handleStartDateChange} />
+                            <TimezoneSelect value={timezone} onChange={handleStartDateChange} />
                             {/* </div> */}
                         </div>
                         <button disabled={loading} onClick={handleCreateAccount} className={loading ? "disabledAccountButton" : "accountButton"}>{loading ? <FerrisWheelSpinner loading={loading} size={28} color="#6DBB48" /> : "Create Account"}</button>
