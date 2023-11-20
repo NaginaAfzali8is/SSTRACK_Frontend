@@ -62,6 +62,7 @@ function Home() {
   const [accessToken, setAccessToken] = useState('');
   const section1Ref = useRef(null);
   const section2Ref = useRef(null);
+  const [page, setPage] = useState(1)
   const [feedback, setFeedback] = useState([
     {
       page: 1,
@@ -83,12 +84,48 @@ function Home() {
           designation: "Product Manager",
           feedback: "“The best way to follow your team overseas is to actually see what they're doing...”",
           img: lana,
-        }
+        },
+        {
+          username: "Olivia Rhye",
+          designation: "Expect Best",
+          feedback: "“scrin.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          img: olivia,
+        },
+        {
+          username: "Phoenix Baker",
+          designation: "Engineering Manager",
+          feedback: "“scrin.io makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you scrin.io!”",
+          img: pheonix,
+        },
+        {
+          username: "Lana Steiner",
+          designation: "Product Manager",
+          feedback: "“The best way to follow your team overseas is to actually see what they're doing...”",
+          img: lana,
+        },
       ]
     },
     {
       page: 2,
       data: [
+        {
+          username: "Olivia Rhye",
+          designation: "Expect Best",
+          feedback: "“scrin.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          img: candice,
+        },
+        {
+          username: "Olivia Rhye",
+          designation: "Expect Best",
+          feedback: "“scrin.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          img: natali,
+        },
+        {
+          username: "Olivia Rhye",
+          designation: "Expect Best",
+          feedback: "“scrin.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          img: drew,
+        },
         {
           username: "Olivia Rhye",
           designation: "Expect Best",
@@ -145,6 +182,8 @@ function Home() {
   useEffect(() => {
     signin()
   }, [])
+
+  console.log(page);
 
   return (
 
@@ -215,20 +254,20 @@ function Home() {
 
           <div className="feedbackDiv">
 
-            {feedback.map((feed, index) => {
+            {feedback?.map((feed, index) => feed.page === page ? feed.data.map((data) => {
               return (
                 <div className="feedbackBox">
                   <div>
-                    <img className="olivia" src={feed.img} />
+                    <img className="olivia" src={data.img} />
                   </div>
                   <div className="oliviaDiv">
-                    <p className="oliviafont">{feed.username}</p>
-                    <p className="oliviaGreen">{feed.designation}</p>
-                    <p className="oliviaPera">{feed.feedback}</p>
+                    <p className="oliviafont">{data.username}</p>
+                    <p className="oliviaGreen">{data.designation}</p>
+                    <p className="oliviaPera">{data.feedback}</p>
                   </div>
                 </div>
               )
-            })}
+            }) : null)}
 
             {/* <div className="feedbackBox" style={{ marginLeft: "20px", marginRight: "20px" }}>
               <div>
@@ -288,11 +327,11 @@ function Home() {
           </div>
 
           <div className="leftRightArrow">
-            <div>
+            <div onClick={() => setPage(page > 1 ? page - 1 : page)} style={{ cursor: "pointer" }}>
               <img src={leftArrow} />
             </div>
-            <p>1 - 3</p>
-            <div>
+            <p>{page}</p>
+            <div onClick={() => setPage(page < 2 ? page + 1 : page)} style={{ cursor: "pointer" }}>
               <img src={rightArrow} />
             </div>
           </div>
