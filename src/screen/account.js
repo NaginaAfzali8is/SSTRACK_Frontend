@@ -23,6 +23,7 @@ function Account() {
     const [updatePassword, setUpdatePassword] = useState(false);
     const [oldPassword, setOldPassword] = useState("");
     const [password, setPassword] = useState("");
+    const [verify, setVerify] = useState(false);
     let token = localStorage.getItem('token');
     const navigate = useNavigate('');
     const apiUrl = process.env.REACT_APP_API_URL;
@@ -53,27 +54,53 @@ function Account() {
 
     async function updateMyPassword() {
         setUpdatePassword(false)
-        const res = await fetch(`${apiUrl}/signin/users/Update`, {
-            headers,
-            method: "PATCH",
-            body: JSON.stringify({
-                password: password
-            }),
-        })
-        try {
-            if (res.status === 200) {
-                console.log((await res.json()));
-                enqueueSnackbar("password updated successfully", {
-                    variant: "success",
-                    anchorOrigin: {
-                        vertical: "top",
-                        horizontal: "right"
-                    }
-                })
+        if (verify === true) {
+            const res = await fetch(`${apiUrl}/signin/users/Update`, {
+                headers,
+                method: "PATCH",
+                body: JSON.stringify({
+                    password: password
+                }),
+            })
+            try {
+                if (res.status === 200) {
+                    console.log((await res.json()));
+                    enqueueSnackbar("password updated successfully", {
+                        variant: "success",
+                        anchorOrigin: {
+                            vertical: "top",
+                            horizontal: "right"
+                        }
+                    })
+                }
+            }
+            catch (error) {
+                console.log(error);
             }
         }
-        catch (error) {
-            console.log(error);
+        else {
+            const res = await fetch(`${apiUrl}/signin/users/Verifypass`, {
+                headers,
+                method: "PATCH",
+                body: JSON.stringify({
+                    oldPassword: oldPassword
+                }),
+            })
+            try {
+                if (res.status === 200) {
+                    console.log((await res.json()));
+                    enqueueSnackbar("password verify successfully", {
+                        variant: "success",
+                        anchorOrigin: {
+                            vertical: "top",
+                            horizontal: "right"
+                        }
+                    })
+                }
+            }
+            catch (error) {
+                console.log(error);
+            }
         }
     }
 
@@ -97,12 +124,21 @@ function Account() {
             {updatePassword ? <Modal show={updatePassword} onHide={() => setShow(false)} animation={false} centered>
                 <Modal.Body>
                     <p style={{ marginBottom: "20px", fontWeight: "700", fontSize: "16px" }}>Update password</p>
-                    <input placeholder="Enter your new password" onChange={(e) => setPassword(e.target.value)} style={{
-                        fontSize: "18px",
-                        padding: "5px 10px",
-                        width: "100%",
-                        border: "1px solid #cacaca"
-                    }} />
+                    {verify ? (
+                        <input placeholder="Enter your new password" onChange={(e) => setPassword(e.target.value)} style={{
+                            fontSize: "18px",
+                            padding: "5px 10px",
+                            width: "100%",
+                            border: "1px solid #cacaca"
+                        }} />
+                    ) : (
+                        <input placeholder="Enter your old password" onChange={(e) => setOldPassword(e.target.value)} style={{
+                            fontSize: "18px",
+                            padding: "5px 10px",
+                            width: "100%",
+                            border: "1px solid #cacaca"
+                        }} />
+                    )}
                 </Modal.Body>
                 <Modal.Footer>
                     <button className="teamActionButton" onClick={updateMyPassword}>
