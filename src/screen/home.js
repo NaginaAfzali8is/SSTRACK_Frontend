@@ -46,7 +46,8 @@ import { AiFillWindows, AiFillApple } from 'react-icons/ai'
 import { BsWindows, BsApple } from 'react-icons/bs'
 import { ImArrowUpRight2 } from 'react-icons/im'
 import { TbSquareRoundedArrowRightFilled } from 'react-icons/tb'
-import connectingEmployess from '../images/connecting-employess-with-manager.png'
+import detailedTimeline from '../images/connecting-employess-with-manager.png'
+import connectingEmployess from '../images/connecting-employess-with-manager2.avif'
 import simpleAccess from '../images/simple-access.jpg'
 import effortlessTimeTrack from '../images/effortless-time-track.jpg'
 import screenshot from '../images/screenshot.jpg'
@@ -474,7 +475,7 @@ function Home() {
                   </p>
                 </div>
                 <div>
-                  <img style={{ width: "300px", height: "300px", objectFit: 'contain' }} src={connectingEmployess} alt="" />
+                  <img style={{ width: "300px", height: "300px", objectFit: 'contain' }} src={detailedTimeline} alt="" />
                 </div>
               </div>
 
