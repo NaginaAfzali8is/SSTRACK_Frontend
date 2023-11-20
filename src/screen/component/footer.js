@@ -8,7 +8,7 @@ import line from '../../images/line.webp';
 import { useNavigate } from "react-router-dom";
 
 
-function Footer() {
+function Footer({ scrollToSection }) {
 
     const navigate = useNavigate()
 
@@ -20,15 +20,15 @@ function Footer() {
                 </div>
                 <div className="footerLinks">
                     {/* <p>Support</p> */}
-                    <p onClick={() => navigate('/')}>Home</p>
-                    <p>About us</p>
-                    <p>Contact</p>
+                    <p onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Home</p>
+                    <p onClick={() => scrollToSection('section1')}>About us</p>
+                    <p onClick={() => scrollToSection('section2')}>Contact</p>
                     <p onClick={() => navigate("/download")}>Download</p>
                     {/* <p>Terms</p> */}
                     {/* <p>Privacy</p> */}
                 </div>
                 <div>
-                    <p className="text-white fs-8 mb-1">info@ss-tracker.com</p>
+                    <p className="text-white fs-8 mb-1">info@ss-track.io</p>
                     <div className="footerSocialMedia">
                         <img src={linkedin} alt="LinkdinIcon.png" />
                         <img src={facebook} alt="FacebookIcon.png" />

@@ -7,6 +7,16 @@ import UserHeader from './screen/component/userHeader';
 const Layout = () => {
 
   const location = useLocation()
+  
+  function scrollToSection (sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      window.scrollTo({
+        top: section.offsetTop,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', justifyContent: 'space-between' }}>
@@ -32,7 +42,7 @@ const Layout = () => {
         <Outlet />
       </div>
       <div style={{ padding: "30px" }}>
-        <Footer />
+        <Footer scrollToSection={scrollToSection} />
       </div>
     </div>
   );
