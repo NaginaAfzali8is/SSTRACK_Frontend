@@ -21,6 +21,7 @@ function Account() {
     const [show, setShow] = useState(false);
     const [deleteAccount, setDeleteAccount] = useState(false);
     const [updatePassword, setUpdatePassword] = useState(false);
+    const [oldPassword, setOldPassword] = useState("");
     const [password, setPassword] = useState("");
     let token = localStorage.getItem('token');
     const navigate = useNavigate('');

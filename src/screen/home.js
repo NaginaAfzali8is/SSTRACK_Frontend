@@ -70,13 +70,13 @@ function Home() {
         {
           username: "Olivia Rhye",
           designation: "Expect Best",
-          feedback: "“scrin.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          feedback: "“ss.track allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
           img: olivia,
         },
         {
           username: "Phoenix Baker",
           designation: "Engineering Manager",
-          feedback: "“scrin.io makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you scrin.io!”",
+          feedback: "“ss.track makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you ss.track!”",
           img: pheonix,
         },
         {
@@ -86,20 +86,20 @@ function Home() {
           img: lana,
         },
         {
-          username: "Olivia Rhye",
-          designation: "Expect Best",
-          feedback: "“scrin.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          username: "Candice Wu",
+          designation: "Backend Developer",
+          feedback: "“ss.track allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
           img: olivia,
         },
         {
           username: "Phoenix Baker",
-          designation: "Engineering Manager",
-          feedback: "“scrin.io makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you scrin.io!”",
+          designation: "Product Designer",
+          feedback: "“ss.track makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you ss.track!”",
           img: pheonix,
         },
         {
-          username: "Lana Steiner",
-          designation: "Product Manager",
+          username: "Drew Cano",
+          designation: "UX Researcher",
           feedback: "“The best way to follow your team overseas is to actually see what they're doing...”",
           img: lana,
         },
@@ -111,38 +111,38 @@ function Home() {
         {
           username: "Olivia Rhye",
           designation: "Expect Best",
-          feedback: "“scrin.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
-          img: candice,
+          feedback: "“ss.track allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          img: olivia,
         },
         {
-          username: "Olivia Rhye",
-          designation: "Expect Best",
-          feedback: "“scrin.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
-          img: natali,
+          username: "Phoenix Baker",
+          designation: "Engineering Manager",
+          feedback: "“ss.track makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you ss.track!”",
+          img: pheonix,
         },
         {
-          username: "Olivia Rhye",
-          designation: "Expect Best",
-          feedback: "“scrin.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
-          img: drew,
+          username: "Lana Steiner",
+          designation: "Product Manager",
+          feedback: "“The best way to follow your team overseas is to actually see what they're doing...”",
+          img: lana,
         },
         {
-          username: "Olivia Rhye",
-          designation: "Expect Best",
-          feedback: "“scrin.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
-          img: candice,
+          username: "Candice Wu",
+          designation: "Backend Developer",
+          feedback: "“ss.track allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          img: olivia,
         },
         {
-          username: "Olivia Rhye",
-          designation: "Expect Best",
-          feedback: "“scrin.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
-          img: natali,
+          username: "Phoenix Baker",
+          designation: "Product Designer",
+          feedback: "“ss.track makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you ss.track!”",
+          img: pheonix,
         },
         {
-          username: "Olivia Rhye",
-          designation: "Expect Best",
-          feedback: "“scrin.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
-          img: drew,
+          username: "Drew Cano",
+          designation: "UX Researcher",
+          feedback: "“The best way to follow your team overseas is to actually see what they're doing...”",
+          img: lana,
         },
       ]
     },
@@ -276,7 +276,7 @@ function Home() {
               <div className="oliviaDiv">
                 <p className="oliviafont">Phoenix Baker</p>
                 <p className="oliviaGreen">Engineering Manager</p>
-                <p className="oliviaPera">“scrin.io makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you scrin.io!”</p>
+                <p className="oliviaPera">“ss.track makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you ss.track!”</p>
               </div>
             </div>
 
@@ -298,7 +298,7 @@ function Home() {
               <div className="oliviaDiv">
                 <p className="oliviafont">Candice Wu</p>
                 <p className="oliviaGreen">Backend Developer</p>
-                <p className="oliviaPera">“scrin.io is the most efficient way to track hours, manage projects, and most importantly your people! With one scroll through the home page, you'll know what everyone is working on.”</p>
+                <p className="oliviaPera">“ss.track is the most efficient way to track hours, manage projects, and most importantly your people! With one scroll through the home page, you'll know what everyone is working on.”</p>
               </div>
             </div>
 
@@ -309,7 +309,7 @@ function Home() {
               <div className="oliviaDiv">
                 <p className="oliviafont">Natali Craig</p>
                 <p className="oliviaGreen">Product Designer</p>
-                <p className="oliviaPera">“I've been using scrin.io for several years and it has been a great tool. As my company grows, it’s easy to add people and get reports sent to me every week.”</p>
+                <p className="oliviaPera">“I've been using ss.track for several years and it has been a great tool. As my company grows, it’s easy to add people and get reports sent to me every week.”</p>
               </div>
             </div>
 
@@ -320,7 +320,7 @@ function Home() {
               <div className="oliviaDiv">
                 <p className="oliviafont">Drew Cano</p>
                 <p className="oliviaGreen">UX Researcher</p>
-                <p className="oliviaPera">“scrin.io is price competitive and the most reliable tool on the market. It tracks screens, prevents cheating, and doesn’t provide unnecessary features.”</p>
+                <p className="oliviaPera">“ss.track is price competitive and the most reliable tool on the market. It tracks screens, prevents cheating, and doesn’t provide unnecessary features.”</p>
               </div>
             </div> */}
 
@@ -358,13 +358,13 @@ function Home() {
         </div>
         <div>
           <p className="employetime">Employees track time</p>
-          <p className="managerFont">A manager invites employees to scrin.io. Employees install a lightweight desktop app, select a project they work on and press the Start button. Tracking starts and data is sent to the web in real time until the Stop button is pressed.</p>
+          <p className="managerFont">A manager invites employees to ss.track. Employees install a lightweight desktop app, select a project they work on and press the Start button. Tracking starts and data is sent to the web in real time until the Stop button is pressed.</p>
         </div>
       </section>
       <section className="deanDiv container">
         <div>
           <p className="employetime">Managers see it on the web</p>
-          <p className="managerFont">In their dashboards on scrin.io, both employee and manager will see when the employee was working, how much time they spent on each task, screenshots of their screens taken at random intervals, their activity level, what applications were used, and what websites were open and for how long.</p>
+          <p className="managerFont">In their dashboards on ss.track, both employee and manager will see when the employee was working, how much time they spent on each task, screenshots of their screens taken at random intervals, their activity level, what applications were used, and what websites were open and for how long.</p>
           <button className="startedButton">See demo</button>
         </div>
         <div>
@@ -407,7 +407,7 @@ function Home() {
         <div>
           <img className="wifi" src={innerSetting} />
           <p className="internetFont">Integrate using Web API</p>
-          <p className="internetPera">Connect your existing software to scrin.io via API to retrieve tracked time and notes.</p>
+          <p className="internetPera">Connect your existing software to ss.track via API to retrieve tracked time and notes.</p>
         </div>
       </section>
 
