@@ -89,7 +89,7 @@ function Home() {
           username: "Candice Wu",
           designation: "Backend Developer",
           feedback: "“ss.track allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
-          img: olivia,
+          img: candice,
         },
         {
           username: "Phoenix Baker",
@@ -101,7 +101,7 @@ function Home() {
           username: "Drew Cano",
           designation: "UX Researcher",
           feedback: "“The best way to follow your team overseas is to actually see what they're doing...”",
-          img: lana,
+          img: drew,
         },
       ]
     },
@@ -109,10 +109,10 @@ function Home() {
       page: 2,
       data: [
         {
-          username: "Olivia Rhye",
-          designation: "Expect Best",
-          feedback: "“ss.track allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
-          img: olivia,
+          username: "Lana Steiner",
+          designation: "Product Manager",
+          feedback: "“The best way to follow your team overseas is to actually see what they're doing...”",
+          img: lana,
         },
         {
           username: "Phoenix Baker",
@@ -121,14 +121,8 @@ function Home() {
           img: pheonix,
         },
         {
-          username: "Lana Steiner",
-          designation: "Product Manager",
-          feedback: "“The best way to follow your team overseas is to actually see what they're doing...”",
-          img: lana,
-        },
-        {
-          username: "Candice Wu",
-          designation: "Backend Developer",
+          username: "Olivia Rhye",
+          designation: "Expect Best",
           feedback: "“ss.track allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
           img: olivia,
         },
@@ -142,7 +136,13 @@ function Home() {
           username: "Drew Cano",
           designation: "UX Researcher",
           feedback: "“The best way to follow your team overseas is to actually see what they're doing...”",
-          img: lana,
+          img: drew,
+        },
+        {
+          username: "Candice Wu",
+          designation: "Backend Developer",
+          feedback: "“ss.track allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          img: candice,
         },
       ]
     },
