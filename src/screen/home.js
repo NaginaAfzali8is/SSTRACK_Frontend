@@ -250,7 +250,7 @@ function Home() {
             Over million hours tracked each month <br />
             15M+ screenshots monthly
           </p>
-          <button className="joinButton">Join them now</button>
+          {/* <button className="joinButton">Join them now</button> */}
 
           <div className="feedbackDiv">
 
