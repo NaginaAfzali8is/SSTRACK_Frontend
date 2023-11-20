@@ -393,7 +393,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="fiveSection container">
+      <section className="fiveSection" style={{ backgroundColor: "whitesmoke" }}>
         <div>
           <img className="wifi" src={wifi} />
           <p className="internetFont">Track without Internet</p>
@@ -422,11 +422,11 @@ function Home() {
 
               <div style={{ display: "flex", alignItems: 'center', justifyContent: "space-between" }} className="how-it-work-container">
                 <div>
-                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Connecting Employees with Managers <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
+                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Connecting Employees with Managers - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SS-TRACK.IO</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
                   <p className="features-working">When you sign up as a company owner or join as admin, you can invite employees to join. As an admin, you can add your team members. When employees log in, they can easily start keeping track of time and share screenshots for their work.</p>
                 </div>
                 <div>
-                  <img style={{ width: "100%", height: "300px", objectFit: 'contain' }} src={connectingEmployess} alt="" />
+                  <img style={{ width: "300px", height: "300px", objectFit: 'contain' }} src={connectingEmployess} alt="" />
                 </div>
               </div>
 
@@ -438,7 +438,7 @@ function Home() {
                   </p>
                 </div>
                 <div>
-                  <img style={{ width: "100%", height: "300px", objectFit: 'contain' }} src={simpleAccess} alt="" />
+                  <img style={{ width: "300px", height: "300px", objectFit: 'contain' }} src={simpleAccess} alt="" />
                 </div>
               </div>
 
@@ -450,7 +450,7 @@ function Home() {
                   </p>
                 </div>
                 <div>
-                  <img style={{ width: "100%", height: "300px", objectFit: 'contain' }} src={effortlessTimeTrack} alt="" />
+                  <img style={{ width: "300px", height: "300px", objectFit: 'contain' }} src={effortlessTimeTrack} alt="" />
                 </div>
               </div>
 
@@ -462,7 +462,7 @@ function Home() {
                   </p>
                 </div>
                 <div>
-                  <img style={{ width: "100%", height: "300px", objectFit: 'contain' }} src={screenshot} alt="" />
+                  <img style={{ width: "300px", height: "300px", objectFit: 'contain' }} src={screenshot} alt="" />
                 </div>
               </div>
 
@@ -474,7 +474,7 @@ function Home() {
                   </p>
                 </div>
                 <div>
-                  <img style={{ width: "100%", height: "300px", objectFit: 'contain' }} src={connectingEmployess} alt="" />
+                  <img style={{ width: "300px", height: "300px", objectFit: 'contain' }} src={connectingEmployess} alt="" />
                 </div>
               </div>
 
