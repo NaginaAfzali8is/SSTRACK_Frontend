@@ -178,7 +178,7 @@ function OwnerTeam() {
         <div>
             {show ? <Modal show={show} onHide={() => setShow(false)} animation={false} centered>
                 <Modal.Body>
-                    <p style={{ marginBottom: "20px", fontWeight: "700", fontSize: "16px" }}>Are you sure want to delete James Hetfield ?</p>
+                    <p style={{ marginBottom: "20px", fontWeight: "600", fontSize: "20px" }}>Are you sure want to delete James Hetfield ?</p>
                     <p>All of the time tracking data and screenshots for this employee will be lost. This can not be undone. Please type <b>DELETE</b> in the box below to acknowledge that employee will be deleted.</p>
                     <input value={deleteType} onChange={(e) => setDeleteType(e.target.value.trim())} type="text" placeholder="DELETE" style={{
                         fontSize: "18px",
@@ -198,7 +198,7 @@ function OwnerTeam() {
             </Modal> : null}
             {show2 ? <Modal show={show2} onHide={() => setShow2(false)} animation={false} centered>
                 <Modal.Body>
-                    <p style={{ marginBottom: "20px", fontWeight: "700", fontSize: "16px" }}>Archive James Hetfield ?</p>
+                    <p style={{ marginBottom: "20px", fontWeight: "600", fontSize: "20px" }}>Archive James Hetfield ?</p>
                     <p>The user:</p>
                     <ul>
                         <li>Will not be able to track time for your company</li>

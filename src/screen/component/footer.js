@@ -5,12 +5,13 @@ import insta from '../../images/InstaIcon.webp';
 import facebook from '../../images/FacebookIcon.webp';
 import twitter from '../../images/TwiterIcon.webp';
 import line from '../../images/line.webp';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 function Footer({ scrollToSection }) {
 
     const navigate = useNavigate()
+    const location = useLocation()
 
     return (
         <div className="footer">
@@ -20,9 +21,9 @@ function Footer({ scrollToSection }) {
                 </div>
                 <div className="footerLinks">
                     {/* <p>Support</p> */}
-                    <p onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Home</p>
-                    <p onClick={() => scrollToSection('section1')}>About us</p>
-                    <p onClick={() => scrollToSection('section2')}>Contact</p>
+                    <p onClick={() => location.pathname === "/" ? window.scrollTo({ top: 0, behavior: 'smooth' }) : navigate("/")}>Home</p>
+                    <p onClick={() => location.pathname === "/" ? scrollToSection('section1') : navigate("/")}>About us</p>
+                    <p onClick={() => location.pathname === "/" ? scrollToSection('section2') : navigate("/")}>Contact</p>
                     <p onClick={() => navigate("/download")}>Download</p>
                     {/* <p>Terms</p> */}
                     {/* <p>Privacy</p> */}

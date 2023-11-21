@@ -81,7 +81,7 @@ function SystemAdminComponent(props) {
         <>
             {show ? <Modal show={show} onHide={() => setShow(false)} animation={false} centered>
                 <Modal.Body>
-                    <p style={{ marginBottom: "20px", fontWeight: "700", fontSize: "16px" }}>Are you sure want to disable company ?</p>
+                    <p style={{ marginBottom: "20px", fontWeight: "600", fontSize: "20px" }}>Are you sure want to disable company ?</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <button className="teamActionButton" onClick={enable_disable_company}>

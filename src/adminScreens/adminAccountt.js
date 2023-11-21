@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 import user from "../images/user-account.webp";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
+import axios from "axios";
 
 function AccountAdmin() {
 
@@ -45,55 +46,54 @@ function AccountAdmin() {
         }
     }
 
-    async function updateMyPassword() {
-        setUpdatePassword(false)
-        if (verify === true) {
-            const res = await fetch(`${apiUrl}/signin/users/Update`, {
-                headers,
-                method: "PATCH",
-                body: JSON.stringify({
-                    password: password
-                }),
-            })
-            try {
-                if (res.status === 200) {
-                    console.log((await res.json()));
-                    enqueueSnackbar("password updated successfully", {
-                        variant: "success",
-                        anchorOrigin: {
-                            vertical: "top",
-                            horizontal: "right"
-                        }
-                    })
-                }
-            }
-            catch (error) {
-                console.log(error);
+    async function verifyPassword() {
+        const res = await fetch(`${apiUrl}/signin/users/Verifypass`, {
+            headers,
+            method: "PATCH",
+            body: JSON.stringify({
+                oldPassword: oldPassword
+            }),
+        })
+        try {
+            if (res.status === 200) {
+                console.log((await res.json()));
+                enqueueSnackbar("password verify successfully", {
+                    variant: "success",
+                    anchorOrigin: {
+                        vertical: "top",
+                        horizontal: "right"
+                    }
+                })
             }
         }
-        else {
-            const res = await fetch(`${apiUrl}/signin/users/Verifypass`, {
-                headers,
-                method: "PATCH",
-                body: JSON.stringify({
-                    oldPassword: oldPassword
-                }),
-            })
-            try {
-                if (res.status === 200) {
-                    console.log((await res.json()));
-                    enqueueSnackbar("password verify successfully", {
-                        variant: "success",
-                        anchorOrigin: {
-                            vertical: "top",
-                            horizontal: "right"
-                        }
-                    })
-                }
+        catch (error) {
+            console.log(error);
+        }
+    }
+    
+    const updateMyPassword = async () => {
+        setUpdatePassword(false)
+        const res = await fetch(`${apiUrl}/signin/users/Update`, {
+            headers,
+            method: "PATCH",
+            body: JSON.stringify({
+                password: password
+            }),
+        })
+        try {
+            if (res.status === 200) {
+                console.log((await res.json()));
+                enqueueSnackbar("password updated successfully", {
+                    variant: "success",
+                    anchorOrigin: {
+                        vertical: "top",
+                        horizontal: "right"
+                    }
+                })
             }
-            catch (error) {
-                console.log(error);
-            }
+        }
+        catch (error) {
+            console.log(error);
         }
     }
 
@@ -102,7 +102,7 @@ function AccountAdmin() {
             <SnackbarProvider />
             {show ? <Modal show={show} onHide={() => setShow(false)} animation={false} centered>
                 <Modal.Body>
-                    <p style={{ marginBottom: "20px", fontWeight: "700", fontSize: "16px" }}>Are you sure want to delete your account ?</p>
+                    <p style={{ marginBottom: "20px", fontWeight: "600", fontSize: "20px" }}>Are you sure want to delete your account ?</p>
                     <p>All of the time tracking data and screenshots for this employee will be lost. This can not be undone.</p>
                 </Modal.Body>
                 <Modal.Footer>
@@ -116,7 +116,7 @@ function AccountAdmin() {
             </Modal> : null}
             {updatePassword ? <Modal show={updatePassword} onHide={() => setShow(false)} animation={false} centered>
                 <Modal.Body>
-                    <p style={{ marginBottom: "20px", fontWeight: "700", fontSize: "16px" }}>Update password</p>
+                <p style={{ marginBottom: "20px", fontWeight: "600", fontSize: "20px" }}>{verify ? "Update password" : "Old password"}</p>
                     {verify ? (
                         <input placeholder="Enter your new password" onChange={(e) => setPassword(e.target.value)} style={{
                             fontSize: "18px",
@@ -134,7 +134,7 @@ function AccountAdmin() {
                     )}
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className="teamActionButton" onClick={updateMyPassword}>
+                    <button className="teamActionButton" onClick={verify === true ? updateMyPassword : verifyPassword}>
                         UPDATE
                     </button>
                     <button className="teamActionButton" onClick={() => setUpdatePassword(false)}>
