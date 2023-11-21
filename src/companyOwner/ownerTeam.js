@@ -22,7 +22,10 @@ function OwnerTeam() {
 
     const [show, setShow] = useState(false);
     const [show2, setShow2] = useState(false);
+    const [show3, setShow3] = useState(false);
+    const [email, setEmail] = useState("")
     const [deleteType, setDeleteType] = useState("");
+    const [selectedUser, setSelectedUser] = useState(null);
     const navigate = useNavigate()
     const { loading, setLoading, loading2, setLoading2 } = useLoading()
     const [payrate, setPayrate] = useState(null)
@@ -103,6 +106,7 @@ function OwnerTeam() {
     }
 
     async function deleteUser() {
+        setShow(false)
         try {
             const res = await axios.delete(`${apiUrl}/superAdmin/deleteEmp/${mainId}`)
             if (res.status === 200) {
@@ -130,34 +134,46 @@ function OwnerTeam() {
         }
     }
 
-    const handleSendInvitation = async (email) => {
-        try {
-            const res = await axios.post(`${apiUrl}/superAdmin/email`, {
-                toEmail: email,
-                company: user.company,
-            }, {
-                headers: headers,
-            })
-            if (res.status) {
-                enqueueSnackbar(res.data.message, {
-                    variant: "success",
+    const handleSendInvitation = async () => {
+        if (email !== "") {
+            setShow3(false)
+            try {
+                const res = await axios.post(`${apiUrl}/superAdmin/email`, {
+                    toEmail: email,
+                    company: user.company,
+                }, {
+                    headers: headers,
+                })
+                if (res.status) {
+                    enqueueSnackbar(res.data.message, {
+                        variant: "success",
+                        anchorOrigin: {
+                            vertical: "top",
+                            horizontal: "right"
+                        }
+                    })
+                    getData()
+                }
+                console.log("invitationEmail RESPONSE =====>", res);
+            } catch (error) {
+                enqueueSnackbar(error?.response?.data?.message ? error?.response?.data?.message : "Network error", {
+                    variant: "error",
                     anchorOrigin: {
                         vertical: "top",
                         horizontal: "right"
                     }
                 })
-                getData()
+                console.log("catch error =====>", error);
             }
-            console.log("invitationEmail RESPONSE =====>", res);
-        } catch (error) {
-            enqueueSnackbar(error?.response?.data?.message ? error?.response?.data?.message : "Network error", {
+        }
+        else {
+            enqueueSnackbar("Email address is required", {
                 variant: "error",
                 anchorOrigin: {
                     vertical: "top",
                     horizontal: "right"
                 }
             })
-            console.log("catch error =====>", error);
         }
     }
 
@@ -172,13 +188,13 @@ function OwnerTeam() {
         }
     }, [data])
 
-    console.log(searchUsers);
+    console.log(selectedUser);
 
     return (
         <div>
             {show ? <Modal show={show} onHide={() => setShow(false)} animation={false} centered>
                 <Modal.Body>
-                    <p style={{ marginBottom: "20px", fontWeight: "600", fontSize: "20px" }}>Are you sure want to delete James Hetfield ?</p>
+                    <p style={{ marginBottom: "20px", fontWeight: "600", fontSize: "20px" }}>Are you sure want to delete {selectedUser?.name} ?</p>
                     <p>All of the time tracking data and screenshots for this employee will be lost. This can not be undone. Please type <b>DELETE</b> in the box below to acknowledge that employee will be deleted.</p>
                     <input value={deleteType} onChange={(e) => setDeleteType(e.target.value.trim())} type="text" placeholder="DELETE" style={{
                         fontSize: "18px",
@@ -198,7 +214,7 @@ function OwnerTeam() {
             </Modal> : null}
             {show2 ? <Modal show={show2} onHide={() => setShow2(false)} animation={false} centered>
                 <Modal.Body>
-                    <p style={{ marginBottom: "20px", fontWeight: "600", fontSize: "20px" }}>Archive James Hetfield ?</p>
+                    <p style={{ marginBottom: "20px", fontWeight: "600", fontSize: "20px" }}>Archive {selectedUser?.name} ?</p>
                     <p>The user:</p>
                     <ul>
                         <li>Will not be able to track time for your company</li>
@@ -213,6 +229,25 @@ function OwnerTeam() {
                         ARCHIVE
                     </button>
                     <button className="teamActionButton" onClick={() => setShow2(false)}>
+                        CANCEL
+                    </button>
+                </Modal.Footer>
+            </Modal> : null}
+            {show3 ? <Modal show={show3} onHide={() => setShow3(false)} animation={false} centered>
+                <Modal.Body>
+                    <p style={{ marginBottom: "20px", fontWeight: "600", fontSize: "20px" }}>Invite user via email address</p>
+                    <input value={email} onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Enter user email" style={{
+                        fontSize: "18px",
+                        padding: "5px 10px",
+                        width: "100%",
+                        border: "1px solid #cacaca"
+                    }} />
+                </Modal.Body>
+                <Modal.Footer>
+                    <button className="teamActionButton" onClick={handleSendInvitation}>
+                        SEND
+                    </button>
+                    <button className="teamActionButton" onClick={() => setShow3(false)}>
                         CANCEL
                     </button>
                 </Modal.Footer>
@@ -235,27 +270,7 @@ function OwnerTeam() {
                                     // justifyContent: "space-between"
                                 }}>
                                     <button style={{ margin: "0 10px 0 0" }} className="addUserButton" onClick={() => navigate('/company-owner-user-signup')}>CREATE</button>
-                                    <button className="addUserButton" onClick={() => {
-                                        Swal.fire({
-                                            title: 'Invite user via email address',
-                                            input: 'text',
-                                            inputPlaceholder: 'Enter email address',
-                                            confirmButtonText: "Send invite",
-                                            confirmButtonColor: "#50AA00",
-                                            showCloseButton: true,
-                                            showCancelButton: true,
-                                            width: "800px",
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
-                                                const email = result.value;
-                                                if (email) {
-                                                    handleSendInvitation(email)
-                                                } else {
-                                                    Swal.fire('Error', 'You must enter an email address', 'error');
-                                                }
-                                            }
-                                        })
-                                    }}>CREATE VIA LINK</button>
+                                    <button className="addUserButton" onClick={() => setShow3(true)}>CREATE VIA LINK</button>
                                 </div>
 
                                 {/* <div className="searchDiv">
@@ -328,6 +343,7 @@ function OwnerTeam() {
                                                 setIsUserArchive(false)
                                                 setInviteStatus(false)
                                                 setPayrate(e)
+                                                setSelectedUser(e)
                                             }}>
                                                 <div style={{ display: "flex", alignItems: "center" }}>
                                                     <div className="groupContentMainImg">
