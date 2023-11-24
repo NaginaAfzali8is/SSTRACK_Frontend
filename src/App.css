@@ -2423,7 +2423,7 @@ input[type=checkbox]:checked:before {
 .trialDiv {
   background-color: #FFFFFF;
   border-radius: 16px;
-  padding: 50px 80px;
+  padding: 40px 80px;
   margin-top: 50px;
 }
 
@@ -2438,13 +2438,14 @@ input[type=checkbox]:checked:before {
   font-size: 30px;
   font-weight: 600;
   color: #0E4772;
-
+  margin: 0 !important;
 }
 
 .unitedFont {
   font-size: 20px;
   font-weight: 600;
   color: #0E4772;
+  margin: 0 !important;
 }
 
 .learnMoreButton {
