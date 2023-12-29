@@ -318,7 +318,7 @@ function CompanyIndividualUser() {
         setSelectedImage(null);
         setSSData(null)
         setSelectedImageIndex(null)
-    }           
+    }
 
     const handleOpenDeleteModal = (element, elements) => {
         setShowDeleteModal(true)
@@ -366,23 +366,29 @@ function CompanyIndividualUser() {
     }, [])
 
     const handleTrimActivity = async () => {
+        const formattedStartTime = new Date().toISOString().split('T')[0] + " " + trimActivity?.startTime;
+        const formattedEndTime = new Date().toISOString().split('T')[0] + " " + trimActivity?.endTime;
         console.log({
-            startTime: new Date().toLocaleDateString() + " " + trimActivity?.startTime,
-            endTime: new Date().toLocaleDateString() + " " + trimActivity?.endTime,
+            startTime: formattedStartTime,
+            endTime: formattedEndTime,
         });
-        setShowTrimActivity(false)
+        setShowTrimActivity(false);
         try {
             const response = await axios.patch(`${apiUrl}/superAdmin/trim-activity/${userId}/${trimActivity?.timeentryId}`, {
                 headers: headers,
-            }, {
-                startTime: new Date().toLocaleDateString() + " " + trimActivity?.startTime,
-                endTime: new Date().toLocaleDateString() + " " + trimActivity?.endTime,
-            })
+            },
+                {
+                    startTime: formattedStartTime,
+                    endTime: formattedEndTime,
+                }
+            );
+            fetchData();
             console.log(response);
         } catch (error) {
             console.log(error);
         }
-    }
+    };
+
 
     const handleSplitActivity = async () => {
         setShowSplitActivity(false)
@@ -394,6 +400,7 @@ function CompanyIndividualUser() {
                 userId: userId,
                 splitTime: ""
             })
+            fetchData()
             console.log(response);
         } catch (error) {
             console.log(error);
@@ -425,7 +432,9 @@ function CompanyIndividualUser() {
         set_current_day(days[currentDay])
         set_current_month(months[currentMonth])
     }, [])
-    
+
+    console.log(userId);
+
     return (
         <div>
             {showScrollButton === true ? <BackToTop /> : null}
@@ -669,13 +678,12 @@ function CompanyIndividualUser() {
                                                 <div
                                                     className="needleContainerMainAlingment"
                                                     style={{
-                                                        transform: `translateY(-50%) rotate(${
-                                                            Math.floor(data?.totalactivity) <= 20 ? -75 :
-                                                            Math.floor(data?.totalactivity) > 20 && Math.floor(data?.totalactivity) <= 40 ? -38 :
-                                                            Math.floor(data?.totalactivity) > 40 && Math.floor(data?.totalactivity) <= 60 ? 0 :
-                                                            Math.floor(data?.totalactivity) > 60 && Math.floor(data?.totalactivity) <= 80 ? 35 :
-                                                            Math.floor(data?.totalactivity) > 80 ? 75 : -108
-                                                        }deg)`
+                                                        transform: `translateY(-50%) rotate(${Math.floor(data?.totalactivity) <= 20 ? -75 :
+                                                                Math.floor(data?.totalactivity) > 20 && Math.floor(data?.totalactivity) <= 40 ? -38 :
+                                                                    Math.floor(data?.totalactivity) > 40 && Math.floor(data?.totalactivity) <= 60 ? 0 :
+                                                                        Math.floor(data?.totalactivity) > 60 && Math.floor(data?.totalactivity) <= 80 ? 35 :
+                                                                            Math.floor(data?.totalactivity) > 80 ? 75 : -108
+                                                            }deg)`
                                                     }}>
                                                     <div className="needleContainerAlingment">
                                                         <div className="diamond"></div>

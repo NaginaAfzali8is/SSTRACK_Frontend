@@ -385,12 +385,13 @@ function AdminUser() {
                 startTime: new Date().toLocaleDateString() + " " + trimActivity?.startTime,
                 endTime: new Date().toLocaleDateString() + " " + trimActivity?.endTime,
             })
+            fetchData()
             console.log(response);
         } catch (error) {
             console.log(error);
         }
     }
-
+    
     const handleAddOfflineTime = async () => {
         console.log({
             startTime: new Date().toLocaleDateString() + " " + offlineTime?.startTime,
@@ -406,6 +407,7 @@ function AdminUser() {
                 endTime: new Date().toLocaleDateString() + " " + offlineTime?.endTime,
                 notes: "Offline activity description"
             })
+            fetchData()
             console.log(response);
         } catch (error) {
             console.log(error);
