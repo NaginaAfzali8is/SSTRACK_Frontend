@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 function ForgetPassword() {
 
-    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
+    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
 
     const [email, setEmail] = useState("")
     const [loading, setLoading] = useState(false)

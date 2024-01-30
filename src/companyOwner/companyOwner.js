@@ -12,6 +12,9 @@ import useLoading from "../hooks/useLoading";
 import axios from "axios";
 import noResultFound from '../images/no-result-found.svg'
 import Pusher from 'pusher-js';
+import { getTimeline } from "../store/timelineSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { GetTimelineUsers } from "../middlewares/timeline";
 
 function CompanyOwner() {
 
@@ -20,14 +23,15 @@ function CompanyOwner() {
     const [activeUser, setActiveUser] = useState(null)
     const { loading, setLoading, loading2, setLoading2 } = useLoading()
     const navigate = useNavigate()
-    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
+    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
     const token = localStorage.getItem('token');
     const [data, setData] = useState(null)
     const [searchResults, setSearchResults] = useState(null)
     const headers = {
         Authorization: "Bearer " + token,
     };
-
+    const timeline = useSelector((state) => state.timeline)
+    const dispatch = useDispatch()
     // var pusher = new Pusher('334425b3c859ed2f1d2b', {
     //     cluster: 'ap2'
     // });
@@ -54,39 +58,8 @@ function CompanyOwner() {
     //     console.log(JSON.stringify(data));
     // });
 
-    const fetchData = async () => {
-        setLoading(true)
-        try {
-            setLoading2(true)
-            const response = await axios.get(`${apiUrl}/owner/getCompanyemployee`, {
-                headers,
-            })
-            if (response.status) {
-                setLoading(false)
-                setTimeout(() => {
-                    setLoading2(false)
-                }, 1000);
-                const onlineUsers = response.data?.onlineUsers?.length > 0 ? response.data?.onlineUsers : []
-                const offlineUsers = response.data?.offlineUsers?.length > 0 ? response.data?.offlineUsers : []
-                const allUsers = [...onlineUsers, ...offlineUsers];
-                setData(allUsers.filter((f) => {
-                    return f.isArchived === false && f.UserStatus === false
-                }))
-                console.log(response);
-            }
-        }
-        catch (error) {
-            setError(true)
-            setLoading(false)
-            setTimeout(() => {
-                setLoading2(false)
-            }, 1000);
-            console.log(error);
-        }
-    }
-
     useEffect(() => {
-        fetchData()
+        dispatch(GetTimelineUsers(headers))
     }, [])
 
     function moveOnlineUsers(userId) {
@@ -96,22 +69,14 @@ function CompanyOwner() {
         });
     }
 
-    function handleSearchEmployee(e) {
-        setLoading2(true)
-        const searchData = data?.filter((user, index) => {
-            return user.userName.toLowerCase().includes(e.target.value.toLowerCase().trim())
-        })
-        setSearchResults(searchData)
-        setTimeout(() => {
-            setLoading2(false)
-        }, 1000);
-    }
+    // function handleSearchEmployee(e) {
+    //     const searchData = timeline?.filter((user, index) => {
+    //         return user.userName.toLowerCase().includes(e.target.value.toLowerCase().trim())
+    //     })
+    //     dispatch(getTimeline(searchData))
+    // }
 
-    useEffect(() => {
-        if (data !== null && data.length > 0) {
-            setSearchResults(data)
-        }
-    }, [data])
+    console.log(timeline);
 
     return (
         <>
@@ -124,7 +89,7 @@ function CompanyOwner() {
                         </div>
                         <div>
                             <input
-                                onChange={(e) => handleSearchEmployee(e)}
+                                // onChange={(e) => handleSearchEmployee(e)}
                                 placeholder="Search employee"
                                 style={{
                                     width: "300px",
@@ -148,7 +113,7 @@ function CompanyOwner() {
                             </div>
                             <div className="bgColorChangeGreen" style={{ marginTop: "20px" }}>
                                 {loading ? <Skeleton count={1} height="100vh" style={{ margin: "0 0 10px 0" }} /> :
-                                    searchResults !== null && searchResults?.length > 0 ? searchResults?.sort((a, b) => {
+                                    timeline?.length > 0 ? timeline?.sort((a, b) => {
                                         const timestampA = b.recentScreenshot?.createdAt || 0;
                                         const timestampB = a.recentScreenshot?.createdAt || 0;
                                         if (timestampA === 0 && timestampB === 0) return 0;

@@ -20,6 +20,8 @@ import useLoading from "../hooks/useLoading";
 import axios from "axios";
 import noResultFound from '../images/no-result-found.svg'
 import Pusher from 'pusher-js';
+import { useDispatch, useSelector } from "react-redux";
+import { getTimeline } from "../store/timelineSlice";
 
 function AdminDashboard() {
 
@@ -30,11 +32,13 @@ function AdminDashboard() {
     const [activeUser, setActiveUser] = useState(null)
     const [searchResults, setSearchResults] = useState(null)
     const navigate = useNavigate();
-    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
+    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
     const token = localStorage.getItem("token");
     const headers = {
         Authorization: "Bearer " + token,
     };
+    const timeline = useSelector((state) => state.timeline)
+    const dispatch = useDispatch()
 
     // Enable pusher logging - don't include this in production
     // Pusher.logToConsole = true;
@@ -66,36 +70,31 @@ function AdminDashboard() {
     // });
 
     async function getData() {
-        setLoading(true)
+        setLoading(true);
         try {
-            setLoading2(true)
+            setLoading2(true);
             const response = await axios.get(`${apiUrl}/superAdmin/allEmployeesworkinghour`, { headers });
             console.log("response", response);
             if (response.status) {
-                setLoading(false)
-                setTimeout(() => {
-                    setLoading2(false)
-                }, 1000);
-                const onlineUsers = response.data?.onlineUsers?.length > 0 ? response.data?.onlineUsers : []
-                const offlineUsers = response.data?.offlineUsers?.length > 0 ? response.data?.offlineUsers : []
+                setLoading(false);
+                setLoading2(false);
+                const onlineUsers = response.data?.onlineUsers?.length > 0 ? response.data?.onlineUsers : [];
+                const offlineUsers = response.data?.offlineUsers?.length > 0 ? response.data?.offlineUsers : [];
                 const allUsers = [...onlineUsers, ...offlineUsers];
-                setData(allUsers.filter((f) => {
-                    return f.isArchived === false && f.UserStatus === false
-                }))
+                setData(allUsers.filter((f) => f.isArchived === false && f.UserStatus === false));
+                dispatch(getTimeline(allUsers.filter((f) => f.isArchived === false && f.UserStatus === false)))
             }
         } catch (err) {
-            setError(true)
-            setLoading(false)
-            setTimeout(() => {
-                setLoading2(false)
-            }, 1000);
+            setError(true);
+            setLoading(false);
+            setLoading2(false);
             console.log(err);
         }
     }
 
     useEffect(() => {
         getData();
-    }, [apiUrl]);
+    }, []);
 
     function moveOnlineUsers(userId) {
         navigate("/adminuser", {
@@ -109,9 +108,7 @@ function AdminDashboard() {
             return user.userName.toLowerCase().includes(e.target.value.toLowerCase().trim())
         })
         setSearchResults(searchData)
-        setTimeout(() => {
-            setLoading2(false)
-        }, 1000);
+        setLoading2(false)
     }
 
     useEffect(() => {
@@ -119,6 +116,10 @@ function AdminDashboard() {
             setSearchResults(data)
         }
     }, [data])
+
+    console.log("data =====>", data)
+
+    console.log(timeline);
 
     return (
         <div>
@@ -157,7 +158,7 @@ function AdminDashboard() {
                             </div>
                         </div>
                         <div className="bgColorChangeGreen" style={{ marginTop: "20px" }}>
-                            {loading ? <Skeleton count={1} height="100vh" style={{ margin: "0 0 10px 0" }} /> : searchResults !== null && searchResults?.length > 0 ? searchResults?.sort((a, b) => {
+                            {loading ? <Skeleton count={1} height="100vh" style={{ margin: "0 0 10px 0" }} /> : timeline?.length > 0 ? timeline?.sort((a, b) => {
                                 const timestampA = b.recentScreenshot?.createdAt || 0;
                                 const timestampB = a.recentScreenshot?.createdAt || 0;
                                 if (timestampA === 0 && timestampB === 0) return 0;
@@ -177,11 +178,7 @@ function AdminDashboard() {
                                             <img
                                                 onClick={() => moveOnlineUsers(user.userId)}
                                                 className="screenShotPreview"
-                                                src={
-                                                    lastScreenshot?.user_id === user?.userId ?
-                                                        lastScreenshot?.key :
-                                                        user?.recentScreenshot ? user?.recentScreenshot?.key : screenshot
-                                                }
+                                                src={lastScreenshot?.user_id === user?.userId ? lastScreenshot?.key : user?.recentScreenshot ? user?.recentScreenshot?.key : screenshot}
                                                 alt="Screenshot"
                                             />
                                             <p className="dashheadingtop">
