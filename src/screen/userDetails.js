@@ -5,7 +5,7 @@ import left from "../images/Leftarrow.webp";
 import right from "../images/Rightarrow.webp";
 import circleDot from "../images/CircleDot.webp";
 import line from "../images/line.webp";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import leftArrow from "../images/left-arrow.png"
 import rightArrow from "../images/right-arrow.png"
 import CircularProgressBar from "./component/circularProgressBar";
@@ -30,6 +30,7 @@ import perc_80 from "../images/LightGreen.svg"
 import perc_100 from "../images/FullGreen.svg"
 import { ImCross } from "react-icons/im";
 import edit from '../images/EditTimeZone.webp';
+import { CaptureScreenshot } from "./component/captureScreenshot";
 
 function UserDetails() {
 
@@ -60,7 +61,8 @@ function UserDetails() {
     const [timeEntryId, setTimeEntryId] = useState(null)
     const [showScrollButton, setShowScrollButton] = useState(false)
     const [editModalContent, setEditModalContent] = useState(null)
-    
+    const [splitTime, setSplitTime] = useState(null)
+
     const [trimActivity, setTrimActivity] = useState(null)
     const [screenshotId, setScreenshotId] = useState(null)
     const [showSplitActivity, setShowSplitActivity] = useState(false)
@@ -84,7 +86,7 @@ function UserDetails() {
     const currentMonth = new Date().getMonth();
     const currentDay = new Date().getDay();
 
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     let token = localStorage.getItem('token');
     let headers = {
         Authorization: 'Bearer ' + token,
@@ -191,13 +193,13 @@ function UserDetails() {
     };
 
     const fetchData = async () => {
-        setLoading(true)
         try {
             const response = await axios.get(`${apiUrl}/timetrack/sorted-screenshot?date=${encodeURIComponent(formattedDate)}`, { headers });
+            setLoading(true)
             if (response.data) {
                 setTimeout(() => {
                     setLoading(false)
-                }, 1000);
+                }, 100);
                 setData(response.data.data);
                 setTimeEntryId(response.data.data.TimeTrackingId)
                 setTimeEntries(response?.data?.data?.groupedScreenshots || []);
@@ -208,7 +210,7 @@ function UserDetails() {
         catch (error) {
             setTimeout(() => {
                 setLoading(false)
-            }, 1000);
+            }, 100);
             console.log(error);
         }
     };
@@ -363,18 +365,18 @@ function UserDetails() {
             })
             if (response.status === 200) {
                 console.log(response);
-                enqueueSnackbar("success", {
+                enqueueSnackbar("Screenshot deleted", {
                     variant: "success",
                     anchorOrigin: {
                         vertical: "top",
                         horizontal: "right"
                     }
                 })
-                fetchData()
             }
+            fetchData()
         } catch (error) {
             console.log(error);
-            enqueueSnackbar(error?.response.data.Message ? error?.response.data.Message : error?.response.data.message, {
+            enqueueSnackbar("network error", {
                 variant: "error",
                 anchorOrigin: {
                     vertical: "top",
@@ -385,19 +387,30 @@ function UserDetails() {
     }
 
     const handleSplitActivity = async () => {
-        console.log({
-            startTime: new Date().toLocaleDateString() + " " + trimActivity?.startTime,
-            endTime: new Date().toLocaleDateString() + " " + trimActivity?.endTime,
-        });
         setShowSplitActivity(false)
+        setShowTrimActivity(false)
+        setShowOfflineTime(false)
         try {
-            const response = await axios.patch(`${apiUrl}/superAdmin/trim-activity/${userId}/${trimActivity?.timeentryId}`, {
-                headers: headers,
+            const response = await axios.post(`${apiUrl}/superAdmin/split-activity`, {
+                timeEntryId: trimActivity?.timeentryId,
+                userId: userId,
+                splitTime: formattedDate + " " + splitTime?.splitTime
             }, {
-                startTime: new Date().toLocaleDateString() + " " + trimActivity?.startTime,
-                endTime: new Date().toLocaleDateString() + " " + trimActivity?.endTime,
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
             })
-            console.log(response);
+            if (response.status === 200) {
+                enqueueSnackbar(response.data.message, {
+                    variant: "success",
+                    anchorOrigin: {
+                        vertical: "top",
+                        horizontal: "right"
+                    }
+                })
+                fetchData()
+                console.log(response);
+            }
         } catch (error) {
             console.log(error);
         }
@@ -423,7 +436,7 @@ function UserDetails() {
             }
         })
     }, [])
-
+    
     return (
         <div>
 
@@ -651,13 +664,12 @@ function UserDetails() {
                                                     <div
                                                         className="needleContainerMainAlingment"
                                                         style={{
-                                                            transform: `translateY(-50%) rotate(${
-                                                                Math.floor(data?.totalactivity) <= 20 ? -75 :
+                                                            transform: `translateY(-50%) rotate(${Math.floor(data?.totalactivity) <= 20 ? -75 :
                                                                 Math.floor(data?.totalactivity) > 20 && Math.floor(data?.totalactivity) <= 40 ? -38 :
-                                                                Math.floor(data?.totalactivity) > 40 && Math.floor(data?.totalactivity) <= 60 ? 0 :
-                                                                Math.floor(data?.totalactivity) > 60 && Math.floor(data?.totalactivity) <= 80 ? 35 :
-                                                                Math.floor(data?.totalactivity) > 80 ? 75 : -108
-                                                            }deg)`
+                                                                    Math.floor(data?.totalactivity) > 40 && Math.floor(data?.totalactivity) <= 60 ? 0 :
+                                                                        Math.floor(data?.totalactivity) > 60 && Math.floor(data?.totalactivity) <= 80 ? 35 :
+                                                                            Math.floor(data?.totalactivity) > 80 ? 75 : -108
+                                                                }deg)`
                                                         }}>
                                                         <div className="needleContainerAlingment">
                                                             <div className="diamond"></div>
@@ -721,7 +733,15 @@ function UserDetails() {
                                                         <CircularProgressBar activityPercentage={element?.totalactivity} size={30} />
                                                     </div>
                                                 </OverlayTrigger>
-                                                {showEditButton && <img onClick={() => setShowTrimActivity(true)} src={edit} alt="EditTimeZone.png" style={{ cursor: "pointer" }} />}
+                                                {showEditButton && <img onClick={() => {
+                                                    setShowTrimActivity(true)
+                                                    setSplitTime({
+                                                        ...splitTime,
+                                                        timeentryId: element.timeentryId,
+                                                        startTime: element.time.split(" ")[0] + " " + element.time.split(" ")[1],
+                                                        endTime: element.time.split(" ")[3] + " " + element.time.split(" ")[4]
+                                                    })
+                                                }} src={edit} alt="EditTimeZone.png" style={{ cursor: "pointer" }} />}
                                             </div>}
                                             <div style={{
                                                 display: "grid",

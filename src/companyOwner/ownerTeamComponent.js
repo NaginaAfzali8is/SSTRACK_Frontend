@@ -21,7 +21,7 @@ function OwnerTeamComponent(props) {
     const [role, setRole] = useState("")
     const [data, setData] = useState();
     const { fixId, archived_unarchived_users, deleteUser, isUserArchive, inviteStatus, handleSendInvitation, payrate } = props
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     const token = localStorage.getItem('token');
     const headers = {
         Authorization: "Bearer " + token,
@@ -32,17 +32,13 @@ function OwnerTeamComponent(props) {
         try {
             const response = await axios.get(`${apiUrl}/owner/sorted-datebased/${fixId}`, { headers })
             if (response.status) {
-                setTimeout(() => {
-                    setLoading(false)
-                }, 3000);
+                setLoading(false)
                 setData(response.data.data)
                 console.log(response);
             }
         }
         catch (err) {
-            setTimeout(() => {
-                setLoading(false)
-            }, 3000);
+            setLoading(false)
             console.log(err);
         }
     }

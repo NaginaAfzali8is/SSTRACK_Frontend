@@ -30,7 +30,7 @@ function Profile() {
         'Content-Type': 'application/json'
     }
 
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
 
     let fillModel = (key, val) => {
         console.log(val);

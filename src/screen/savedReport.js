@@ -44,7 +44,7 @@ function SavedReport() {
                                 <div className="reportsDiv">
                                     <div>Weekly Report</div>
                                     <div className="reportImageDiv">
-                                        <p>https://ss.track/r/96e0b4</p>
+                                        <p>https://scrin.io/r/96e0b4</p>
                                         <div><img src={copy} /></div>
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@ function SavedReport() {
                                 <div className="reportsDiv">
                                     <div>Weekly Report</div>
                                     <div className="reportImageDiv">
-                                        <p>https://ss.track/r/96e0b4</p>
+                                        <p>https://scrin.io/r/96e0b4</p>
                                         <div><img src={copy} /></div>
                                     </div>
                                 </div>
@@ -88,7 +88,7 @@ function SavedReport() {
                                 <div className="reportsDiv">
                                     <div>Weekly Report</div>
                                     <div className="reportImageDiv">
-                                        <p>https://ss.track/r/96e0b4</p>
+                                        <p>https://scrin.io/r/96e0b4</p>
                                         <div><img src={copy} /></div>
                                     </div>
                                 </div>

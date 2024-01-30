@@ -7,14 +7,15 @@ import CompanyEmployess from "../../screen/component/companyEmployess";
 import SaveChanges from "../../screen/component/button";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 
-function Screenshot() {
+function Screenshot(props) {
 
+    const {loading, loading2, employess, setEmployess} = props
     const [id, setId] = useState([])
     let token = localStorage.getItem('token');
     let headers = {
         Authorization: 'Bearer ' + token,
     }
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
 
     async function handleUpdateSettings() {
         if (id !== null) {
@@ -63,31 +64,29 @@ function Screenshot() {
         return arr
     }
 
-    function Setting({ employee, index, employees, setEmployess }) {
-        console.log(employees);
+    function Setting({ setting, setSetting, employee }) {
         return (
             <>
                 <div>
                     <input
-                        checked={id?.find(f => f.userId === employee._id)?.settings?.screenshots?.enabled === true}
                         type="checkbox"
-                        id="html"
                         name="fav_language"
-                        onClick={(e) => {
-                            setId((ids) => {
-                                return ids.map((emp) => {
-                                    if (emp.userId === employee._id) {
+                        onChange={() => {
+                            setSetting((prevSetting) => {
+                                return prevSetting.map((settings) => {
+                                    if (settings.id === employee._id) {
                                         return {
-                                            ...emp,
+                                            ...settings,
                                             settings: {
                                                 screenshots: {
-                                                    frequency: emp.settings.screenshots.frequency, enabled: true
+                                                    frequency: settings.settings.screenshots.frequency,
+                                                    enabled: true
                                                 }
                                             }
                                         }
                                     }
                                     else {
-                                        return emp
+                                        return settings
                                     }
                                 })
                             })
@@ -97,27 +96,28 @@ function Screenshot() {
                 </div>
                 <div>
                     <select
-                        value={id?.find(f => f.userId === employee._id)?.settings?.screenshots?.frequency}
                         className="myselect"
                         onChange={(e) => {
-                            setId((ids) => {
-                                return ids.map((emp) => {
-                                    if (emp.userId === employee._id) {
+                            setSetting((prevSetting) => {
+                                return prevSetting.map((settings) => {
+                                    if (settings.id === employee._id) {
                                         return {
-                                            ...emp,
+                                            ...settings,
                                             settings: {
                                                 screenshots: {
-                                                    frequency: e.target.value, enabled: emp.settings.screenshots.enabled
+                                                    frequency: e.target.value,
+                                                    enabled: settings.settings.screenshots.enabled
                                                 }
                                             }
                                         }
                                     }
                                     else {
-                                        return emp
+                                        return settings
                                     }
                                 })
                             })
-                        }}>
+                        }}
+                    >
                         {getMinutes().map((t) => <option value={t} key={t}>{t}</option>)}
                     </select>
                 </div>
@@ -132,25 +132,24 @@ function Screenshot() {
                 </div>
                 <div>
                     <input
-                        checked={id?.find(f => f.userId === employee._id)?.settings?.screenshots?.enabled === false}
                         type="checkbox"
-                        id="html"
                         name="fav_language"
-                        onClick={(e) => {
-                            setId((ids) => {
-                                return ids.map((emp) => {
-                                    if (emp.userId === employee._id) {
+                        onChange={() => {
+                            setSetting((prevSetting) => {
+                                return prevSetting.map((settings) => {
+                                    if (settings.id === employee._id) {
                                         return {
-                                            ...emp,
+                                            ...settings,
                                             settings: {
                                                 screenshots: {
-                                                    frequency: emp.settings.screenshots.frequency, enabled: false
+                                                    frequency: settings.settings.screenshots.frequency,
+                                                    enabled: false
                                                 }
                                             }
                                         }
                                     }
                                     else {
-                                        return emp
+                                        return settings
                                     }
                                 })
                             })
@@ -162,7 +161,8 @@ function Screenshot() {
         )
     }
 
-    console.log({ body: id });
+    console.log(props);
+    console.log("screenshot");
 
     return (
         <div>
@@ -206,15 +206,9 @@ function Screenshot() {
             <div className="activityLevelIndividual">
                 <p className="settingScreenshotIndividual">Individual Settings</p>
                 <p className="individualSettingFont">If enabled, the individual setting will be used instead of the team setting</p>
-
-                <CompanyEmployess
-                    Setting={Setting}
-                    setId={setId}
-                    id={id}
-                />
-
+                <CompanyEmployess Setting={Setting} loading={loading} loading2={loading2} employees={employess} setEmployess={setEmployess} />
             </div>
-        </div >
+        </div>
     )
 }
 

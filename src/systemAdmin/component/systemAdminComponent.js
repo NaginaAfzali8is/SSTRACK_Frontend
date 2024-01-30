@@ -18,7 +18,7 @@ function SystemAdminComponent(props) {
     const companyId = props?.fixComponent?.owner?._id
     const companyName = props?.fixComponent?.owner?.company
     const company = data?.owner?.company;
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     let token = localStorage.getItem('adminToken');
     const companyStatus = props?.fixComponent?.owner?.isArchived;
     const [companyDetail, setCompanyDetail] = useState(null)
@@ -81,7 +81,7 @@ function SystemAdminComponent(props) {
         <>
             {show ? <Modal show={show} onHide={() => setShow(false)} animation={false} centered>
                 <Modal.Body>
-                    <p style={{ marginBottom: "20px", fontWeight: "600", fontSize: "20px" }}>Are you sure want to disable company ?</p>
+                    <p style={{ marginBottom: "20px", fontWeight: "700", fontSize: "16px" }}>Are you sure want to disable company ?</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <button className="teamActionButton" onClick={enable_disable_company}>

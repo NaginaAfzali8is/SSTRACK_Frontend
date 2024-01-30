@@ -36,7 +36,7 @@ function OwnerUserSignup() {
     });
     const [err, setErr] = useState("");
     const [error, setError] = useState("");
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     const [timezone, setSelectedTimezone] = useState(
         Intl.DateTimeFormat().resolvedOptions().timeZone
     )
@@ -177,7 +177,7 @@ function OwnerUserSignup() {
                         <div className="inputDiv2">
                             {/* <div><img src={clock} /></div> */}
                             {/* <div> */}
-                                <TimezoneSelect value={timezone} onChange={handleStartDateChange} />
+                            <TimezoneSelect value={timezone} onChange={handleStartDateChange} />
                             {/* </div> */}
                         </div>
                         <button disabled={loading} onClick={handleCreateAccount} className={loading ? "disabledAccountButton" : "accountButton"}>{loading ? <FerrisWheelSpinner loading={loading} size={28} color="#6DBB48" /> : "Create Account"}</button>

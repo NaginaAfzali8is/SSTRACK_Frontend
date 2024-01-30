@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import CompanyEmployess from "../../screen/component/companyEmployess";
 import SaveChanges from "../../screen/component/button";
 
-function ActivityLevel() {
+function ActivityLevel(props) {
 
-    const [id, setId] = useState([])
+    const { loading, loading2, employees, setEmployess } = props
 
-    function Setting() {
+    function Setting({ setting, setSetting, employee }) {
+        console.log(employee);
         return (
             <>
                 <div>
@@ -51,11 +52,7 @@ function ActivityLevel() {
             <div className="activityLevelIndividual">
                 <p className="settingScreenshotIndividual">Individual Settings</p>
                 <p className="individualSettingFont">If enabled, the individual setting will be used instead of the team setting</p>
-                <CompanyEmployess
-                    Setting={Setting}
-                    setId={setId}
-                    id={id}
-                />
+                <CompanyEmployess Setting={Setting} loading={loading} loading2={loading2} employees={employees} setEmployess={setEmployess} />
             </div>
         </div>
     )

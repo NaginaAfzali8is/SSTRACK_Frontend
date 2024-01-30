@@ -19,7 +19,7 @@ function SystemAdminDashboard() {
     const [isUserArchive, setIsUserArchive] = useState(false)
     const { loading, setLoading, loading2, setLoading2 } = useLoading()
     const navigate = useNavigate();
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     const [data, setData] = useState([])
     let token = localStorage.getItem('adminToken');
     const [fixComponent, setFixComponent] = useState();

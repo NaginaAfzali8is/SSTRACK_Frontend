@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 function ForgetPassword() {
 
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
 
     const [email, setEmail] = useState("")
     const [loading, setLoading] = useState(false)
@@ -63,7 +63,7 @@ function ForgetPassword() {
             <SnackbarProvider />
             <div className="maininputdivs">
                 <div className="mainInputDiv">
-                    <p className="getback">Want to get back into your account?</p>
+                    <p className="getback">Want to get back into your account ?</p>
                     <div className="inputDiv">
                         <img src={emailIcon} />
                         <input
@@ -76,7 +76,7 @@ function ForgetPassword() {
                         textAlign: "center"
                     }}>
                         <button disabled={loading} onClick={handleSendLink} className={loading ? "disabledAccountButton2" : "saveButton"}>
-                            {loading ? <FerrisWheelSpinner loading={loading} size={28} color="#6DBB48" /> : "Send reset link"}
+                            {loading ? <FerrisWheelSpinner loading={loading} size={28} color="#6DBB48" /> : "Send link"}
                         </button>
                     </div>
                 </div>

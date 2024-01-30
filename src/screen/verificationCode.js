@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 function VerificationCode() {
 
     const navigate = useNavigate()
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     const [code, setCode] = useState("")
     const [inputIndex, setIndex] = useState(0)
     const [loading, setLoading] = useState(false)
@@ -84,19 +84,6 @@ function VerificationCode() {
     }, [digits])
 
     return (
-        // <div>
-        //     <div className="maininputdivs">
-        //         <div className="mainInputDiv">
-        //             <p className="getback">Want to get back into your account?</p>
-        //             <div className="inputDiv">
-        //                 <div><img src={email} /></div>
-        //                 <input placeholder="Email" />
-        //             </div>
-        //             <button disabled={loading} onClick={handleSendLink} className={loading ? "disabledAccountButton2" : "saveButton"}>{loading ? <FerrisWheelSpinner loading={loading} size={28} color="white" /> : "save"}</button>
-        //         </div>
-        //     </div>
-        //     <img className="lines" src={line} />
-        // </div>
         <>
             <SnackbarProvider />
             <div className="maininputdivs">
@@ -114,19 +101,7 @@ function VerificationCode() {
                     <div id="inputs" class="inputs">
                         {inputs.map((inputRef, index) => (
                             <input
-                                // disabled={inputIndex === index ? false : true}
                                 ref={inputRef}
-                                // onKeyDown={(e) => {
-                                //     console.log(e.key);
-                                //     if (e.key === "Backspace" || e.key === "ArrowLeft") {
-                                //         inputs[inputIndex - 1]?.current?.focus();
-                                //         setIndex(inputIndex - 1);
-                                //     }
-                                //     if (e.key === "ArrowRight") {
-                                //         inputs[inputIndex + 1]?.current?.focus();
-                                //         setIndex(inputIndex + 1);
-                                //     }
-                                // }}
                                 onChange={(e) => {
                                     handleChange(e.target.value, index)
                                 }}
@@ -136,18 +111,7 @@ function VerificationCode() {
                                 key={index}
                             />
                         ))}
-                        {/* <input ref={inputs[index]} onChange={(e) => handleChange(e.target.value)} className="input" type="text" inputmode="numeric" maxlength="1" />
-                        <input ref={inputs[index]} onChange={(e) => handleChange(e.target.value)} className="input" type="text" inputmode="numeric" maxlength="1" />
-                        <input ref={inputs[index]} onChange={(e) => handleChange(e.target.value)} className="input" type="text" inputmode="numeric" maxlength="1" />
-                        <input ref={inputs[index]} onChange={(e) => handleChange(e.target.value)} className="input" type="text" inputmode="numeric" maxlength="1" />
-                        <input ref={inputs[index]} onChange={(e) => handleChange(e.target.value)} className="input" type="text" inputmode="numeric" maxlength="1" />
-                        <input ref={inputs[index]} onChange={(e) => handleChange(e.target.value)} className="input" type="text" inputmode="numeric" maxlength="1" /> */}
                     </div>
-                    {/* <p className="accessFont">Login to Your account</p>
-                    <div className="inputDiv">
-                        <div><img src={email} alt="Email" /></div>
-                        <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-                    </div> */}
                     <button style={{ marginTop: 30 }} disabled={loading} className={loading ? "disabledAccountButton" : "accountButton"}>
                         {loading ? <FerrisWheelSpinner loading={loading} size={28} color="#6DBB48" /> : "Verify"}
                     </button>

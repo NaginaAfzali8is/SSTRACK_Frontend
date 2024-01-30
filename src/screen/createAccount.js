@@ -34,7 +34,7 @@ function CreateAccount() {
     });
     const [err, setErr] = useState("");
     const [error, setError] = useState("");
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     const [timezone, setSelectedTimezone] = useState(
         Intl.DateTimeFormat().resolvedOptions().timeZone
     )

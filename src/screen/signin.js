@@ -21,7 +21,7 @@ function SignIn() {
     password: ""
   });
   const [loading, setLoading] = useState(false)
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
 
   const loginUser = async (e) => {
     e.preventDefault();
@@ -87,7 +87,7 @@ function SignIn() {
       <section>
         <form onSubmit={loginUser} className="maininputdivs">
           <div className="mainInputDiv">
-            <p className="accessFont">Login to Your account</p>
+            <p className="accessFont">Login your account</p>
             <div className="inputDiv">
               <img src={email} alt="Email" />
               <input className="autofill" onChange={(e) => fillModel("email", e.target.value)} placeholder="Email" />

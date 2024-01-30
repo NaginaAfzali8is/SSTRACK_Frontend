@@ -14,7 +14,7 @@ function UpdatePassword() {
     const navigate = useNavigate()
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
 
     console.log(apiUrl);
 

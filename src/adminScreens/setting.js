@@ -23,16 +23,64 @@ import AdminHead from "../screen/component/adminHeadSection";
 
 function Setting() {
 
+    const [loading, setLoading] = useState(false)
+    const [loading2, setLoading2] = useState(false)
+    const [employess, setEmployess] = useState(null);
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
+    let token = localStorage.getItem('token');
+    let user = JSON.parse(localStorage.getItem('items'));
+    let headers = {
+        Authorization: 'Bearer ' + token,
+    }
+
+    async function getData() {
+        setLoading(true)
+        setLoading2(true)
+        try {
+            const response = await fetch(`${apiUrl}${user.userType === "admin" ? "/superAdmin/employees" : user.userType === "owner" ? "/owner/companies" : ""}`, { headers })
+            const json = await response.json();
+            setEmployess(() => {
+                if (user.userType === "admin") {
+                    const filterCompanies = json?.convertedEmployees?.filter((emp, index) => {
+                        return user.company === emp.company && emp.isArchived === false && emp?.inviteStatus === false
+                    })
+                    return filterCompanies
+                }
+                else if (user.userType === "owner") {
+                    const filterCompanies = json?.employees?.filter((emp, index) => {
+                        return user.company === emp.company && emp.isArchived === false && emp?.inviteStatus === false
+                    })
+                    return filterCompanies
+                }
+            })
+            setLoading2(false)
+            setTimeout(() => {
+                setLoading(false)
+            }, 2000);
+        }
+        catch (error) {
+            setLoading2(true)
+            setLoading(false)
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getData()
+    }, [])
+
+    console.log(employess);
+
     const [settingsTabs, setSettingTabs] = useState([
-        { id: 1, showSetting: <Screenshot />, name: "Screenshots", activeTab: "component1", isActive: true, icon: "12/hr" },
-        { id: 2, showSetting: <ActivityLevel />, name: "Activity level tracking", activeTab: "component2", isActive: false, icon: "Yes" },
-        { id: 3, showSetting: <UrlTracking />, name: "App & URL tracking", activeTab: "component3", isActive: false, icon: "Yes" },
-        { id: 4, showSetting: <WeeklyLimit />, name: "Weekly time limit", activeTab: "component4", isActive: false, icon: "100 hr" },
-        { id: 5, showSetting: <AutoPause />, name: "Auto pause tracking after", activeTab: "component5", isActive: false, icon: "5 min" },
-        { id: 6, showSetting: <OfflineTime />, name: "Allow adding offline time", activeTab: "component6", isActive: false, icon: "Yes" },
-        { id: 7, showSetting: <Notify />, name: "Notify when screeshot is taken", activeTab: "component7", isActive: false, icon: "Yes" },
-        { id: 8, showSetting: <WeekStart />, name: "Week starts on", activeTab: "component8", isActive: false, icon: "Sun" },
-        { id: 9, showSetting: <CurrencySymbol />, name: "Currency symbol", activeTab: "component9", isActive: false, icon: "$" },
+        { id: 1, showSetting: <Screenshot loading={loading} loading2={loading2} employees={employess} setEmployess={setEmployess} />, name: "Screenshots", isActive: true, icon: "12/hr" },
+        { id: 2, showSetting: <ActivityLevel loading={loading} loading2={loading2} employees={employess} setEmployess={setEmployess} />, name: "Activity level tracking", isActive: false, icon: "Yes" },
+        { id: 3, showSetting: <UrlTracking loading={loading} loading2={loading2} employees={employess} setEmployess={setEmployess} />, name: "App & URL tracking", isActive: false, icon: "Yes" },
+        { id: 4, showSetting: <WeeklyLimit loading={loading} loading2={loading2} employees={employess} setEmployess={setEmployess} />, name: "Weekly time limit", isActive: false, icon: "100 hr" },
+        { id: 5, showSetting: <AutoPause loading={loading} loading2={loading2} employees={employess} setEmployess={setEmployess} />, name: "Auto pause tracking after", isActive: false, icon: "5 min" },
+        { id: 6, showSetting: <OfflineTime loading={loading} loading2={loading2} employees={employess} setEmployess={setEmployess} />, name: "Allow adding offline time", isActive: false, icon: "Yes" },
+        { id: 7, showSetting: <Notify loading={loading} loading2={loading2} employees={employess} setEmployess={setEmployess} />, name: "Notify when screeshot is taken", isActive: false, icon: "Yes" },
+        { id: 8, showSetting: <WeekStart loading={loading} loading2={loading2} employees={employess} setEmployess={setEmployess} />, name: "Week starts on", isActive: false, icon: "Sun" },
+        { id: 9, showSetting: <CurrencySymbol loading={loading} loading2={loading2} employees={employess} setEmployess={setEmployess} />, name: "Currency symbol", isActive: false, icon: "$" },
     ]);
 
     return (
@@ -80,7 +128,15 @@ function Setting() {
                                 <img src={middleLine} />
                             </div>
                             <div className="componentScreenshot">
-                                {settingsTabs.find((setting) => setting.isActive)?.showSetting}
+                                {/* {activeSetting === "component1" && <Screenshot />}
+                                {activeSetting === "component2" && <ActivityLevel />}
+                                {activeSetting === "component3" && <UrlTracking />}
+                                {activeSetting === "component4" && <WeeklyLimit />}
+                                {activeSetting === "component5" && <AutoPause />}
+                                {activeSetting === "component6" && <OfflineTime />}
+                                {activeSetting === "component7" && <Notify />}
+                                {activeSetting === "component8" && <WeekStart />}
+                                {activeSetting === "component9" && <CurrencySymbol />} */}
                             </div>
                         </div>
                     </div>
@@ -92,6 +148,5 @@ function Setting() {
         </div>
     );
 }
-
 
 export default Setting;

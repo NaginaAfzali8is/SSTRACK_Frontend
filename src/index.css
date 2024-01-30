@@ -99,7 +99,7 @@ input:checked+.slider:before {
   padding: 6px 12px;
   font-size: 14px;
   font-weight: 600;
-  color: white; 
+  color: white;
   transition: 0.5s;
 }
 
@@ -109,7 +109,7 @@ input:checked+.slider:before {
   padding: 8px 12px;
   font-size: 14px;
   font-weight: 600;
-  color: white; 
+  color: white;
   transition: 0.5s;
   border-radius: 5px;
 }
@@ -121,7 +121,7 @@ input:checked+.slider:before {
   padding: 6px 12px;
   font-size: 14px;
   font-weight: 600;
-  color: white; 
+  color: white;
   transition: 0.5s;
 }
 
@@ -131,4 +131,10 @@ input:checked+.slider:before {
 
 .CircularProgressbar .CircularProgressbar-trail {
   stroke: rgb(240, 240, 240) !important;
+}
+
+.bs-tooltip-top {
+  background-color: black !important;
+  display: block !important;
+  font-size: 20px !important;
 }

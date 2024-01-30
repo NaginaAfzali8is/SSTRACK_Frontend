@@ -15,7 +15,7 @@ function SystemAdminLogin() {
         password: ""
     });
     const [loading, setLoading] = useState(false)
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('items'));
 

@@ -22,6 +22,7 @@ import AdminHeader from "./component/adminHeader";
 import AdminHead from "../screen/component/adminHeadSection";
 
 function AdminReports() {
+    
     const [activeComponent, setActiveComponent] = useState('component1');
     const location = useLocation()
 
@@ -42,9 +43,11 @@ function AdminReports() {
         //     weeklyLimit : value === "weeklylimit",
         // });
     }
+
     useEffect(() => {
         setActiveComponent(location.state)
     }, [location.state])
+
     console.log(location.state);
     return (
         <div>
@@ -90,7 +93,6 @@ function AdminReports() {
                                     {activeComponent === "component7" && <Notify />}
                                     {activeComponent === "component8" && <WeekStart />}
                                     {activeComponent === "component9" && <CurrencySymbol />}
-
                                 </div>
                             </div>
                         </div>
@@ -108,6 +110,5 @@ function AdminReports() {
         </div>
     );
 }
-
 
 export default AdminReports;

@@ -20,7 +20,7 @@ function CompanyOwner() {
     const [activeUser, setActiveUser] = useState(null)
     const { loading, setLoading, loading2, setLoading2 } = useLoading()
     const navigate = useNavigate()
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     const token = localStorage.getItem('token');
     const [data, setData] = useState(null)
     const [searchResults, setSearchResults] = useState(null)
@@ -176,7 +176,7 @@ function CompanyOwner() {
                                                         alt="Screenshot"
                                                     />
                                                     <p className="dashheadingtop">
-                                                        ({user?.minutesAgo === "0 minute ago" ? "a minute ago" : user?.minutesAgo})
+                                                        ({user?.minutesAgo === "0 minute ago" || user?.minutesAgo === "-1 minute ago" ? "a minute ago" : user?.minutesAgo})
                                                     </p>
                                                 </div>
                                                 <div className="nameVerified">

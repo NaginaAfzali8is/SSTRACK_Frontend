@@ -14,7 +14,7 @@ function Screenshot() {
     let headers = {
         Authorization: 'Bearer ' + token,
     }
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
 
     async function getData() {
         try {

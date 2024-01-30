@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -50,6 +50,7 @@ import AdminUserSignup from "../adminScreens/adminUserSignup";
 import UpdatePassword from "../screen/updatePassword";
 import AddCompany from "../systemAdmin/addCompany";
 import VerificationCode from "../screen/verificationCode";
+import { CaptureScreenshot } from "../screen/component/captureScreenshot";
 import CaptureScreen from "../screen/captureScreen";
 
 export default function AppRouter() {
@@ -58,9 +59,10 @@ export default function AppRouter() {
   const token = localStorage.getItem("token")
   const adminToken = localStorage.getItem("adminToken")
   const location = useLocation()
-
-  console.log("current user ====>", user);
-  console.log("token ====>", token);
+  const [isCapturing, setIsCapturing] = useState(false);
+  const [screenshotCount, setScreenshotCount] = useState(0);
+  const [videoStream, setVideoStream] = useState(null);
+  const [captureInterval, setCaptureInterval] = useState(null);
 
   return (
     <>
@@ -82,8 +84,8 @@ export default function AppRouter() {
             } />
           <Route path="/systemAdminLogin" element={<SystemAdminLogin />} />
           <Route path="/" element={<Home />} />
-          <Route path="/:token" element={<Home />} />
           <Route path="/capture-screen" element={<CaptureScreen />} />
+          <Route path="/:token" element={<Home />} />
           <Route path="/admin-user-signup" element={<AdminUserSignup />} />
           <Route path="/create-account/:code/:email" element={<CreateAccount />} />
           <Route path="/forget-password" element={<ForgetPassword />} />

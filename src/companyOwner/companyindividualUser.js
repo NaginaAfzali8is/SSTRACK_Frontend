@@ -35,6 +35,7 @@ import perc_40 from "../images/Orange.svg"
 import perc_60 from "../images/Yellow.svg"
 import perc_80 from "../images/LightGreen.svg"
 import perc_100 from "../images/FullGreen.svg"
+import { CaptureScreenshot } from "../screen/component/captureScreenshot";
 
 function CompanyIndividualUser() {
 
@@ -72,6 +73,7 @@ function CompanyIndividualUser() {
     const [showDeleteButton, setShowDeleteButton] = useState(false)
     const [showEditButton, setShowEditButton] = useState(false)
 
+    const [splitTime, setSplitTime] = useState(null)
     const [timeTrackingId, setTimeTrackingId] = useState(null)
     const [screenshotId, setScreenshotId] = useState(null)
     const [showScrollButton, setShowScrollButton] = useState(false)
@@ -84,13 +86,20 @@ function CompanyIndividualUser() {
     const navigate = useNavigate("")
     const [current_day, set_current_day] = useState(null)
     const [current_month, set_current_month] = useState(null)
+    const [startTime, setStartTime] = useState(null)
+    const [endTime, setEndTime] = useState(null)
+    const [totalPercentageByDay, setTotalPercentageByDay] = useState(null)
+    const [activeMonth, setActiveMonth] = useState(new Date().toLocaleDateString())
 
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     let token = localStorage.getItem('token');
     let items = JSON.parse(localStorage.getItem('items'));
     let headers = {
-        Authorization: 'Bearer ' + token,
+        Authorization: "Bearer " + token,
     }
+
+    console.log("token", token);
+    console.log("userId", userId);
 
     // var pusher = new Pusher('334425b3c859ed2f1d2b', {
     //     cluster: 'ap2'
@@ -136,6 +145,8 @@ function CompanyIndividualUser() {
     const prevMonth = () => {
         setDate((prevDate) => {
             const prevMonthDate = new Date(prevDate.getFullYear(), prevDate.getMonth() - 1);
+            setActiveMonth(prevMonthDate.toLocaleDateString())
+            setTotalPercentageByDay(null)
             return prevMonthDate;
         });
     };
@@ -143,6 +154,8 @@ function CompanyIndividualUser() {
     const nextMonth = () => {
         setDate((prevDate) => {
             const nextMonthDate = new Date(prevDate.getFullYear(), prevDate.getMonth() + 1);
+            setActiveMonth(nextMonthDate.toLocaleDateString())
+            setTotalPercentageByDay(null)
             return nextMonthDate;
         });
     };
@@ -156,6 +169,7 @@ function CompanyIndividualUser() {
         const weeks = [];
         let days = [];
         let currentDay = new Date(firstDayOfMonth);
+
         const handleClick = (key) => {
             setSelectedDate(key);
             const clickDay = new Date(key).getFullYear();
@@ -163,58 +177,137 @@ function CompanyIndividualUser() {
             const clickDate = new Date(key).getDate().toString().padStart(2, '0');
             const clickDa = new Date(key).getDay();
             const clickMon = new Date(key).getMonth();
+            // console.log(clickDa);
             setClickDay(clickDa)
             setMonth(clickMon)
             const formattedsDate = `${clickDay}-${clickMonth}-${clickDate}`;
             setFormattedDate(formattedsDate);
             setActiveButton(key)
         };
-        for (let i = 1; i <= daysInMonth; i++) {
+
+        // Generate cells for each day in the current month
+        // ...
+
+        // Generate cells for each day in the current month
+        for (let i = 0; i < daysInMonth; i++) {
             const isWeekend = currentDay.getDay() === 0 || currentDay.getDay() === 6;
             const isFirstDayOfWeek = currentDay.getDay() === 1;
-            const isLastDayOfWeek = currentDay.getDay() === 0 || i === daysInMonth;
+            const isLastDayOfWeek = currentDay.getDay() === 0 || i === daysInMonth - 1;
             const dayKey = currentDay.toString();
             const isCurrentDate = currentDay.getDate() === new Date().getDate() && currentDay.getMonth() === new Date().getMonth();
+
+            const dayFormatted = `${currentDay.getFullYear()}-${(currentDay.getMonth() + 1).toString().padStart(2, '0')}-${currentDay.getDate().toString().padStart(2, '0')}`;
+
+            // Generate a unique key using the string representation of the date
             days.push(
-                <div className={`col cell ${isWeekend ? "week day week first" : "day"} ${dayKey === activeButton ? "active" : isCurrentDate ? "active2" : ""}`} key={dayKey} onClick={() => handleClick(dayKey)} style={{ cursor: "pointer" }}>
+                <div
+                    style={{ cursor: "pointer", border: "1px solid #ebeaea" }}
+                    className={`col cell ${isWeekend ? "week day week first" : "day"} ${dayKey === activeButton ? "active" : isCurrentDate ? "active2" : ""}`}
+                    key={dayKey}
+                    onClick={() => handleClick(dayKey)}
+                >
                     <p className="weekName">{currentDay.toLocaleString("en-US", { weekday: "short" })}</p>
                     <p className="Weekdate">{currentDay.getDate()}</p>
-                    <p className="nonetaken">{currentDay.toLocaleString("en-US", { weekday: "short" })}</p>
+                    {/* <p className="nonetaken">{currentDay.toLocaleString("en-US", { weekday: "short" })}</p> */}
+                    <div style={{ padding: "2px" }}>
+                        <div style={{ width: `${totalPercentageByDay === null ? 0 : totalPercentageByDay[i]?.percentage}%`, background: 'linear-gradient(180deg,#cdeb8e 0,#a5c956)', height: '10px' }}></div>
+                    </div>
                 </div>
             );
+
             currentDay.setDate(currentDay.getDate() + 1);
         }
+
         weeks.push(<div className="days" key={currentDay}>{days}</div>);
         return weeks;
     };
 
     const fetchData = async () => {
-        setLoading(true)
         try {
-            const response = await axios.get(`${apiUrl}/owner/sorted-datebased/${userId}?date=${encodeURIComponent(formattedDate)}`, { headers });
+            const response = await axios.get(`${apiUrl}/superAdmin/sorted-datebased/${userId}?date=${encodeURIComponent(formattedDate)}`, { headers });
+            setLoading(true)
             if (response.data) {
                 setData(response.data.data);
                 setTimeBill(response.data.data.timeBill);
-                setTimeTrackingId(response.data.data.TimeTrackingId)
                 setTimeEntries(response?.data?.data?.groupedScreenshots || []);
+                setTimeTrackingId(response.data.data.TimeTrackingId)
                 setTrimActivity({ ...trimActivity, totalHours: response?.data?.data?.totalHours.daily })
                 setTimeout(() => {
                     setLoading(false)
-                }, 1000);
+                }, 100);
                 console.log(response);
             }
         }
         catch (error) {
             setTimeout(() => {
                 setLoading(false)
-            }, 1000);
+            }, 100);
             console.log(error);
         }
     };
 
+    async function getAllDays() {
+        try {
+            const response = await axios.get(`${apiUrl}/superAdmin/hoursbyday/${userId}?date=${activeMonth}`, { headers });
+            const totalHours = response.data.data.totalHoursByDay;
+            console.log("totalHours of active month", response.data);
+            const currentDate = new Date();
+            const currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+            const currentYear = currentDate.getFullYear();
+            const maxHours = 6;
+            let percentagesByDay = [];
+            const processMonth = (totalHours, month, year) => {
+                const filteredHours = totalHours.filter(th => {
+                    const dateParts = th.date.split('-').map(part => part);
+                    return dateParts[1] === month && dateParts[2] == year;
+                });
+
+                console.log(`filteredHoursss for ${month}-${year}`, filteredHours);
+
+                filteredHours.forEach(th => {
+                    const timeMatches = th.totalHours.match(/(\d+)h\s*(\d*)m/);
+                    let totalMinutes = 0;
+
+                    if (timeMatches) {
+                        const hours = parseInt(timeMatches[1], 10) || 0;
+                        const minutes = parseInt(timeMatches[2], 10) || 0;
+                        totalMinutes = hours * 60 + minutes;
+                    }
+
+                    const totalHoursDecimal = totalMinutes / 60;
+                    const widthPercentage = (totalMinutes / (maxHours * 60)) * 100;
+                    const widthPercentageExact = (totalHoursDecimal / maxHours) * 100;
+
+                    percentagesByDay.push({
+                        date: th.date,
+                        totalMinutes: totalMinutes,
+                        percentage: Math.min(widthPercentage, 100),
+                        percentageExact: Math.min(widthPercentageExact, 100),
+                    });
+                });
+            };
+            // Assuming you have the totalHours data available
+            // Process data for all months up to the current month
+            for (let year = currentDate.getFullYear(); year >= 2022; year--) {
+                for (let month = 12; month >= 1; month--) {
+                    processMonth(totalHours, month.toString().padStart(2, '0'), year.toString());
+                }
+            }
+            console.log(percentagesByDay);
+            setTotalPercentageByDay(percentagesByDay);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         fetchData();
     }, [formattedDate]);
+
+    useEffect(() => {
+        getAllDays()
+    }, [activeMonth]);
 
     const openModal = (element, imageSrc, index) => {
         setSelectedImage(imageSrc);
@@ -223,38 +316,64 @@ function CompanyIndividualUser() {
         console.log(index);
     };
 
-    const getColorForTime = (time) => {
-        const matchingEntry = timeEntries.find(entry => {
-            const [startTime, endTime] = entry?.time?.split(' - ');
-            const startTimeFormatted = new Date(`${encodeURIComponent(formattedDate)} ${startTime}`).getTime();
-            const endTimeFormatted = new Date(`${encodeURIComponent(formattedDate)} ${endTime}`).getTime();
-            const currentTimeFormatted = new Date(`${encodeURIComponent(formattedDate)} ${time}`).getTime();
-            return currentTimeFormatted >= startTimeFormatted && currentTimeFormatted <= endTimeFormatted;
-        });
-        return matchingEntry ? "#A8C96A" : '#EFF9EC';
+    const getColorForTime = (hoursWorked) => {
+        // Define your color thresholds based on hours worked
+        const colorThresholds = [
+            { minHours: 0, maxHours: 4, color: '#EFF9EC' },   // Color for 0-4 hours
+            { minHours: 4, maxHours: 8, color: '#A8C96A' },   // Color for 4-8 hours
+            { minHours: 8, maxHours: 12, color: '#FF5733' },  // Color for 8-12 hours
+        ];
+
+        // Find the first color threshold that matches the hours worked
+        const matchedThreshold = colorThresholds.find(threshold => hoursWorked >= threshold.minHours && hoursWorked < threshold.maxHours);
+
+        // Return the color of the matched threshold or a default color
+        return matchedThreshold ? matchedThreshold.color : '#EFF9EC';
     };
 
     const renderTimeIntervals = () => {
         const intervals = [];
+        let totalHoursWorked = 0;
+
         for (let hour = 0; hour <= 23; hour++) {
             const isPM = hour >= 12;
             const formattedHour = hour <= 12 ? hour : hour - 12;
+
             intervals.push(
                 <div key={hour} className="time-slot">
                     <div className="hour-color">
                         {formattedHour === 0 ? 12 : formattedHour} {isPM ? 'pm' : 'am'}
-                        <div className="minute-container">
-                            {Array.from({ length: 60 }, (_, minute) => {
-                                const timeWithMinutes = `${hour}:${minute < 10 ? '0' + minute : minute}`;
-                                const color = getColorForTime(timeWithMinutes);
-                                return <div key={minute} className={`time-interval ${color !== 'transparent' ? 'red' : ''}`} style={{ background: color }}>{minute}</div>
-                            })}
-                        </div>
+                        {renderMinuteContainers(hour, totalHoursWorked)}
                     </div>
                 </div>
             );
+
+            // Increment totalHoursWorked for each hour
+            totalHoursWorked += 1;
         }
+
         return intervals;
+    };
+
+    const renderMinuteContainers = (hour, totalHoursWorked) => {
+        return (
+            <div className="minute-container">
+                {Array.from({ length: 60 }, (_, minute) => {
+                    const hoursWorked = totalHoursWorked + minute / 60;
+                    const color = getColorForTime(hoursWorked);
+
+                    return (
+                        <div
+                            key={minute}
+                            className={`time-interval ${color !== 'transparent' ? 'red' : ''}`}
+                            style={{ background: color }}
+                        >
+                            {minute}
+                        </div>
+                    );
+                })}
+            </div>
+        );
     };
 
     const goBackToPreviousImage = () => {
@@ -333,7 +452,7 @@ function CompanyIndividualUser() {
             })
             if (response.status === 200) {
                 console.log(response);
-                enqueueSnackbar("success", {
+                enqueueSnackbar("Screenshot deleted", {
                     variant: "success",
                     anchorOrigin: {
                         vertical: "top",
@@ -344,7 +463,7 @@ function CompanyIndividualUser() {
             fetchData()
         } catch (error) {
             console.log(error);
-            enqueueSnackbar(error?.response.data.Message, {
+            enqueueSnackbar("network error", {
                 variant: "error",
                 anchorOrigin: {
                     vertical: "top",
@@ -366,63 +485,99 @@ function CompanyIndividualUser() {
     }, [])
 
     const handleTrimActivity = async () => {
-        const formattedStartTime = new Date().toISOString().split('T')[0] + " " + trimActivity?.startTime;
-        const formattedEndTime = new Date().toISOString().split('T')[0] + " " + trimActivity?.endTime;
-        console.log({
-            startTime: formattedStartTime,
-            endTime: formattedEndTime,
-        });
-        setShowTrimActivity(false);
+        setShowOfflineTime(false)
+        setShowTrimActivity(false)
+        setShowSplitActivity(false)
+        const formattedStartTime = formattedDate + " " + trimActivity?.startTime;
+        const formattedEndTime = formattedDate + " " + trimActivity?.endTime;
+        const timeEntryId = trimActivity?.timeentryId
         try {
-            const response = await axios.patch(`${apiUrl}/superAdmin/trim-activity/${userId}/${trimActivity?.timeentryId}`, {
-                headers: headers,
-            },
-                {
-                    startTime: formattedStartTime,
-                    endTime: formattedEndTime,
+            const response = await axios.patch(`${apiUrl}/superAdmin/trim-activity/${userId}/${timeEntryId}`, {
+                startTime: formattedStartTime,
+                endTime: formattedEndTime,
+            }, {
+                headers: {
+                    Authorization: 'Bearer ' + token
                 }
-            );
-            fetchData();
-            console.log(response);
+            });
+            if (response.status === 200) {
+                enqueueSnackbar(response.data.data.message, {
+                    variant: "success",
+                    anchorOrigin: {
+                        vertical: "top",
+                        horizontal: "right"
+                    }
+                })
+                fetchData()
+                console.log(response);
+            }
         } catch (error) {
             console.log(error);
         }
     };
 
-
     const handleSplitActivity = async () => {
         setShowSplitActivity(false)
+        setShowTrimActivity(false)
+        setShowOfflineTime(false)
         try {
             const response = await axios.post(`${apiUrl}/superAdmin/split-activity`, {
-                headers: headers,
-            }, {
                 timeEntryId: trimActivity?.timeentryId,
                 userId: userId,
-                splitTime: ""
+                splitTime: formattedDate + " " + splitTime?.splitTime
+            }, {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
             })
-            fetchData()
-            console.log(response);
+            if (response.status === 200) {
+                enqueueSnackbar(response.data.message, {
+                    variant: "success",
+                    anchorOrigin: {
+                        vertical: "top",
+                        horizontal: "right"
+                    }
+                })
+                fetchData()
+                console.log(response);
+            }
         } catch (error) {
             console.log(error);
         }
     }
 
     const handleAddOfflineTime = async () => {
-        console.log({
-            startTime: new Date().toLocaleDateString() + " " + offlineTime?.startTime,
-            endTime: new Date().toLocaleDateString() + " " + offlineTime?.endTime,
-            notes: "Offline activity description"
-        });
+        setShowOfflineTime(false)
+        setShowSplitActivity(false)
         setShowTrimActivity(false)
+        console.log(`${apiUrl}/superAdmin/offline-time/${userId}`);
+        console.log({
+            startTime: formattedDate + " " + offlineTime?.startTime,
+            endTime: formattedDate + " " + offlineTime?.endTime,
+            notes: "Offline activity description",
+        });
         try {
             const response = await axios.post(`${apiUrl}/superAdmin/offline-time/${userId}`, {
-                headers: headers,
-            }, {
-                startTime: new Date().toLocaleDateString() + " " + offlineTime?.startTime,
-                endTime: new Date().toLocaleDateString() + " " + offlineTime?.endTime,
+                startTime: formattedDate + " " + offlineTime?.startTime,
+                endTime: formattedDate + " " + offlineTime?.endTime,
+                projectId: "643fb528272a1877e4fcf30e",
                 notes: "Offline activity description"
+            }, {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
             })
-            console.log(response);
+            if (response.status === 200) {
+                enqueueSnackbar("offline time added", {
+                    variant: "success",
+                    anchorOrigin: {
+                        vertical: "top",
+                        horizontal: "right"
+                    }
+                })
+                fetchData()
+                console.log(response);
+            }
         } catch (error) {
             console.log(error);
         }
@@ -433,7 +588,7 @@ function CompanyIndividualUser() {
         set_current_month(months[currentMonth])
     }, [])
 
-    console.log(userId);
+    console.log(trimActivity);
 
     return (
         <div>
@@ -463,12 +618,16 @@ function CompanyIndividualUser() {
                     <p style={{ marginBottom: "20px", fontWeight: "700", fontSize: "20px" }}>Edit time</p>
                     <div className="editBoxLowerDiv">
                         <p>You can trim activity time, or edit activity note. <br />
-                            If you need add time, then <a onClick={() => {
+                            If you need add time, then <span style={{ cursor: "pointer", fontWeight: "bold", textDecoration: "underline" }} onClick={() => {
                                 setShowOfflineTime(true)
                                 setShowTrimActivity(false)
                                 setShowSplitActivity(false)
-                            }}>Add Offline Time </a> instead
+                            }}>Add Offline Time </span> instead
                         </p>
+
+                        {trimActivity?.startTime < startTime || trimActivity?.endTime > endTime ? (
+                            <p style={{ color: "red" }}>`From` and `To` must be within current bounds. <br /> To add extra time, Add Offline Time instead.</p>
+                        ) : null}
 
                         <div className="editboxinputdiv">
                             <input onChange={(e) => setTrimActivity({ ...trimActivity, startTime: e.target.value })} value={trimActivity?.startTime} />
@@ -492,20 +651,15 @@ function CompanyIndividualUser() {
                                 <input id="editcheck" type="checkbox" />
                                 <p style={{ margin: "0 0 0 10px", padding: 0 }}>Delete this activity</p>
                             </div>
-                            <a href="#" onClick={() => {
+                            <p style={{ margin: 0, cursor: "pointer" }} onClick={() => {
                                 setShowSplitActivity(true)
                                 setShowTrimActivity(false)
-                            }}>Split Activity</a>
+                            }}>Split Activity</p>
                         </div>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className="teamActionButton" onClick={() => {
-                        setShowOfflineTime(false)
-                        setShowTrimActivity(false)
-                        setShowSplitActivity(false)
-                        handleTrimActivity()
-                    }}>
+                    <button disabled={trimActivity?.startTime < startTime || trimActivity?.endTime > endTime} className={`${trimActivity?.startTime < startTime || trimActivity?.endTime > endTime ? "teamActionButtonDisabled" : "teamActionButton"}`} onClick={handleTrimActivity}>
                         SAVE CHANGES
                     </button>
                     <button className="teamActionButton" onClick={() => {
@@ -527,7 +681,9 @@ function CompanyIndividualUser() {
                     <p style={{ marginBottom: "20px", fontWeight: "700", fontSize: "20px" }}>Edit time</p>
                     <div className="editBoxLowerDiv">
                         <div className="editboxinputdiv">
-                            <input placeholder="9:05" />-<input placeholder="split" />-<input placeholder="10:00" /> <p>-0h 40m</p>
+                            <input disabled={true} value={splitTime?.startTime} />
+                            -<input value={splitTime?.splitTime} onChange={(e) => setSplitTime({ ...splitTime, splitTime: e.target.value })} placeholder="split" />-
+                            <input disabled={true} value={splitTime?.endTime} /> <p>-0h 40m</p>
                         </div>
                     </div>
                 </Modal.Body>
@@ -679,10 +835,10 @@ function CompanyIndividualUser() {
                                                     className="needleContainerMainAlingment"
                                                     style={{
                                                         transform: `translateY(-50%) rotate(${Math.floor(data?.totalactivity) <= 20 ? -75 :
-                                                                Math.floor(data?.totalactivity) > 20 && Math.floor(data?.totalactivity) <= 40 ? -38 :
-                                                                    Math.floor(data?.totalactivity) > 40 && Math.floor(data?.totalactivity) <= 60 ? 0 :
-                                                                        Math.floor(data?.totalactivity) > 60 && Math.floor(data?.totalactivity) <= 80 ? 35 :
-                                                                            Math.floor(data?.totalactivity) > 80 ? 75 : -108
+                                                            Math.floor(data?.totalactivity) > 20 && Math.floor(data?.totalactivity) <= 40 ? -38 :
+                                                                Math.floor(data?.totalactivity) > 40 && Math.floor(data?.totalactivity) <= 60 ? 0 :
+                                                                    Math.floor(data?.totalactivity) > 60 && Math.floor(data?.totalactivity) <= 80 ? 35 :
+                                                                        Math.floor(data?.totalactivity) > 80 ? 75 : -108
                                                             }deg)`
                                                     }}>
                                                     <div className="needleContainerAlingment">
@@ -746,6 +902,7 @@ function CompanyIndividualUser() {
                                                 </div>
                                             </OverlayTrigger>
                                             {showEditButton && <img onClick={() => {
+                                                console.log(element);
                                                 setShowTrimActivity(true)
                                                 setTrimActivity({
                                                     ...trimActivity,
@@ -753,6 +910,20 @@ function CompanyIndividualUser() {
                                                     startTime: element.time.split(" ")[0] + " " + element.time.split(" ")[1],
                                                     endTime: element.time.split(" ")[3] + " " + element.time.split(" ")[4]
                                                 })
+                                                setSplitTime({
+                                                    ...splitTime,
+                                                    timeentryId: element.timeentryId,
+                                                    startTime: element.time.split(" ")[0] + " " + element.time.split(" ")[1],
+                                                    endTime: element.time.split(" ")[3] + " " + element.time.split(" ")[4]
+                                                })
+                                                setOfflineTime({
+                                                    ...offlineTime,
+                                                    timeentryId: element.timeentryId,
+                                                    startTime: element.time.split(" ")[0] + " " + element.time.split(" ")[1],
+                                                    endTime: element.time.split(" ")[3] + " " + element.time.split(" ")[4]
+                                                })
+                                                setStartTime(element.time.split(" ")[0] + " " + element.time.split(" ")[1])
+                                                setEndTime(element.time.split(" ")[3] + " " + element.time.split(" ")[4])
                                             }} src={edit} alt="EditTimeZone.png" style={{ cursor: "pointer" }} />}
                                         </div>}
                                         <div style={{

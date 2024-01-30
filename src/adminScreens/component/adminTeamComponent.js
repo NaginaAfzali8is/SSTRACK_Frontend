@@ -36,7 +36,7 @@ function AdminTeamComponent(props) {
     const { fixId, archived_unarchived_users, deleteUser, isUserArchive, inviteStatus, handleSendInvitation, payrate, reSendInvitation } = props
     const [role, setRole] = useState("")
 
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     let token = localStorage.getItem("token");
     let headers = {
         Authorization: "Bearer " + token,
@@ -301,17 +301,13 @@ function AdminTeamComponent(props) {
         try {
             const response = await axios.get(`${apiUrl}/superAdmin/sorted-datebased/${fixId}`, { headers })
             if (response.status) {
-                setTimeout(() => {
-                    setLoading(false)
-                }, 3000);
+                setLoading(false)
                 setSettings(response.data.data)
                 console.log(response);
             }
         }
         catch (err) {
-            setTimeout(() => {
-                setLoading(false)
-            }, 3000);
+            setLoading(false)
             console.log(err);
         }
     };

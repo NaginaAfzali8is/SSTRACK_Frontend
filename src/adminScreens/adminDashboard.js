@@ -9,7 +9,7 @@ import setting from "../images/setting.webp";
 import line from "../images/line.webp";
 import Footer from "../screen/component/footer";
 // import AdminHeader from "../screen/component/adminHeader";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AdminHead from "../screen/component/adminHeadSection";
 import offline from "../images/not-active.svg";
 import groupCompany from "../images/Group.webp"
@@ -30,7 +30,7 @@ function AdminDashboard() {
     const [activeUser, setActiveUser] = useState(null)
     const [searchResults, setSearchResults] = useState(null)
     const navigate = useNavigate();
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     const token = localStorage.getItem("token");
     const headers = {
         Authorization: "Bearer " + token,
@@ -185,7 +185,7 @@ function AdminDashboard() {
                                                 alt="Screenshot"
                                             />
                                             <p className="dashheadingtop">
-                                                ({user?.minutesAgo === "0 minute ago" ? "a minute ago" : user?.minutesAgo})
+                                                ({user?.minutesAgo === "0 minute ago" || user?.minutesAgo === "-1 minute ago" ? "a minute ago" : user?.minutesAgo})
                                             </p>
                                         </div>
                                         <div className="nameVerified">

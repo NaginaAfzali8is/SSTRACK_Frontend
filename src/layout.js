@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './screen/component/header';
 import Footer from './screen/component/footer';
 import { Outlet, useLocation } from 'react-router-dom';
@@ -7,8 +7,8 @@ import UserHeader from './screen/component/userHeader';
 const Layout = () => {
 
   const location = useLocation()
-  
-  function scrollToSection (sectionId) {
+
+  function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
       window.scrollTo({
@@ -35,14 +35,14 @@ const Layout = () => {
           location.pathname === "/download" ? (
           <Header />
         ) : (
-          <UserHeader />
+          location.pathname !== "/capture-screen" && <UserHeader />
         )
       }
       <div>
         <Outlet />
       </div>
       <div style={{ padding: "30px" }}>
-        <Footer scrollToSection={scrollToSection} />
+        {location.pathname !== "/capture-screen" && <Footer scrollToSection={scrollToSection} />}
       </div>
     </div>
   );

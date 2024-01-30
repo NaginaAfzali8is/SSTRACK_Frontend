@@ -10,7 +10,7 @@ function ProjectComponent(props) {
         Authorization: "Bearer " + token,
     };
     
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     const getData = async ()=>{
      try{
         const response = await fetch(`${apiUrl}/superAdmin/${projectId}`,{
