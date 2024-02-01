@@ -97,7 +97,7 @@ function AdminUser() {
     let headers = {
         Authorization: "Bearer " + token,
     }
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
 
     // var pusher = new Pusher('334425b3c859ed2f1d2b', {
     //     cluster: 'ap2'
@@ -285,14 +285,24 @@ function AdminUser() {
                 });
             };
             // Assuming you have the totalHours data available
-            // Process data for all months up to the current month
+            // Process data for the first month of the new year
+            let isFirstMonthProcessed = false;
+
             for (let year = currentDate.getFullYear(); year >= 2022; year--) {
                 for (let month = 12; month >= 1; month--) {
                     processMonth(totalHours, month.toString().padStart(2, '0'), year.toString());
+
+                    // Break out of the loop after processing the first month
+                    if (month === 1 && !isFirstMonthProcessed) {
+                        isFirstMonthProcessed = true;
+                        break;
+                    }
                 }
             }
-            console.log(percentagesByDay);
+
+            console.log({ percentagesByDay });
             setTotalPercentageByDay(percentagesByDay);
+
         }
         catch (error) {
             console.log(error);
@@ -652,9 +662,7 @@ function AdminUser() {
         set_current_month(months[currentMonth])
     }, [])
 
-    console.log(trimActivity);
-
-    console.log("time entries", data.groupedScreenshots);
+    console.log({ activeMonth })
 
     return (
         <div>

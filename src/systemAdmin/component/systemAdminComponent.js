@@ -18,7 +18,7 @@ function SystemAdminComponent(props) {
     const companyId = props?.fixComponent?.owner?._id
     const companyName = props?.fixComponent?.owner?.company
     const company = data?.owner?.company;
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     let token = localStorage.getItem('adminToken');
     const companyStatus = props?.fixComponent?.owner?.isArchived;
     const [companyDetail, setCompanyDetail] = useState(null)

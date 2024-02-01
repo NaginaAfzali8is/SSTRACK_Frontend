@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
 const GeoxHR = () => {
-    const url = 'http://15.156.80.22:8000/login';
+
+    const url = 'http://15.156.80.22:8000';
+    const iframeRef = useRef(null);
+
     return (
         <div style={{ width: '100%', height: '100vh' }}>
             <iframe
-                title="MyWebPage"
+                ref={iframeRef}
+                title="GeoxHR"
                 style={{ width: '100%', height: '100%' }}
                 src={url}
                 allowFullScreen

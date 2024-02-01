@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 function VerificationCode() {
 
     const navigate = useNavigate()
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     const [code, setCode] = useState("")
     const [inputIndex, setIndex] = useState(0)
     const [loading, setLoading] = useState(false)

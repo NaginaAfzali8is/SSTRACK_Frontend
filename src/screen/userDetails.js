@@ -86,7 +86,7 @@ function UserDetails() {
     const currentMonth = new Date().getMonth();
     const currentDay = new Date().getDay();
 
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     let token = localStorage.getItem('token');
     let headers = {
         Authorization: 'Bearer ' + token,

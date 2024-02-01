@@ -36,7 +36,7 @@ function AdminTeamComponent(props) {
     const { fixId, archived_unarchived_users, deleteUser, isUserArchive, inviteStatus, handleSendInvitation, payrate, reSendInvitation } = props
     const [role, setRole] = useState("")
 
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     let token = localStorage.getItem("token");
     let headers = {
         Authorization: "Bearer " + token,

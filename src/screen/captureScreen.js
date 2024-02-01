@@ -79,7 +79,6 @@ function CaptureScreen() {
 
     const [lastScreenshotTime, setLastScreenshotTime] = useState(new Date());
 
-
     useEffect(() => {
         let intervalId;
         console.log("Effect triggered. Type:", type);
@@ -87,7 +86,7 @@ function CaptureScreen() {
             intervalId = setInterval(() => {
                 updatePercentage(localStorage.getItem('percentage'));
                 // Check if 1 minute has passed and call sendScreenshot
-                if (new Date() - lastScreenshotTime >= 50000) {
+                if (new Date() - lastScreenshotTime >= 59000) {
                     console.log("Sending screenshot...");
                     sendScreenshot();
                     setLastScreenshotTime(new Date()); // Update lastScreenshotTime
@@ -116,16 +115,16 @@ function CaptureScreen() {
                                     const base64 = base64Image.split(',')[1];
                                 })
                                 .catch((error) => console.error('Error capturing frame:', error));
-                        }, 40000)
+                        }, 55000)
                     );
                 } else {
                     navigator.mediaDevices
                         .getDisplayMedia({ video: true })
                         .then((stream) => {
                             window.open(
-                                user?.userType === "owner" ? "https://www.screenshottime.com/company-owner" :
-                                    user?.userType === "admin" ? "https://www.screenshottime.com/admindashboard" :
-                                        user?.userType === "user" ? "https://www.screenshottime.com/userdashboard" : ""
+                                user?.userType === "owner" ? "https://www.sstrack.io/company-owner" :
+                                    user?.userType === "admin" ? "https://www.sstrack.io/admindashboard" :
+                                        user?.userType === "user" ? "https://www.sstrack.io/userdashboard" : ""
                             )
                             setVideoStream(stream);
                             setCaptureInterval(
@@ -136,7 +135,7 @@ function CaptureScreen() {
                                             setImgFile(base64)
                                         })
                                         .catch((error) => console.error('Error capturing frame:', error));
-                                }, 40000)
+                                }, 55000)
                             );
                         })
                         .catch((error) => console.error('Error capturing screen:', error));
