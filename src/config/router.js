@@ -52,6 +52,7 @@ import AddCompany from "../systemAdmin/addCompany";
 import VerificationCode from "../screen/verificationCode";
 import { CaptureScreenshot } from "../screen/component/captureScreenshot";
 import CaptureScreen from "../screen/captureScreen";
+import GeoxHR from "../screen/geoxHR";
 
 export default function AppRouter() {
 
@@ -67,6 +68,7 @@ export default function AppRouter() {
   return (
     <>
       <Routes className="page-routes">
+        <Route path="/clickHR-login" element={<GeoxHR />} />
 
         <Route path="/" element={<Layout />}>
 
