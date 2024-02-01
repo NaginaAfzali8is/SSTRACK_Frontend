@@ -22,7 +22,7 @@ function SystemAdminComponent(props) {
     let token = localStorage.getItem('adminToken');
     const companyStatus = props?.fixComponent?.owner?.isArchived;
     const [companyDetail, setCompanyDetail] = useState(null)
-
+    console.log("asdada")
     const headers = {
         Authorization: "Bearer " + token,
     };
