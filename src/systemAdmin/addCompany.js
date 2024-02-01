@@ -15,7 +15,7 @@ const AddCompany = () => {
     const navigate = useNavigate();
     let token = localStorage.getItem('adminToken');
     const [timezone, setSelectedTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone)
-    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
+    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
     const [model, setModel] = useState({
         userType: 'owner',
     });

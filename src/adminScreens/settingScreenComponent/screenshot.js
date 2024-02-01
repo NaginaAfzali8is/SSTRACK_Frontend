@@ -15,7 +15,7 @@ function Screenshot(props) {
     let headers = {
         Authorization: 'Bearer ' + token,
     }
-    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
+    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
 
     async function handleUpdateSettings() {
         if (id !== null) {

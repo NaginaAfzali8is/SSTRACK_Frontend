@@ -32,7 +32,7 @@ function AdminDashboard() {
     const [activeUser, setActiveUser] = useState(null)
     const [searchResults, setSearchResults] = useState(null)
     const navigate = useNavigate();
-    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
+    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
     const token = localStorage.getItem("token");
     const headers = {
         Authorization: "Bearer " + token,
