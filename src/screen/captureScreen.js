@@ -13,6 +13,7 @@ function CaptureScreen() {
     const [modal, setModal] = useState({});
     const location = useLocation();
     const API_URL = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    // const API_URL = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     const user = JSON.parse(localStorage.getItem("items"))
 
     let token = localStorage.getItem('token');
@@ -46,7 +47,7 @@ function CaptureScreen() {
     const sendScreenshot = useCallback(async () => {
         console.log({
             activityPercentage: percentage,
-            description: window.location.href,
+            description: localStorage.getItem('activeTab'),
             description2: "Google chrome",
             startTime: new Date(),
             createdAt: new Date(),
@@ -55,7 +56,7 @@ function CaptureScreen() {
         try {
             const model = {
                 activityPercentage: percentage,
-                description: window.location.href,
+                description: localStorage.getItem('activeTab'),
                 description2: "Google chrome",
                 startTime: new Date(),
                 createdAt: new Date(),
@@ -99,7 +100,7 @@ function CaptureScreen() {
             clearInterval(intervalId);
         };
     }, [sendScreenshot, type, lastScreenshotTime]);
-    
+        
     useEffect(() => {
         const token = screenshotCapture?.token;
         const decoded = jwtDecode(token);

@@ -1,18 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-    timeline: [],
-}
-
 const timelineSlice = createSlice({
     name: "timeline",
-    initialState: initialState,
+    initialState: {
+        timeline: [],
+        loading: false
+    },
     reducers: {
         getTimeline: (state, action) => {
             state.timeline = action.payload
-        }
+        },
+        setLoading: (state, action) => {
+            state.loading = action.payload
+        },
     },
 })
 
-export const { getTimeline } = timelineSlice.actions
+export const { getTimeline, setLoading } = timelineSlice.actions
 export default timelineSlice.reducer

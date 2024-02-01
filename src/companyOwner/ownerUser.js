@@ -145,10 +145,11 @@ function OwnerUserSignup() {
         setCurrentTimeZone(defaultTimezone);
         fillModel("timezoneOffset", 5);
         fillModel("timezone", defaultTimezone);
-        fillModel("company", "i8is");
+        fillModel("company", currentUser?.company);
     }, []);
 
     console.log(model);
+    console.log(currentUser);
 
     return (
         <div>

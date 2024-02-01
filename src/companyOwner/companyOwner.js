@@ -21,7 +21,6 @@ function CompanyOwner() {
     const [lastScreenshot, setLastScreenshot] = useState(null)
     const [error, setError] = useState(false)
     const [activeUser, setActiveUser] = useState(null)
-    const { loading, setLoading, loading2, setLoading2 } = useLoading()
     const navigate = useNavigate()
     const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
     const token = localStorage.getItem('token');
@@ -31,6 +30,7 @@ function CompanyOwner() {
         Authorization: "Bearer " + token,
     };
     const timeline = useSelector((state) => state.timeline)
+    const loading = useSelector((state) => state.loading)
     const dispatch = useDispatch()
     // var pusher = new Pusher('334425b3c859ed2f1d2b', {
     //     cluster: 'ap2'
@@ -77,6 +77,7 @@ function CompanyOwner() {
     // }
 
     console.log(timeline);
+    console.log(loading);
 
     return (
         <>
@@ -113,15 +114,17 @@ function CompanyOwner() {
                             </div>
                             <div className="bgColorChangeGreen" style={{ marginTop: "20px" }}>
                                 {loading ? <Skeleton count={1} height="100vh" style={{ margin: "0 0 10px 0" }} /> :
-                                    timeline?.length > 0 ? timeline?.sort((a, b) => {
-                                        const timestampA = b.recentScreenshot?.createdAt || 0;
-                                        const timestampB = a.recentScreenshot?.createdAt || 0;
-                                        if (timestampA === 0 && timestampB === 0) return 0;
-                                        if (timestampA === 0) return -1;
-                                        if (timestampB === 0) return 1;
-                                        return timestampA - timestampB;
-                                    }).map((user, index) => {
-                                        return loading2 ? (
+                                    timeline?.length > 0 ? 
+                                    // timeline?.sort((a, b) => {
+                                    //     const timestampA = b?.recentScreenshot?.createdAt || 0;
+                                    //     const timestampB = a?.recentScreenshot?.createdAt || 0;
+                                    //     if (timestampA === 0 && timestampB === 0) return 0;
+                                    //     if (timestampA === 0) return -1;
+                                    //     if (timestampB === 0) return 1;
+                                    //     return timestampA - timestampB;
+                                    // })
+                                    timeline?.map((user, index) => {
+                                        return loading ? (
                                             <Skeleton count={1} height="107px" style={{ margin: "0 0 10px 0" }} />
                                         ) : (
                                             <div className="dashsheadings" key={user.userId}>
@@ -133,11 +136,7 @@ function CompanyOwner() {
                                                     <img
                                                         onClick={() => moveOnlineUsers(user.userId)}
                                                         className="screenShotPreview"
-                                                        src={
-                                                            lastScreenshot?.user_id === user?.userId ?
-                                                                lastScreenshot?.key :
-                                                                user?.recentScreenshot ? user?.recentScreenshot?.key : screenshot
-                                                        }
+                                                        src={lastScreenshot?.user_id === user?.userId ? lastScreenshot?.key : user?.recentScreenshot ? user?.recentScreenshot?.key : screenshot}
                                                         alt="Screenshot"
                                                     />
                                                     <p className="dashheadingtop">

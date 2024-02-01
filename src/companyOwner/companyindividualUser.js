@@ -224,7 +224,7 @@ function CompanyIndividualUser() {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${apiUrl}/superAdmin/sorted-datebased/${userId}?date=${encodeURIComponent(formattedDate)}`, { headers });
+            const response = await axios.get(`${apiUrl}/owner/sorted-datebased/${userId}?date=${encodeURIComponent(formattedDate)}`, { headers });
             setLoading(true)
             if (response.data) {
                 setData(response.data.data);
@@ -248,7 +248,7 @@ function CompanyIndividualUser() {
 
     async function getAllDays() {
         try {
-            const response = await axios.get(`${apiUrl}/superAdmin/hoursbyday/${userId}?date=${activeMonth}`, { headers });
+            const response = await axios.get(`${apiUrl}/owner/hoursbyday/${userId}?date=${activeMonth}`, { headers });
             const totalHours = response.data.data.totalHoursByDay;
             console.log("totalHours of active month", response.data);
             const currentDate = new Date();

@@ -158,14 +158,7 @@ function AdminDashboard() {
                             </div>
                         </div>
                         <div className="bgColorChangeGreen" style={{ marginTop: "20px" }}>
-                            {loading ? <Skeleton count={1} height="100vh" style={{ margin: "0 0 10px 0" }} /> : timeline?.length > 0 ? timeline?.sort((a, b) => {
-                                const timestampA = b.recentScreenshot?.createdAt || 0;
-                                const timestampB = a.recentScreenshot?.createdAt || 0;
-                                if (timestampA === 0 && timestampB === 0) return 0;
-                                if (timestampA === 0) return -1;
-                                if (timestampB === 0) return 1;
-                                return timestampA - timestampB;
-                            }).map((user, index) => {
+                            {loading ? <Skeleton count={1} height="100vh" style={{ margin: "0 0 10px 0" }} /> : timeline?.length > 0 ? timeline?.map((user, index) => {
                                 return loading2 ? (
                                     <Skeleton count={1} height="107px" style={{ margin: "0 0 10px 0" }} />
                                 ) : (

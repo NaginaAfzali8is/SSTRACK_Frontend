@@ -8,25 +8,25 @@ import edit from '../images/EditTimeZone.webp';
 import historyIcon from "../images/HistoryIcon.webp";
 import line from "../images/line.webp";
 import { useLocation, useNavigate, useNavigation } from "react-router-dom";
-import AdminHead from "../screen/component/adminHeadSection";
-import cross from "../images/cross.webp";
-import moment from "moment-timezone";
+// import AdminHead from "../screen/component/adminHeadSection";
+// import cross from "../images/cross.webp";
+// import moment from "moment-timezone";
 import leftArrow from "../images/left-arrow.png"
 import rightArrow from "../images/right-arrow.png"
 import CircularProgressBar from "../screen/component/circularProgressBar";
 import activityImage from "../images/activity-level.svg"
-import activityTracker from "../images/activityTracker.svg"
-import needle from '../images/Needle.svg'
+// import activityTracker from "../images/activityTracker.svg"
+// import needle from '../images/Needle.svg'
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
 import useLoading from "../hooks/useLoading";
 import axios from "axios";
 import logo from '../images/app-logo-white.svg'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import Pusher from 'pusher-js';
+// import Pusher from 'pusher-js';
 import deleteIcon from '../images/delete.svg'
-import TimeEntryModal from "../screen/component/timeEntryModal";
-import DeleteSSModal from "../screen/component/deleteSSModal";
+// import TimeEntryModal from "../screen/component/timeEntryModal";
+// import DeleteSSModal from "../screen/component/deleteSSModal";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 import BackToTop from "../screen/component/backToTop";
 import { ImCross } from "react-icons/im";
@@ -36,7 +36,7 @@ import perc_40 from "../images/Orange.svg"
 import perc_60 from "../images/Yellow.svg"
 import perc_80 from "../images/LightGreen.svg"
 import perc_100 from "../images/FullGreen.svg"
-import { CaptureScreenshot } from "../screen/component/captureScreenshot";
+// import { CaptureScreenshot } from "../screen/component/captureScreenshot";
 
 function AdminUser() {
 
@@ -47,7 +47,7 @@ function AdminUser() {
     const currentDate = new Date().getDate().toString().padStart(2, '0');
     const todayDate = `${today}-${currentMonths}-${currentDate}`;
 
-    const [show2, setShow2] = useState(false);
+    // const [show2, setShow2] = useState(false);
     const [rotation, setRotation] = useState(0)
     const { loading, setLoading } = useLoading()
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -73,11 +73,11 @@ function AdminUser() {
     const [data, setData] = useState([]);
     const [date, setDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(null);
-    const [changeEdit, setEdit] = useState(false);
+    // const [changeEdit, setEdit] = useState(false);
     const [formattedDate, setFormattedDate] = useState(todayDate);
-    const [offiineTiming, setOfflineTiming] = useState(false);
+    // const [offiineTiming, setOfflineTiming] = useState(false);
     const [timeEntries, setTimeEntries] = useState([]);
-    const [lastScreenshot, setLastScreenshot] = useState(null)
+    // const [lastScreenshot, setLastScreenshot] = useState(null)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [timeTrackingId, setTimeTrackingId] = useState(null)
     const [screenshotId, setScreenshotId] = useState(null)

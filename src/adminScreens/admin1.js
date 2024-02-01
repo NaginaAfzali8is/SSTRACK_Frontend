@@ -1,9 +1,9 @@
 import React from "react";
-import UserHeader from "../screen/component/userHeader";
-import menu from "../images/menu.webp";
-import loader from "../images/Rectangle.webp";
-import check from "../images/check.webp";
-import circle from "../images/circle.webp";
+// import UserHeader from "../screen/component/userHeader";
+// import menu from "../images/menu.webp";
+// import loader from "../images/Rectangle.webp";
+// import check from "../images/check.webp";
+// import circle from "../images/circle.webp";
 import saveReport from "../images/reportImg.webp";
 import blueArrow from "../images/bluearrow.webp";
 import cross from "../images/cross.webp";
@@ -15,19 +15,20 @@ import reportButton from "../images/reportButton.webp";
 import adminReport from "../images/adminReport.webp";
 import addButton from "../images/addButton.webp";
 import line from "../images/line.webp";
-import Footer from "../screen/component/footer";
-import AdminHeader from "./component/adminHeader";
-import AdminHead from "../screen/component/adminHeadSection";
+// import Footer from "../screen/component/footer";
+// import AdminHeader from "./component/adminHeader";
+// import AdminHead from "../screen/component/adminHeadSection";
 
 
 function AdminReport1() {
+    console.log("asdsad");
     return (
         <div>
             <section>
                 <div className="container">
                     <div className="userHeader">
                         <div className="headerTop">
-                            <img src={saveReport} />
+                            <img alt="" src={saveReport} />
                             <h5>Summary Report </h5>
                         </div>
 
@@ -39,7 +40,7 @@ function AdminReport1() {
                                 <div className="calenderInnerDiv">
                                     <div className="dateDiv">
                                         <button>21/10/22</button>
-                                        <div><img src={blueArrow} /></div>
+                                        <div><img alt="" src={blueArrow} /></div>
                                         <button>23/10/22</button>
 
                                     </div>
@@ -77,12 +78,12 @@ function AdminReport1() {
                             </div>
                             <div className="crossButtonDiv">
                                 <div>
-                                    <button className="crossButton"><img src={cross} /></button>
+                                    <button className="crossButton"><img alt="" src={cross} /></button>
                                     <button className="crossButton">Asad Mehmood</button>
                                 </div>
                                 <div className="downArrowDiv">
-                                    <div><img src={cross} /></div>
-                                    <div><img src={downArrow} /></div>
+                                    <div><img alt="" src={cross} /></div>
+                                    <div><img alt="" src={downArrow} /></div>
 
 
                                 </div>
@@ -92,8 +93,8 @@ function AdminReport1() {
                                     Select Projects
                                 </div>
                                 <div className="downArrowDiv">
-                                    <div><img src={cross} /></div>
-                                    <div><img src={downArrow} /></div>
+                                    <div><img alt="" src={cross} /></div>
+                                    <div><img alt="" src={downArrow} /></div>
 
 
                                 </div>
@@ -114,17 +115,17 @@ function AdminReport1() {
                             <div className="crossButtonDiv">
                                 <div className="groupDiv">
                                     <div>
-                                        <button className="crossButton"><img src={cross} /></button>
+                                        <button className="crossButton"><img alt="" src={cross} /></button>
                                         <button className="crossButton">Group by project</button>
                                     </div>
                                     <div>
-                                        <button className="crossButton"><img src={cross} /></button>
+                                        <button className="crossButton"><img alt="" src={cross} /></button>
                                         <button className="crossButton">Group by employee</button>
                                     </div>
                                 </div>
                                 <div className="downArrowDiv">
-                                    <div><img src={cross} /></div>
-                                    <div><img src={downArrow} /></div>
+                                    <div><img alt="" src={cross} /></div>
+                                    <div><img alt="" src={downArrow} /></div>
 
 
                                 </div>
@@ -141,26 +142,26 @@ function AdminReport1() {
                                 </div>
                                 <div className="excelDiv">
                                     <div className="excelInnerDiv">
-                                        <div><img src={excel} /></div>
+                                        <div><img alt="" src={excel} /></div>
                                         <p>Excel</p>
                                     </div>
                                     <div className="excelInnerDiv">
-                                        <div><img src={excel} /></div>
+                                        <div><img alt="" src={excel} /></div>
                                         <p>Share PDF</p>
                                     </div>
                                     <div className="excelInnerDiv">
-                                        <div><img src={share} /></div>
+                                        <div><img alt="" src={share} /></div>
                                         <p>Share Report </p>
                                     </div>
                                     <div className="excelInnerDiv">
-                                        <div><img src={save} /></div>
+                                        <div><img alt="" src={save} /></div>
                                         <p>Save Report</p>
                                     </div>
 
                                 </div>
                             </div>
                             <div>
-                                <img className="reportButton" src={reportButton} />
+                                <img alt="" className="reportButton" src={reportButton} />
                             </div>
                             <div className="summaryButton">
                                 <button className="activeButton">Timeline</button>
@@ -176,7 +177,7 @@ function AdminReport1() {
                                     <p className="percent">31 %</p>
                                 </div>
                                 <div>
-                                    <img src={adminReport} />
+                                    <img alt="" src={adminReport} />
                                 </div>
 
                             </div>
@@ -191,7 +192,7 @@ function AdminReport1() {
                             </div>
                             <div className="asadMehmoodDiv">
                                 <div>
-                                    <p><img src={addButton} /><span>Asad Mehmood</span></p>
+                                    <p><img alt="" src={addButton} /><span>Asad Mehmood</span></p>
                                 </div>
                                 <div className="durationDiv">
                                     <p>36h 52m</p>
@@ -203,7 +204,7 @@ function AdminReport1() {
                             </div>
                             <div className="asadMehmoodDiv">
                                 <div>
-                                    <p><img src={addButton} /><span>Hasaan Soomro</span></p>
+                                    <p><img alt="" src={addButton} /><span>Hasaan Soomro</span></p>
                                 </div>
                                 <div className="durationDiv">
                                     <p>36h 52m</p>
@@ -215,7 +216,7 @@ function AdminReport1() {
                             </div>
                             <div className="asadMehmoodDiv">
                                 <div>
-                                    <p><img src={addButton} /><span>Fatima Zohra</span></p>
+                                    <p><img alt="" src={addButton} /><span>Fatima Zohra</span></p>
                                 </div>
                                 <div className="durationDiv">
                                     <p>36h 52m</p>
@@ -227,7 +228,7 @@ function AdminReport1() {
                             </div>
                             <div className="asadMehmoodDiv">
                                 <div>
-                                    <p><img src={addButton} /><span>Fatima Zohra</span></p>
+                                    <p><img alt="" src={addButton} /><span>Fatima Zohra</span></p>
                                 </div>
                                 <div className="durationDiv">
                                     <p>36h 52m</p>
@@ -242,7 +243,7 @@ function AdminReport1() {
                 </div>
             </section>
             <div>
-                <img className="admin1Line" src={line} />
+                <img alt="" className="admin1Line" src={line} />
             </div>
         </div>
     )
