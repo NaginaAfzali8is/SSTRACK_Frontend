@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 
 const GeoxHR = () => {
 
-    const url = 'http://15.156.80.22:8000';
+    const url = 'http://15.156.80.22:8000/login';
 
     return (
         <div style={{ width: '100%', height: '100vh' }}>

@@ -98,9 +98,6 @@ function CompanyIndividualUser() {
         Authorization: "Bearer " + token,
     }
 
-    console.log("token", token);
-    console.log("userId", userId);
-
     // var pusher = new Pusher('334425b3c859ed2f1d2b', {
     //     cluster: 'ap2'
     // });
@@ -259,25 +256,19 @@ function CompanyIndividualUser() {
             const processMonth = (totalHours, month, year) => {
                 const filteredHours = totalHours.filter(th => {
                     const dateParts = th.date.split('-').map(part => part);
-                    return dateParts[1] === month && dateParts[2] == year;
+                    return "0" + dateParts[1] === month && dateParts[2] === year;
                 });
-
-                console.log(`filteredHoursss for ${month}-${year}`, filteredHours);
-
                 filteredHours.forEach(th => {
                     const timeMatches = th.totalHours.match(/(\d+)h\s*(\d*)m/);
                     let totalMinutes = 0;
-
                     if (timeMatches) {
                         const hours = parseInt(timeMatches[1], 10) || 0;
                         const minutes = parseInt(timeMatches[2], 10) || 0;
                         totalMinutes = hours * 60 + minutes;
                     }
-
                     const totalHoursDecimal = totalMinutes / 60;
                     const widthPercentage = (totalMinutes / (maxHours * 60)) * 100;
                     const widthPercentageExact = (totalHoursDecimal / maxHours) * 100;
-
                     percentagesByDay.push({
                         date: th.date,
                         totalMinutes: totalMinutes,
@@ -293,7 +284,6 @@ function CompanyIndividualUser() {
                     processMonth(totalHours, month.toString().padStart(2, '0'), year.toString());
                 }
             }
-            console.log(percentagesByDay);
             setTotalPercentageByDay(percentagesByDay);
         }
         catch (error) {
@@ -588,7 +578,7 @@ function CompanyIndividualUser() {
         set_current_month(months[currentMonth])
     }, [])
 
-    console.log(trimActivity);
+    console.log({ totalPercentageByDay });
 
     return (
         <div>
