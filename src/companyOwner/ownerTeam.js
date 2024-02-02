@@ -216,17 +216,26 @@ function OwnerTeam() {
                 <Modal.Body>
                     <p style={{ marginBottom: "20px", fontWeight: "600", fontSize: "20px" }}>Archive {selectedUser?.name} ?</p>
                     <p>The user:</p>
-                    <ul>
-                        <li>Will not be able to track time for your company</li>
-                        <li>Will not appear in the list of users on your home or timeline</li>
-                        <li>Their data will be retained and accessible in reports</li>
-                        <li>You will not be charged for this user</li>
-                    </ul>
-                    <p>You can restore this user any time</p>
+                    {isArchived ? (
+                        <ul>
+                            <li>Will be able to track time for your company</li>
+                            <li>Will appear in the list of users on your home or timeline</li>
+                            <li>Their data will not be retained and accessible in reports</li>
+                            <li>You will be charged for this user</li>
+                        </ul>
+                    ) : (
+                        <ul>
+                            <li>Will not be able to track time for your company</li>
+                            <li>Will not appear in the list of users on your home or timeline</li>
+                            <li>Their data will be retained and accessible in reports</li>
+                            <li>You will not be charged for this user</li>
+                        </ul>
+                    )}
+                    {!isArchived && <p>You can restore this user any time</p>}
                 </Modal.Body>
                 <Modal.Footer>
                     <button className="teamActionButton" onClick={archived_unarchived_users}>
-                        ARCHIVE
+                        {isArchived ? "UN-ARCHIVE" : "ARCHIVE"}
                     </button>
                     <button className="teamActionButton" onClick={() => setShow2(false)}>
                         CANCEL

@@ -76,6 +76,11 @@ function UserDetails() {
     const [splitActivity, setSplitActivity] = useState(false);
     const [changeEdit, setEdit] = useState(false);
 
+    const [totalPercentageByDay, setTotalPercentageByDay] = useState(null)
+    const [activeMonth, setActiveMonth] = useState(new Date().toLocaleDateString())
+    const [current_day, set_current_day] = useState(null)
+    const [current_month, set_current_month] = useState(null)
+
     const userId = items?._id;
     const currentMonths = (new Date().getMonth() + 1).toString().padStart(2, '0');
     const currentDate = new Date().getDate().toString().padStart(2, '0');
@@ -99,6 +104,8 @@ function UserDetails() {
     const prevMonth = () => {
         setDate((prevDate) => {
             const prevMonthDate = new Date(prevDate.getFullYear(), prevDate.getMonth() - 1);
+            setActiveMonth(prevMonthDate.toLocaleDateString())
+            setTotalPercentageByDay(null)
             return prevMonthDate;
         });
     };
@@ -106,6 +113,8 @@ function UserDetails() {
     const nextMonth = () => {
         setDate((prevDate) => {
             const nextMonthDate = new Date(prevDate.getFullYear(), prevDate.getMonth() + 1);
+            setActiveMonth(nextMonthDate.toLocaleDateString())
+            setTotalPercentageByDay(null)
             return nextMonthDate;
         });
     };
@@ -154,37 +163,46 @@ function UserDetails() {
             const clickDay = new Date(key).getFullYear();
             const clickMonth = (new Date(key).getMonth() + 1).toString().padStart(2, '0');
             const clickDate = new Date(key).getDate().toString().padStart(2, '0');
-            const formattedsDate = `${clickDay}-${clickMonth}-${clickDate}`;
-            setFormattedDate(formattedsDate);
-            setActiveButton(key)
             const clickDa = new Date(key).getDay();
             const clickMon = new Date(key).getMonth();
             // console.log(clickDa);
             setClickDay(clickDa)
             setMonth(clickMon)
-            // console.log(formattedDate)
+            const formattedsDate = `${clickDay}-${clickMonth}-${clickDate}`;
+            setFormattedDate(formattedsDate);
+            setActiveButton(key)
         };
 
         // Generate cells for each day in the current month
-        for (let i = 1; i <= daysInMonth; i++) {
+        // ...
+
+        // Generate cells for each day in the current month
+        for (let i = 0; i < daysInMonth; i++) {
             const isWeekend = currentDay.getDay() === 0 || currentDay.getDay() === 6;
             const isFirstDayOfWeek = currentDay.getDay() === 1;
-            const isLastDayOfWeek = currentDay.getDay() === 0 || i === daysInMonth;
-            const dayKey = currentDay.toString(); // Generate a unique key using the string representation of the date
+            const isLastDayOfWeek = currentDay.getDay() === 0 || i === daysInMonth - 1;
+            const dayKey = currentDay.toString();
             const isCurrentDate = currentDay.getDate() === new Date().getDate() && currentDay.getMonth() === new Date().getMonth();
 
+            const dayFormatted = `${currentDay.getFullYear()}-${(currentDay.getMonth() + 1).toString().padStart(2, '0')}-${currentDay.getDate().toString().padStart(2, '0')}`;
+
+            // Generate a unique key using the string representation of the date
             days.push(
                 <div
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", border: "1px solid #ebeaea" }}
                     className={`col cell ${isWeekend ? "week day week first" : "day"} ${dayKey === activeButton ? "active" : isCurrentDate ? "active2" : ""}`}
                     key={dayKey}
                     onClick={() => handleClick(dayKey)}
                 >
                     <p className="weekName">{currentDay.toLocaleString("en-US", { weekday: "short" })}</p>
                     <p className="Weekdate">{currentDay.getDate()}</p>
-                    <p className="nonetaken">{currentDay.toLocaleString("en-US", { weekday: "short" })}</p>
+                    {/* <p className="nonetaken">{currentDay.toLocaleString("en-US", { weekday: "short" })}</p> */}
+                    <div style={{ padding: "2px" }}>
+                        <div style={{ width: `${totalPercentageByDay === null ? 0 : totalPercentageByDay[i]?.percentage}%`, background: 'linear-gradient(180deg,#cdeb8e 0,#a5c956)', height: '10px' }}></div>
+                    </div>
                 </div>
             );
+
             currentDay.setDate(currentDay.getDate() + 1);
         }
 
@@ -310,6 +328,75 @@ function UserDetails() {
         });
         return matchingEntry ? "#A8C96A" : '#EFF9EC';
     };
+
+    async function getAllDays() {
+        try {
+            const response = await axios.get(`${apiUrl}/user/hoursbyday/${userId}?date=${activeMonth}`, { headers });
+            const totalHours = response.data.data.totalHoursByDay;
+            console.log("totalHours of active month", response.data);
+            const currentDate = new Date();
+            const currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+            const currentYear = currentDate.getFullYear();
+            const maxHours = 6;
+            let percentagesByDay = [];
+            const processMonth = (totalHours, month, year) => {
+                const filteredHours = totalHours.filter(th => {
+                    const dateParts = th.date.split('-').map(part => part);
+                    return "0" + dateParts[1] === month && dateParts[2] === year;
+                });
+
+                console.log(`filteredHoursss for ${month}-${year}`, filteredHours);
+
+                filteredHours.forEach(th => {
+                    const timeMatches = th.totalHours.match(/(\d+)h\s*(\d*)m/);
+                    let totalMinutes = 0;
+
+                    if (timeMatches) {
+                        const hours = parseInt(timeMatches[1], 10) || 0;
+                        const minutes = parseInt(timeMatches[2], 10) || 0;
+                        totalMinutes = hours * 60 + minutes;
+                    }
+
+                    const totalHoursDecimal = totalMinutes / 60;
+                    const widthPercentage = (totalMinutes / (maxHours * 60)) * 100;
+                    const widthPercentageExact = (totalHoursDecimal / maxHours) * 100;
+
+                    percentagesByDay.push({
+                        date: th.date,
+                        totalMinutes: totalMinutes,
+                        percentage: Math.min(widthPercentage, 100),
+                        percentageExact: Math.min(widthPercentageExact, 100),
+                    });
+                });
+            };
+            // Assuming you have the totalHours data available
+            // Process data for the first month of the new year
+            let isFirstMonthProcessed = false;
+
+            for (let year = currentDate.getFullYear(); year >= 2022; year--) {
+                for (let month = 12; month >= 1; month--) {
+                    processMonth(totalHours, month.toString().padStart(2, '0'), year.toString());
+
+                    // Break out of the loop after processing the first month
+                    if (month === 1 && !isFirstMonthProcessed) {
+                        isFirstMonthProcessed = true;
+                        break;
+                    }
+                }
+            }
+
+            console.log({ percentagesByDay });
+            setTotalPercentageByDay(percentagesByDay);
+
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getAllDays()
+    }, [activeMonth]);
 
     // var pusher = new Pusher('334425b3c859ed2f1d2b', {
     //     cluster: 'ap2'

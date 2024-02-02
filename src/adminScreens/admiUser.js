@@ -257,7 +257,7 @@ function AdminUser() {
             const processMonth = (totalHours, month, year) => {
                 const filteredHours = totalHours.filter(th => {
                     const dateParts = th.date.split('-').map(part => part);
-                    return dateParts[1] === month && dateParts[2] == year;
+                    return "0" + dateParts[1] === month && dateParts[2] === year;
                 });
 
                 console.log(`filteredHoursss for ${month}-${year}`, filteredHours);
@@ -308,14 +308,14 @@ function AdminUser() {
             console.log(error);
         }
     }
+    
+    useEffect(() => {
+        getAllDays()
+    }, [activeMonth]);
 
     useEffect(() => {
         fetchData();
     }, [formattedDate]);
-
-    useEffect(() => {
-        getAllDays()
-    }, [activeMonth]);
 
     const goBackToPreviousImage = () => {
         if (selectedImageIndex >= 0) {
@@ -381,87 +381,8 @@ function AdminUser() {
         return () => window.removeEventListener('keydown', keyPressHandler);
     }, [selectedImageIndex]);
 
-    const getColorForTimeRange = (hoursWorked) => {
-        // Define your color thresholds based on hours worked
-        const colorThresholds = [
-            { minHours: 0, maxHours: 4, color: '#EFF9EC' },   // Color for 0-4 hours
-            { minHours: 4, maxHours: 8, color: '#A8C96A' },   // Color for 4-8 hours
-            { minHours: 8, maxHours: 12, color: '#FF5733' },  // Color for 8-12 hours
-        ];
-        // Find the first color threshold that matches the hours worked
-        const matchedThreshold = colorThresholds.find(threshold => hoursWorked >= threshold.minHours && hoursWorked < threshold.maxHours);
-        // Return the color of the matched threshold or a default color
-        return matchedThreshold ? matchedThreshold.color : 'transparent';
-    };
-
-    const renderMinuteContainers = (hour, totalHoursWorked, startHour) => {
-        const maxWorkingHoursInDay = 8;
-
-        return (
-            <div className="minute-container">
-                {Array.from({ length: 60 }, (_, minute) => {
-                    const hoursWorked = totalHoursWorked + hour + minute / 60;
-                    const color = getColorForTimeRange(hoursWorked);
-                    const totalMinutes = hoursWorked * 60;
-
-                    // Use the totalMinutes directly for widthPercentage calculation
-                    const widthPercentage = totalMinutes >= startHour
-                        ? ((totalMinutes - startHour) / (maxWorkingHoursInDay * 60)) * 100
-                        : 0;
-
-                    const style = color !== 'transparent' ? { background: color } : {};
-
-                    return (
-                        <div
-                            key={minute}
-                            className={`time-interval ${color !== 'transparent' ? 'colored' : ''}`}
-                            style={{ width: `${widthPercentage}%`, ...style }}
-                        >
-                            {minute}
-                        </div>
-                    );
-                })}
-            </div>
-        );
-    };
-
-
-    const getHourAndMinuteFromTime = (time) => {
-        const timeRangeMatch = time.match(/(\d{1,2}:\d{2})\s([APMapm]{2})\s-\s(\d{1,2}:\d{2})\s([APMapm]{2})/);
-
-        if (timeRangeMatch) {
-            const [, start, startPeriod, end, endPeriod] = timeRangeMatch;
-
-            const parseTime = (time, period) => {
-                let [hour, minute] = time.split(":").map(part => parseInt(part, 10));
-
-                if (isNaN(hour) || isNaN(minute)) {
-                    return null;
-                }
-
-                if (period.toLowerCase() === 'pm' && hour !== 12) {
-                    hour += 12;
-                }
-
-                return { hour, minute };
-            };
-
-            const startTime = parseTime(start, startPeriod);
-            const endTime = parseTime(end, endPeriod);
-
-            if (!startTime || !endTime) {
-                return {};
-            }
-
-            return { startTime, endTime };
-        }
-
-        return {};
-    };
-
     const renderTimeIntervals = () => {
         const intervals = [];
-        let totalHoursWorked = 0;
 
         for (let hour = 0; hour <= 23; hour++) {
             const isPM = hour >= 12;
@@ -471,36 +392,40 @@ function AdminUser() {
                 <div key={hour} className="time-slot">
                     <div className="hour-color">
                         {formattedHour === 0 ? 12 : formattedHour} {isPM ? 'pm' : 'am'}
-                        {renderMinuteContainers(hour, totalHoursWorked, 0)}
+                        <div className="minute-container">
+                            {Array.from({ length: 60 }, (_, minute) => {
+                                const timeWithMinutes = `${hour}:${minute < 10 ? '0' + minute : minute}`;
+                                const color = getColorForTime(timeWithMinutes);
+
+                                return (
+                                    <div
+                                        key={minute}
+                                        className={`time-interval ${color !== 'transparent' ? 'red' : ''}`}
+                                        style={{ background: color }}
+                                    >
+                                        {minute}
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
+
                 </div>
             );
-
-            totalHoursWorked += 1;
         }
 
-        data?.groupedScreenshots?.forEach((timeRange) => {
-            const { startTime, endTime } = getHourAndMinuteFromTime(timeRange.time);
-
-            if (startTime && endTime) {
-                for (let hour = startTime.hour; hour <= endTime.hour; hour++) {
-                    const isPM = hour >= 12;
-                    const formattedHour = hour <= 12 ? hour : hour - 12;
-                    const index = hour % 24;
-
-                    intervals[index] = (
-                        <div key={hour} className="time-slot">
-                            <div className="hour-color">
-                                {formattedHour === 0 ? 12 : formattedHour} {isPM ? 'pm' : 'am'}
-                                {renderMinuteContainers(hour, totalHoursWorked, startTime.hour * 60 + startTime.minute)}
-                            </div>
-                        </div>
-                    );
-                }
-            }
-        });
-
         return intervals;
+    };
+
+    const getColorForTime = (time) => {
+        const matchingEntry = timeEntries.find(entry => {
+            const [startTime, endTime] = entry?.time?.split(' - ');
+            const startTimeFormatted = new Date(`${encodeURIComponent(formattedDate)} ${startTime}`).getTime();
+            const endTimeFormatted = new Date(`${encodeURIComponent(formattedDate)} ${endTime}`).getTime();
+            const currentTimeFormatted = new Date(`${encodeURIComponent(formattedDate)} ${time}`).getTime();
+            return currentTimeFormatted >= startTimeFormatted && currentTimeFormatted <= endTimeFormatted;
+        });
+        return matchingEntry ? "#A8C96A" : '#EFF9EC';
     };
 
     const handleOpenDeleteModal = (element, elements) => {

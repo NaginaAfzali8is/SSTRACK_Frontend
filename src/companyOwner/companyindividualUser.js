@@ -306,24 +306,8 @@ function CompanyIndividualUser() {
         console.log(index);
     };
 
-    const getColorForTime = (hoursWorked) => {
-        // Define your color thresholds based on hours worked
-        const colorThresholds = [
-            { minHours: 0, maxHours: 4, color: '#EFF9EC' },   // Color for 0-4 hours
-            { minHours: 4, maxHours: 8, color: '#A8C96A' },   // Color for 4-8 hours
-            { minHours: 8, maxHours: 12, color: '#FF5733' },  // Color for 8-12 hours
-        ];
-
-        // Find the first color threshold that matches the hours worked
-        const matchedThreshold = colorThresholds.find(threshold => hoursWorked >= threshold.minHours && hoursWorked < threshold.maxHours);
-
-        // Return the color of the matched threshold or a default color
-        return matchedThreshold ? matchedThreshold.color : '#EFF9EC';
-    };
-
     const renderTimeIntervals = () => {
         const intervals = [];
-        let totalHoursWorked = 0;
 
         for (let hour = 0; hour <= 23; hour++) {
             const isPM = hour >= 12;
@@ -333,37 +317,40 @@ function CompanyIndividualUser() {
                 <div key={hour} className="time-slot">
                     <div className="hour-color">
                         {formattedHour === 0 ? 12 : formattedHour} {isPM ? 'pm' : 'am'}
-                        {renderMinuteContainers(hour, totalHoursWorked)}
+                        <div className="minute-container">
+                            {Array.from({ length: 60 }, (_, minute) => {
+                                const timeWithMinutes = `${hour}:${minute < 10 ? '0' + minute : minute}`;
+                                const color = getColorForTime(timeWithMinutes);
+
+                                return (
+                                    <div
+                                        key={minute}
+                                        className={`time-interval ${color !== 'transparent' ? 'red' : ''}`}
+                                        style={{ background: color }}
+                                    >
+                                        {minute}
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
+
                 </div>
             );
-
-            // Increment totalHoursWorked for each hour
-            totalHoursWorked += 1;
         }
 
         return intervals;
     };
 
-    const renderMinuteContainers = (hour, totalHoursWorked) => {
-        return (
-            <div className="minute-container">
-                {Array.from({ length: 60 }, (_, minute) => {
-                    const hoursWorked = totalHoursWorked + minute / 60;
-                    const color = getColorForTime(hoursWorked);
-
-                    return (
-                        <div
-                            key={minute}
-                            className={`time-interval ${color !== 'transparent' ? 'red' : ''}`}
-                            style={{ background: color }}
-                        >
-                            {minute}
-                        </div>
-                    );
-                })}
-            </div>
-        );
+    const getColorForTime = (time) => {
+        const matchingEntry = timeEntries.find(entry => {
+            const [startTime, endTime] = entry?.time?.split(' - ');
+            const startTimeFormatted = new Date(`${encodeURIComponent(formattedDate)} ${startTime}`).getTime();
+            const endTimeFormatted = new Date(`${encodeURIComponent(formattedDate)} ${endTime}`).getTime();
+            const currentTimeFormatted = new Date(`${encodeURIComponent(formattedDate)} ${time}`).getTime();
+            return currentTimeFormatted >= startTimeFormatted && currentTimeFormatted <= endTimeFormatted;
+        });
+        return matchingEntry ? "#A8C96A" : '#EFF9EC';
     };
 
     const goBackToPreviousImage = () => {
