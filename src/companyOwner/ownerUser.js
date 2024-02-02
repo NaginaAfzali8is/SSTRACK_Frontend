@@ -9,13 +9,13 @@ import clock from "../images/time.png"
 // import Header from "./component/header";
 import { useNavigate, useParams } from "react-router-dom";
 import TimezoneSelect from 'react-timezone-select';
-import moment from "moment-timezone";
 import link_expired from '../images/link-broken.svg'
 import { enqueueSnackbar, SnackbarProvider } from 'notistack'
 import axios from "axios";
 import { FerrisWheelSpinner } from "react-spinner-overlay";
 import showPasswordIcon from '../images/showPassword.svg';
 import hidePasswordIcon from '../images/hidePassword.svg';
+import moment from 'moment-timezone';
 
 function OwnerUserSignup() {
 
@@ -123,15 +123,15 @@ function OwnerUserSignup() {
     }
 
     const handleStartDateChange = (selectedtimezone) => {
-        // const localTime = moment().tz(selectedtimezone.value).format("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        // const mynewtime = localTime + selectedtimezone?.label
-        // console.log(mynewtime);
-        // console.log(localTime);
-        // console.log("timezone", selectedtimezone);
-        setSelectedTimezone(selectedtimezone);
-        setCurrentTimeZone(selectedtimezone)
-        fillModel("timezoneOffset", selectedtimezone?.offset)
-        fillModel("timezone", selectedtimezone?.value)
+        // Assuming selectedtimezone is an object with a 'value' property representing the time zone name
+        const timezoneName = selectedtimezone.value;
+        const offsetInMinutes = moment.tz(timezoneName).utcOffset();
+        const offsetInHours = offsetInMinutes / 60;
+        setSelectedTimezone(timezoneName);
+        setCurrentTimeZone(timezoneName);
+        fillModel("timezoneOffset", offsetInHours);
+        fillModel("timezone", timezoneName);
+        console.log(timezoneName);
     };
 
     let fillModel = (key, val) => {
@@ -141,12 +141,15 @@ function OwnerUserSignup() {
 
     useEffect(() => {
         const defaultTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const offsetInMinutes = moment.tz(defaultTimezone).utcOffset();
+        const offsetInHours = offsetInMinutes / 60;
         setSelectedTimezone(defaultTimezone);
         setCurrentTimeZone(defaultTimezone);
-        fillModel("timezoneOffset", 5);
+        fillModel("timezoneOffset", offsetInHours);
         fillModel("timezone", defaultTimezone);
         fillModel("company", currentUser?.company);
     }, []);
+    
 
     console.log(model);
     console.log(currentUser);
