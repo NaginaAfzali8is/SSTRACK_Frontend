@@ -331,7 +331,7 @@ function UserDetails() {
 
     async function getAllDays() {
         try {
-            const response = await axios.get(`${apiUrl}/user/hoursbyday/${userId}?date=${activeMonth}`, { headers });
+            const response = await axios.get(`${apiUrl}/timetrack/hoursbyday?date=${activeMonth}`, { headers });
             const totalHours = response.data.data.totalHoursByDay;
             console.log("totalHours of active month", response.data);
             const currentDate = new Date();
