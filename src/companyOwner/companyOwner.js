@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import OwnerSection from "./ownerComponent/ownerSection";
 import groupCompany from "../images/Group.webp"
 import screenshot from "../images/white.svg";
@@ -12,9 +12,9 @@ import useLoading from "../hooks/useLoading";
 import axios from "axios";
 import noResultFound from '../images/no-result-found.svg'
 import Pusher from 'pusher-js';
-import { getTimeline } from "../store/timelineSlice";
+import { getTimeline, searchUsers } from "../store/timelineSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { GetTimelineUsers } from "../middlewares/timeline";
+import { GetAllTimelineUsersOwner, GetTimelineUsers } from "../middlewares/timeline";
 
 function CompanyOwner() {
 
@@ -59,7 +59,9 @@ function CompanyOwner() {
     // });
 
     useEffect(() => {
-        dispatch(GetTimelineUsers(headers))
+        if (timeline && timeline?.length === 0) {
+            dispatch(GetAllTimelineUsersOwner(headers))
+        }
     }, [])
 
     function moveOnlineUsers(userId) {
@@ -69,15 +71,10 @@ function CompanyOwner() {
         });
     }
 
-    // function handleSearchEmployee(e) {
-    //     const searchData = timeline?.filter((user, index) => {
-    //         return user.userName.toLowerCase().includes(e.target.value.toLowerCase().trim())
-    //     })
-    //     dispatch(getTimeline(searchData))
-    // }
-
-    console.log(timeline);
-    console.log(loading);
+    function handleSearchEmployee(e) {
+        const searchValue = e?.target?.value;
+        dispatch(searchUsers(searchValue));
+    }
 
     return (
         <>
@@ -90,7 +87,7 @@ function CompanyOwner() {
                         </div>
                         <div>
                             <input
-                                // onChange={(e) => handleSearchEmployee(e)}
+                                onChange={(e) => handleSearchEmployee(e)}
                                 placeholder="Search employee"
                                 style={{
                                     width: "300px",
@@ -113,68 +110,70 @@ function CompanyOwner() {
                                 <p style={{ fontSize: "18px", color: "#0D3756" }} className="dashheadingtop textalign">This Month</p>
                             </div>
                             <div className="bgColorChangeGreen" style={{ marginTop: "20px" }}>
-                                {loading ? <Skeleton count={1} height="100vh" style={{ margin: "0 0 10px 0" }} /> :
-                                    timeline?.length > 0 ? 
-                                    // timeline?.sort((a, b) => {
-                                    //     const timestampA = b?.recentScreenshot?.createdAt || 0;
-                                    //     const timestampB = a?.recentScreenshot?.createdAt || 0;
-                                    //     if (timestampA === 0 && timestampB === 0) return 0;
-                                    //     if (timestampA === 0) return -1;
-                                    //     if (timestampB === 0) return 1;
-                                    //     return timestampA - timestampB;
-                                    // })
-                                    timeline?.map((user, index) => {
-                                        return loading ? (
-                                            <Skeleton count={1} height="107px" style={{ margin: "0 0 10px 0" }} />
-                                        ) : (
-                                            <div className="dashsheadings" key={user.userId}>
-                                                <div className="companyNameverified">
-                                                    <img src={user?.userId === activeUser?._id && activeUser?.isActive === true ? check : user?.isActive === true ? check : offline} alt="Verified" />
-                                                    <h5 className="dashCompanyName">{user?.userName}</h5>
+                                {loading ? (
+                                    <>
+                                        <Skeleton count={1} height="400px" style={{ margin: "0 0 10px 0" }} />
+                                    </>
+                                ) :
+                                    timeline?.length > 0 ?
+                                        // timeline?.sort((a, b) => {
+                                        //     const timestampA = b?.recentScreenshot?.createdAt || 0;
+                                        //     const timestampB = a?.recentScreenshot?.createdAt || 0;
+                                        //     if (timestampA === 0 && timestampB === 0) return 0;
+                                        //     if (timestampA === 0) return -1;
+                                        //     if (timestampB === 0) return 1;
+                                        //     return timestampA - timestampB;
+                                        // })
+                                        timeline?.map((user, index) => {
+                                            return (
+                                                <div className="dashsheadings" key={user.userId}>
+                                                    <div className="companyNameverified">
+                                                        <img src={user?.userId === activeUser?._id && activeUser?.isActive === true ? check : user?.isActive === true ? check : offline} alt="Verified" />
+                                                        <h5 className="dashCompanyName">{user?.userName}</h5>
+                                                    </div>
+                                                    <div className="companyNameverified lastActive" style={{ width: "100%" }}>
+                                                        <img
+                                                            onClick={() => moveOnlineUsers(user.userId)}
+                                                            className="screenShotPreview"
+                                                            src={lastScreenshot?.user_id === user?.userId ? lastScreenshot?.key : user?.recentScreenshot ? user?.recentScreenshot?.key : screenshot}
+                                                            alt="Screenshot"
+                                                        />
+                                                        <p className="dashheadingtop">
+                                                            ({user?.minutesAgo === "0 minute ago" || user?.minutesAgo === "-1 minute ago" ? "a minute ago" : user?.minutesAgo})
+                                                        </p>
+                                                    </div>
+                                                    <div className="nameVerified">
+                                                        <p className="dashheadingtop textalign">{user?.totalHours?.daily}</p>
+                                                        <p className="screenShotAmount" style={{ color: user.isActive === true && "#28659C" }}>${user?.billingAmounts?.daily}</p>
+                                                    </div>
+                                                    <div className="nameVerified">
+                                                        <p className="dashheadingtop textalign">{user?.totalHours?.yesterday}</p>
+                                                        <p className="screenShotAmount" style={{ color: user.isActive === true && "#28659C" }}>${user?.billingAmounts?.yesterday}</p>
+                                                    </div>
+                                                    <div className="nameVerified">
+                                                        <p className="dashheadingtop textalign">{user?.totalHours?.weekly}</p>
+                                                        <p className="screenShotAmount" style={{ color: user.isActive === true && "#28659C" }}>${user?.billingAmounts?.weekly}</p>
+                                                    </div>
+                                                    <div className="nameVerified">
+                                                        <p className="dashheadingtop textalign">{user?.totalHours?.monthly}</p>
+                                                        <p className="screenShotAmount" style={{ color: user.isActive === true && "#28659C" }}>${user?.billingAmounts?.monthly}</p>
+                                                    </div>
                                                 </div>
-                                                <div className="companyNameverified lastActive" style={{ width: "100%" }}>
-                                                    <img
-                                                        onClick={() => moveOnlineUsers(user.userId)}
-                                                        className="screenShotPreview"
-                                                        src={lastScreenshot?.user_id === user?.userId ? lastScreenshot?.key : user?.recentScreenshot ? user?.recentScreenshot?.key : screenshot}
-                                                        alt="Screenshot"
-                                                    />
-                                                    <p className="dashheadingtop">
-                                                        ({user?.minutesAgo === "0 minute ago" || user?.minutesAgo === "-1 minute ago" ? "a minute ago" : user?.minutesAgo})
-                                                    </p>
+                                            )
+                                        }) : (
+                                            error === true ? (
+                                                <Skeleton count={1} height="100vh" style={{ margin: "0 0 10px 0" }} />
+                                            ) : (
+                                                <div style={{
+                                                    display: "flex",
+                                                    justifyContent: "center",
+                                                    alignItems: "center",
+                                                    minHeight: "80vh"
+                                                }}>
+                                                    <img style={{ width: "50%" }} src={noResultFound} />
                                                 </div>
-                                                <div className="nameVerified">
-                                                    <p className="dashheadingtop textalign">{user?.totalHours?.daily}</p>
-                                                    <p className="screenShotAmount" style={{ color: user.isActive === true && "#28659C" }}>${user?.billingAmounts?.daily}</p>
-                                                </div>
-                                                <div className="nameVerified">
-                                                    <p className="dashheadingtop textalign">{user?.totalHours?.yesterday}</p>
-                                                    <p className="screenShotAmount" style={{ color: user.isActive === true && "#28659C" }}>${user?.billingAmounts?.yesterday}</p>
-                                                </div>
-                                                <div className="nameVerified">
-                                                    <p className="dashheadingtop textalign">{user?.totalHours?.weekly}</p>
-                                                    <p className="screenShotAmount" style={{ color: user.isActive === true && "#28659C" }}>${user?.billingAmounts?.weekly}</p>
-                                                </div>
-                                                <div className="nameVerified">
-                                                    <p className="dashheadingtop textalign">{user?.totalHours?.monthly}</p>
-                                                    <p className="screenShotAmount" style={{ color: user.isActive === true && "#28659C" }}>${user?.billingAmounts?.monthly}</p>
-                                                </div>
-                                            </div>
-                                        )
-                                    }) : (
-                                        error === true ? (
-                                            <Skeleton count={1} height="100vh" style={{ margin: "0 0 10px 0" }} />
-                                        ) : (
-                                            <div style={{
-                                                display: "flex",
-                                                justifyContent: "center",
-                                                alignItems: "center",
-                                                minHeight: "80vh"
-                                            }}>
-                                                <img style={{ width: "50%" }} src={noResultFound} />
-                                            </div>
-                                        )
-                                    )}
+                                            )
+                                        )}
                             </div>
                         </div>
                     </div>

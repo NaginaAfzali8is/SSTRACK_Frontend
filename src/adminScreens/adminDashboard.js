@@ -22,6 +22,7 @@ import noResultFound from '../images/no-result-found.svg'
 import Pusher from 'pusher-js';
 import { useDispatch, useSelector } from "react-redux";
 import { getTimeline } from "../store/timelineSlice";
+import { GetTimelineUsersAdmin } from "../middlewares/timeline";
 
 function AdminDashboard() {
 
@@ -37,8 +38,8 @@ function AdminDashboard() {
     const headers = {
         Authorization: "Bearer " + token,
     };
-    const timeline = useSelector((state) => state.timeline)
     const dispatch = useDispatch()
+    const timeline = useSelector((state) => state.timeline)
 
     // Enable pusher logging - don't include this in production
     // Pusher.logToConsole = true;
@@ -69,32 +70,11 @@ function AdminDashboard() {
     //     console.log(JSON.stringify(data));
     // });
 
-    async function getData() {
-        setLoading(true);
-        try {
-            setLoading2(true);
-            const response = await axios.get(`${apiUrl}/superAdmin/allEmployeesworkinghour`, { headers });
-            console.log("response", response);
-            if (response.status) {
-                setLoading(false);
-                setLoading2(false);
-                const onlineUsers = response.data?.onlineUsers?.length > 0 ? response.data?.onlineUsers : [];
-                const offlineUsers = response.data?.offlineUsers?.length > 0 ? response.data?.offlineUsers : [];
-                const allUsers = [...onlineUsers, ...offlineUsers];
-                setData(allUsers.filter((f) => f.isArchived === false && f.UserStatus === false));
-                dispatch(getTimeline(allUsers.filter((f) => f.isArchived === false && f.UserStatus === false)))
-            }
-        } catch (err) {
-            setError(true);
-            setLoading(false);
-            setLoading2(false);
-            console.log(err);
-        }
-    }
-
     useEffect(() => {
-        getData();
-    }, []);
+        if (timeline && timeline?.length === 0) {
+            dispatch(GetTimelineUsersAdmin(headers))
+        }
+    }, [])
 
     function moveOnlineUsers(userId) {
         navigate("/adminuser", {

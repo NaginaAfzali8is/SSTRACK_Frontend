@@ -36,6 +36,9 @@ import perc_60 from "../images/Yellow.svg"
 import perc_80 from "../images/LightGreen.svg"
 import perc_100 from "../images/FullGreen.svg"
 import { CaptureScreenshot } from "../screen/component/captureScreenshot";
+import { useDispatch, useSelector } from "react-redux";
+import { GetTimelineUserOwner } from "../middlewares/timeline";
+import { selectUserTimeline } from "../store/timelineSlice";
 
 function CompanyIndividualUser() {
 
@@ -97,6 +100,10 @@ function CompanyIndividualUser() {
     let headers = {
         Authorization: "Bearer " + token,
     }
+
+    const dispatch = useDispatch()
+    const userTimeline = useSelector((state) => state.userTimeline)
+    const showUserTimeline = useSelector((state) => state.showTimelineData)
 
     // var pusher = new Pusher('334425b3c859ed2f1d2b', {
     //     cluster: 'ap2'
@@ -220,27 +227,27 @@ function CompanyIndividualUser() {
     };
 
     const fetchData = async () => {
-        try {
-            const response = await axios.get(`${apiUrl}/owner/sorted-datebased/${userId}?date=${encodeURIComponent(formattedDate)}`, { headers });
-            setLoading(true)
-            if (response.data) {
-                setData(response.data.data);
-                setTimeBill(response.data.data.timeBill);
-                setTimeEntries(response?.data?.data?.groupedScreenshots || []);
-                setTimeTrackingId(response.data.data.TimeTrackingId)
-                setTrimActivity({ ...trimActivity, totalHours: response?.data?.data?.totalHours.daily })
-                setTimeout(() => {
-                    setLoading(false)
-                }, 100);
-                console.log(response);
-            }
+        const findTimeline = userTimeline?.find((f) => f.formattedDate === formattedDate)
+        if (findTimeline) {
+            dispatch(selectUserTimeline({ findTimeline, formattedDate }))
         }
-        catch (error) {
-            setTimeout(() => {
-                setLoading(false)
-            }, 100);
-            console.log(error);
+        else {
+            dispatch(GetTimelineUserOwner({ userId, formattedDate, headers }))
         }
+        // try {
+        //     const response = await axios.get(`${apiUrl}/owner/sorted-datebased/${userId}?date=${encodeURIComponent(formattedDate)}`, { headers });
+        //     if (response.data) {
+        //         setData(response.data.data);
+        //         setTimeBill(response.data.data.timeBill);
+        //         setTimeEntries(response?.data?.data?.groupedScreenshots || []);
+        //         setTimeTrackingId(response.data.data.TimeTrackingId)
+        //         setTrimActivity({ ...trimActivity, totalHours: response?.data?.data?.totalHours.daily })
+        //         console.log(response);
+        //     }
+        // }
+        // catch (error) {
+        //     console.log(error);
+        // }
     };
 
     async function getAllDays() {
@@ -308,11 +315,9 @@ function CompanyIndividualUser() {
 
     const renderTimeIntervals = () => {
         const intervals = [];
-
         for (let hour = 0; hour <= 23; hour++) {
             const isPM = hour >= 12;
             const formattedHour = hour <= 12 ? hour : hour - 12;
-
             intervals.push(
                 <div key={hour} className="time-slot">
                     <div className="hour-color">
@@ -321,7 +326,6 @@ function CompanyIndividualUser() {
                             {Array.from({ length: 60 }, (_, minute) => {
                                 const timeWithMinutes = `${hour}:${minute < 10 ? '0' + minute : minute}`;
                                 const color = getColorForTime(timeWithMinutes);
-
                                 return (
                                     <div
                                         key={minute}
@@ -334,11 +338,9 @@ function CompanyIndividualUser() {
                             })}
                         </div>
                     </div>
-
                 </div>
             );
         }
-
         return intervals;
     };
 
@@ -565,7 +567,7 @@ function CompanyIndividualUser() {
         set_current_month(months[currentMonth])
     }, [])
 
-    console.log({ totalPercentageByDay });
+    console.log({ totalPercentageByDay, showUserTimeline });
 
     return (
         <div>
@@ -761,19 +763,19 @@ function CompanyIndividualUser() {
                                     <p className="weekDayTimer">{formattedDate === todayDate ? current_day : days[clickDay]} </p>
                                     <p className="weekDayTimer">{formattedDate && formattedDate.split('-')[2]}</p>
                                     <p className="weekDateTimer">{formattedDate === todayDate ? current_month : months[month]}</p>
-                                    <OverlayTrigger placement="top" overlay={<Tooltip>{Math.floor(data?.totalactivity)} %</Tooltip>}>
+                                    <OverlayTrigger placement="top" overlay={<Tooltip>{Math.floor(showUserTimeline?.totalactivity)} %</Tooltip>}>
                                         <div className="circular-progress" style={{
                                             cursor: "pointer"
                                         }}>
-                                            <CircularProgressBar activityPercentage={data?.totalactivity} size={30} />
+                                            <CircularProgressBar activityPercentage={showUserTimeline?.totalactivity} size={30} />
                                         </div>
                                     </OverlayTrigger>
-                                    <p className="timerClock">{data?.totalHours?.daily}</p>
+                                    <p className="timerClock">{showUserTimeline?.totalHours?.daily}</p>
                                     <p className="weekTimer">Week</p>
-                                    <p className="weekTimerDigit">{data?.totalHours?.weekly}</p>
+                                    <p className="weekTimerDigit">{showUserTimeline?.totalHours?.weekly}</p>
                                     <img src={circleDot} alt="CircleDot.png" />
                                     <p className="weekTimer">Month</p>
-                                    <p className="monthTimerDigit">{data?.totalHours?.monthly}</p>
+                                    <p className="monthTimerDigit">{showUserTimeline?.totalHours?.monthly}</p>
                                 </div>
                             </div>
                             <div className="activity-image-container">
@@ -811,17 +813,17 @@ function CompanyIndividualUser() {
                                                 <div
                                                     className="needleContainerMainAlingment"
                                                     style={{
-                                                        transform: `translateY(-50%) rotate(${Math.floor(data?.totalactivity) <= 20 ? -75 :
-                                                            Math.floor(data?.totalactivity) > 20 && Math.floor(data?.totalactivity) <= 40 ? -38 :
-                                                                Math.floor(data?.totalactivity) > 40 && Math.floor(data?.totalactivity) <= 60 ? 0 :
-                                                                    Math.floor(data?.totalactivity) > 60 && Math.floor(data?.totalactivity) <= 80 ? 35 :
-                                                                        Math.floor(data?.totalactivity) > 80 ? 75 : -108
+                                                        transform: `translateY(-50%) rotate(${Math.floor(showUserTimeline?.totalactivity) <= 20 ? -75 :
+                                                                Math.floor(showUserTimeline?.totalactivity) > 20 && Math.floor(showUserTimeline?.totalactivity) <= 40 ? -38 :
+                                                                    Math.floor(showUserTimeline?.totalactivity) > 40 && Math.floor(showUserTimeline?.totalactivity) <= 60 ? 0 :
+                                                                        Math.floor(showUserTimeline?.totalactivity) > 60 && Math.floor(showUserTimeline?.totalactivity) <= 80 ? 35 :
+                                                                            Math.floor(showUserTimeline?.totalactivity) > 80 ? 75 : -108
                                                             }deg)`
                                                     }}>
                                                     <div className="needleContainerAlingment">
                                                         <div className="diamond"></div>
                                                         <div className="needlePointerMain"></div>
-                                                        <OverlayTrigger placement="bottom" overlay={<Tooltip>{Math.floor(data?.totalactivity)} %</Tooltip>}>
+                                                        <OverlayTrigger placement="bottom" overlay={<Tooltip>{Math.floor(showUserTimeline?.totalactivity)} %</Tooltip>}>
                                                             <div className="needleScrewMain"></div>
                                                         </OverlayTrigger>
                                                     </div>
@@ -868,7 +870,7 @@ function CompanyIndividualUser() {
                             {renderTimeIntervals()}
                         </div>
                         <div>
-                            {data && (data?.groupedScreenshots?.map((element) => {
+                            {showUserTimeline && (showUserTimeline?.groupedScreenshots?.map((element) => {
                                 return (
                                     <div>
                                         {loading ? <Skeleton count={1} width="300px" height="34.5px" style={{ margin: "40px 0 0 0" }} /> : <div className="timeZone" onMouseOver={() => setShowEditButton(true)} onMouseOut={() => setShowEditButton(false)}>
