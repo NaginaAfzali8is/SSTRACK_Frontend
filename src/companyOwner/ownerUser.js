@@ -171,7 +171,7 @@ function OwnerUserSignup() {
                         </div>
                         <div className="inputDiv">
                             <div><img src={emailIcon} /></div>
-                            <input className="autofill" value={model.email} onChange={(e) => fillModel("email", e.target.value)} placeholder="Email" />
+                            <input type="email" className="autofill" value={model.email} onChange={(e) => fillModel("email", e.target.value)} placeholder="Email" />
                         </div>
                         <div className="inputDiv">
                             <div><img src={password} /></div>
