@@ -31,6 +31,7 @@ import perc_100 from "../images/FullGreen.svg"
 import { ImCross } from "react-icons/im";
 import edit from '../images/EditTimeZone.webp';
 import { CaptureScreenshot } from "./component/captureScreenshot";
+import moment from "moment-timezone";
 
 function UserDetails() {
 
@@ -523,7 +524,12 @@ function UserDetails() {
             }
         })
     }, [])
-    
+
+    const offsetInMinutes = moment.tz(items?.timezone).utcOffset();
+    const offsetInHours = offsetInMinutes / 60;
+    const offsetSign = offsetInHours >= 0 ? '+' : '-';
+    const formattedOffset = `${offsetSign}${Math.abs(offsetInHours)}`;
+
     return (
         <div>
 
@@ -678,7 +684,7 @@ function UserDetails() {
                             <h5><img src={circle} alt="" /> {data?.name}</h5>
                         </div>
                         <div className="headerTop">
-                            <p>{data?.timezone}</p>
+                            <p>All times are UTC {formattedOffset}</p>
                             <img src={setting} alt="setting.png" style={{ cursor: "pointer" }} onClick={() => navigate("/account")} />
                         </div>
                     </div>

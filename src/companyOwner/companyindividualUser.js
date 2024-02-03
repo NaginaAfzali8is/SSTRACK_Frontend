@@ -567,7 +567,14 @@ function CompanyIndividualUser() {
         set_current_month(months[currentMonth])
     }, [])
 
+    const offsetInMinutes = moment.tz(items?.timezone).utcOffset();
+    const offsetInHours = offsetInMinutes / 60;
+    const offsetSign = offsetInHours >= 0 ? '+' : '-';
+    const formattedOffset = `${offsetSign}${Math.abs(offsetInHours)}`;
+
+    console.log(formattedOffset);
     console.log({ totalPercentageByDay, showUserTimeline });
+    console.log(items);
 
     return (
         <div>
@@ -732,7 +739,7 @@ function CompanyIndividualUser() {
                             <h5><img src={circle} alt="" /> {showUserTimeline?.name}</h5>
                         </div>
                         <div className="headerTop">
-                            <p>All times are UTC + {items.timezoneOffset}</p>
+                            <p>All times are UTC {formattedOffset}</p>
                             <img
                                 src={setting}
                                 alt="setting.png"
@@ -814,10 +821,10 @@ function CompanyIndividualUser() {
                                                     className="needleContainerMainAlingment"
                                                     style={{
                                                         transform: `translateY(-50%) rotate(${Math.floor(showUserTimeline?.totalactivity) <= 20 ? -75 :
-                                                                Math.floor(showUserTimeline?.totalactivity) > 20 && Math.floor(showUserTimeline?.totalactivity) <= 40 ? -38 :
-                                                                    Math.floor(showUserTimeline?.totalactivity) > 40 && Math.floor(showUserTimeline?.totalactivity) <= 60 ? 0 :
-                                                                        Math.floor(showUserTimeline?.totalactivity) > 60 && Math.floor(showUserTimeline?.totalactivity) <= 80 ? 35 :
-                                                                            Math.floor(showUserTimeline?.totalactivity) > 80 ? 75 : -108
+                                                            Math.floor(showUserTimeline?.totalactivity) > 20 && Math.floor(showUserTimeline?.totalactivity) <= 40 ? -38 :
+                                                                Math.floor(showUserTimeline?.totalactivity) > 40 && Math.floor(showUserTimeline?.totalactivity) <= 60 ? 0 :
+                                                                    Math.floor(showUserTimeline?.totalactivity) > 60 && Math.floor(showUserTimeline?.totalactivity) <= 80 ? 35 :
+                                                                        Math.floor(showUserTimeline?.totalactivity) > 80 ? 75 : -108
                                                             }deg)`
                                                     }}>
                                                     <div className="needleContainerAlingment">

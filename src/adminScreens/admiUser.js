@@ -40,6 +40,7 @@ import { GetTimelineUserSuperAdmin } from "../middlewares/timeline";
 import { selectUserTimeline } from "../store/timelineSlice";
 import { useDispatch, useSelector } from "react-redux";
 // import { CaptureScreenshot } from "../screen/component/captureScreenshot";
+import moment from "moment-timezone";
 
 function AdminUser() {
 
@@ -578,6 +579,11 @@ function AdminUser() {
         set_current_month(months[currentMonth])
     }, [])
 
+    const offsetInMinutes = moment.tz(items?.timezone).utcOffset();
+    const offsetInHours = offsetInMinutes / 60;
+    const offsetSign = offsetInHours >= 0 ? '+' : '-';
+    const formattedOffset = `${offsetSign}${Math.abs(offsetInHours)}`;
+
     console.log({ activeMonth })
 
     return (
@@ -740,7 +746,7 @@ function AdminUser() {
                             <h5><img src={circle} alt="" /> {showUserTimeline?.name}</h5>
                         </div>
                         <div className="headerTop">
-                            <p>All times are UTC + {items.timezoneOffset}</p>
+                            <p>All times are UTC {formattedOffset}</p>
                             <img src={setting} alt="setting.png" style={{ cursor: "pointer" }} onClick={() => navigate("/adminaccount")} />
                         </div>
                     </div>
