@@ -409,7 +409,7 @@ function AdminUser() {
     };
 
     const getColorForTime = (time) => {
-        const matchingEntry = timeEntries.find(entry => {
+        const matchingEntry = showUserTimeline?.groupedScreenshots?.find(entry => {
             const [startTime, endTime] = entry?.time?.split(' - ');
             const startTimeFormatted = new Date(`${encodeURIComponent(formattedDate)} ${startTime}`).getTime();
             const endTimeFormatted = new Date(`${encodeURIComponent(formattedDate)} ${endTime}`).getTime();
@@ -737,7 +737,7 @@ function AdminUser() {
 
                     <div className="userHeader">
                         <div className="headerTop">
-                            <h5><img src={circle} alt="" /> {data?.name}</h5>
+                            <h5><img src={circle} alt="" /> {showUserTimeline?.name}</h5>
                         </div>
                         <div className="headerTop">
                             <p>All times are UTC + {items.timezoneOffset}</p>
