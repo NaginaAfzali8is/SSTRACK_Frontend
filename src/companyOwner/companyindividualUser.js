@@ -426,7 +426,7 @@ function CompanyIndividualUser() {
     const handleDeleteSS = async () => {
         setShowDeleteModal(false)
         try {
-            const response = await axios.delete(`${apiUrl}/superAdmin/deleteScreenshot/${screenshotId}/TimeTracking/${timeTrackingId}`, {
+            const response = await axios.delete(`${apiUrl}/superAdmin/deleteScreenshot/${screenshotId}/TimeTracking/${showUserTimeline?.TimeTrackingId}`, {
                 headers: headers
             })
             if (response.status === 200) {
@@ -572,9 +572,7 @@ function CompanyIndividualUser() {
     const offsetSign = offsetInHours >= 0 ? '+' : '-';
     const formattedOffset = `${offsetSign}${Math.abs(offsetInHours)}`;
 
-    console.log(formattedOffset);
-    console.log({ totalPercentageByDay, showUserTimeline });
-    console.log(items);
+    console.log(userId);
 
     return (
         <div>

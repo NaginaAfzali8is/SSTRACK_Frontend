@@ -17,8 +17,6 @@ import '../../node_modules/sweetalert2/src/sweetalert2.scss'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { AiFillStar } from 'react-icons/ai'
-import { useDispatch, useSelector } from "react-redux";
-import { GetOwnerTeam } from "../middlewares/timeline";
 
 function OwnerTeam() {
 
@@ -44,11 +42,38 @@ function OwnerTeam() {
         Authorization: "Bearer " + token,
     };
     const user = JSON.parse(localStorage.getItem("items"))
-    const state = useSelector((state) => state)
-    const dispatch = useDispatch()
+
+    const getData = async () => {
+        setLoading(true)
+        try {
+            setLoading2(true)
+            const response = await axios.get(`${apiUrl}/owner/companies`, { headers })
+            if (response.status) {
+                setLoading(false)
+                setTimeout(() => {
+                    setLoading2(false)
+                }, 1000);
+                setData(() => {
+                    const filterCompanies = response?.data?.employees?.filter((employess, index) => {
+                        return user.company === employess.company && employess.userType !== "owner"
+                    })
+                    return filterCompanies
+                })
+                // setFixId(response.data.employees[0]._id)
+                console.log(response);
+            }
+        }
+        catch (err) {
+            console.log(err);
+            setLoading(false)
+            setTimeout(() => {
+                setLoading2(false)
+            }, 1000);
+        }
+    }
 
     useEffect(() => {
-        dispatch(GetOwnerTeam({ user, headers }))
+        getData();
     }, [])
 
     async function archived_unarchived_users() {
@@ -59,6 +84,7 @@ function OwnerTeam() {
                 headers: headers
             })
             if (res.status) {
+                getData()
                 enqueueSnackbar(res.data.message, {
                     variant: "success",
                     anchorOrigin: {
@@ -84,6 +110,7 @@ function OwnerTeam() {
         try {
             const res = await axios.delete(`${apiUrl}/superAdmin/deleteEmp/${mainId}`)
             if (res.status === 200) {
+                getData()
                 enqueueSnackbar(res.data.Message, {
                     variant: "success",
                     anchorOrigin: {
@@ -125,6 +152,7 @@ function OwnerTeam() {
                             horizontal: "right"
                         }
                     })
+                    getData()
                 }
                 console.log("invitationEmail RESPONSE =====>", res);
             } catch (error) {
@@ -149,7 +177,18 @@ function OwnerTeam() {
         }
     }
 
-    console.log(state);
+    // console.log({
+    //     toEmail: invitationEmail,
+    //     company: user.company,
+    // });
+
+    useEffect(() => {
+        if (data !== null) {
+            setSearchUsers(data)
+        }
+    }, [data])
+
+    console.log(selectedUser);
 
     return (
         <div>
