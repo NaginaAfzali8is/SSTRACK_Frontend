@@ -53,13 +53,15 @@ const Download = () => {
                     </div>
                     <div className='download-card'>
                         <div>
-                            <h4>Download employee deskstop application for {downloadOS === "mac" ? "mac OS" : "windows"}</h4>
+                            {/* <h4>Download employee deskstop application for {downloadOS === "mac" ? "mac OS" : "windows"}</h4> */}
+                            <h4>Download employee deskstop application for windows</h4>
                             <p>This application is <span style={{ fontWeight: "700", color: "#7ACB59" }}>only for employess, not managers</span></p>
                             <p>Company managers can see the recorded time and screenshots right on this website.</p>
                             <img width={300} src={DownloadProduct} alt="" />
                             <div style={{ margin: "30px 0" }}>
                                 <h4>What is this ?</h4>
-                                <p>This is a {downloadOS === "mac" ? "mac OS" : "Windows"} desktop application for employess. it is started and stopped by an employee to track time and take their computer screenshot during work.</p>
+                                {/* <p>This is a {downloadOS === "mac" ? "mac OS" : "Windows"} desktop application for employess. it is started and stopped by an employee to track time and take their computer screenshot during work.</p> */}
+                                <p>This is a windows desktop application for employess. it is started and stopped by an employee to track time and take their computer screenshot during work.</p>
                                 <p>After the stop button is pressed - no screenshot are being taken. You can review your time and screenshots at My Home. you can also delete your screenshot there.</p>
                             </div>
                             <div>

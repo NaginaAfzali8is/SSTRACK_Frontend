@@ -2529,13 +2529,17 @@ input[type=checkbox]:checked:before {
 }
 
 .fiveSection {
-  display: grid;
+  display: flex;
   align-items: center;
-  grid-template-columns: 26% 26% 26%;
   justify-content: space-between;
-  /* gap: 20px; */
   align-items: flex-start;
+  text-align: left;
   margin-top: 100px;
+  padding: 40px;
+}
+
+.fiveSection div {
+  width: 500px;
 }
 
 /* .reportImage{
@@ -2543,6 +2547,7 @@ input[type=checkbox]:checked:before {
   display: block;
   margin: auto;
 } */
+
 .wifi {
   display: block;
   margin: 0 auto;
@@ -2560,6 +2565,7 @@ input[type=checkbox]:checked:before {
   font-size: 20px;
   font-weight: 400;
   color: #0E4772;
+  margin: 0;
   text-align: center;
 }
 

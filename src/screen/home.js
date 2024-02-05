@@ -47,7 +47,7 @@ import { BsWindows, BsApple } from 'react-icons/bs'
 import { ImArrowUpRight2 } from 'react-icons/im'
 import { TbSquareRoundedArrowRightFilled } from 'react-icons/tb'
 import detailedTimeline from '../images/connecting-employess-with-manager.png'
-import connectingEmployess from '../images/connecting-employess-with-manager2.avif'
+import connectingemployees from '../images/connecting-employess-with-manager2.avif'
 import simpleAccess from '../images/simple-access.jpg'
 import effortlessTimeTrack from '../images/effortless-time-track.jpg'
 import screenshot from '../images/screenshot.jpg'
@@ -212,19 +212,19 @@ function Home() {
           <div className="container">
 
             <div>
-              <p className='ethical'>Track employess' <span style={{ fontWeight: "600" }}>time</span> and <span style={{ fontWeight: "600" }}>screenshots</span>. See it on the web.</p>
-              <p className='employee'>Get a clear picture of time and money your remote or office team spends on each task.</p>
+              <p className='ethical'>Monitor employee hours and screen captures online.</p>
+              <p className='employee'>Discover how much time and money your remote or office team dedicates to each task.</p>
             </div>
             <div className='cardSection'>
               <div className='box'>
                 <img src={ss1} alt="" style={{ width: "200px", height: "200px", borderRadius: "100%", objectFit: "cover", border: "10px solid #7ACB59" }} />
-                <p className='trackEffort'>Track employess' time and screenshots</p>
-                <p className='trackEffortPera'>Employees start and stop the tracking themselves within a lightweight desktop app.</p>
+                <p className='trackEffort'>Monitor employees work hours and screen captures.</p>
+                <p className='trackEffortPera'>Employees independently manage the start and stop of their tracking using a streamlined desktop app.</p>
                 {/* <img className='arrow' src={arrow} /> */}
               </div>
               <div className='box'>
                 <img src={ss2} alt="" style={{ width: "200px", height: "200px", borderRadius: "100%", objectFit: "cover", border: "10px solid #7ACB59" }} />
-                <p className='trackEffort'>See it on the web</p>
+                <p className='trackEffort'>Access it online</p>
                 <p className='trackEffortPera'>The tracked time, screenshots and activity are all sent to the web for the employee. </p>
                 {/* <img className='arrow' src={arrow} /> */}
               </div>
@@ -341,7 +341,7 @@ function Home() {
             <div className="freeTrialDiv">
               <div>
                 <p className="startedFont">Start your 30-day free trial</p>
-                <p className="unitedFont">Join over 4,000+ startups already growing with Untitled.</p>
+                <p className="unitedFont">Become part of the 4,000+ startups thriving with Untitled.</p>
               </div>
               {/* <div className="startedButtonDiv">
                 <button className="learnMoreButton">Learn More</button>
@@ -359,14 +359,16 @@ function Home() {
         </div>
         <div>
           <p className="employetime">Employees track time</p>
-          <p className="managerFont">A manager invites employees to ss.track. Employees install a lightweight desktop app, select a project they work on and press the Start button. Tracking starts and data is sent to the web in real time until the Stop button is pressed.</p>
+          <p className="managerFont">
+            A manager invites employees to ss.track, where they download a streamlined desktop application, choose a project to work on, and hit the Start button. This initiates tracking, sending data to the web instantly until they press the Stop button.
+          </p>
         </div>
       </section>
       <section className="deanDiv container">
         <div>
-          <p className="employetime">Managers see it on the web</p>
-          <p className="managerFont">In their dashboards on ss.track, both employee and manager will see when the employee was working, how much time they spent on each task, screenshots of their screens taken at random intervals, their activity level, what applications were used, and what websites were open and for how long.</p>
-          <button className="startedButton">See demo</button>
+          <p className="employetime">Managers view it on the web</p>
+          <p className="managerFont">Within their ss.track dashboards, both the employee and manager have access to insights on the employee's working periods, task duration, screen captures taken at random moments, activity metrics, applications operated, along with the websites visited and their respective browsing times.</p>
+          <button className="startedButton">Explore</button>
         </div>
         <div>
           <img className="deanBanner" src={dean} />
@@ -427,7 +429,7 @@ function Home() {
                   <p className="features-working">When you sign up as a company owner or join as admin, you can invite employees to join. As an admin, you can add your team members. When employees log in, they can easily start keeping track of time and share screenshots for their work.</p>
                 </div>
                 <div>
-                  <img style={{ width: "300px", height: "300px", objectFit: 'contain' }} src={connectingEmployess} alt="" />
+                  <img style={{ width: "300px", height: "300px", objectFit: 'contain' }} src={connectingemployees} alt="" />
                 </div>
               </div>
 
