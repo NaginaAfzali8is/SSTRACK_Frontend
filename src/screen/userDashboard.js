@@ -110,7 +110,7 @@ function UserDasboard() {
                                 </div>
                                 <div className="companyNameverified lastActive" style={{ width: "100%" }}>
                                     <img
-                                        onClick={() => navigate('/userdetail')}
+                                        onClick={() => navigate('/userdashboard/userdetail')}
                                         className="screenShotPreview"
                                         src={lastScreenshot?.key ? lastScreenshot?.key : data?.data?.lastScreenshot?.key ? data?.data?.lastScreenshot?.key : screenshot}
                                         alt="Screenshot"

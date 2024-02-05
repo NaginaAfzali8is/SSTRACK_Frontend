@@ -300,7 +300,7 @@ function AdminUser() {
             console.log(error);
         }
     }
-    
+
     useEffect(() => {
         getAllDays()
     }, [activeMonth]);
@@ -428,7 +428,7 @@ function AdminUser() {
     const handleDeleteSS = async () => {
         setShowDeleteModal(false)
         try {
-            const response = await axios.delete(`${apiUrl}/superAdmin/deleteScreenshot/${screenshotId}/TimeTracking/${timeTrackingId}`, {
+            const response = await axios.delete(`${apiUrl}/superAdmin/deleteScreenshot/${screenshotId}/TimeTracking/${showUserTimeline?.TimeTrackingId}`, {
                 headers: headers
             })
             if (response.status === 200) {
@@ -440,6 +440,7 @@ function AdminUser() {
                         horizontal: "right"
                     }
                 })
+                dispatch(GetTimelineUserSuperAdmin({ userId, formattedDate, headers }))
             }
             fetchData()
         } catch (error) {
@@ -756,7 +757,7 @@ function AdminUser() {
                             <div className="calendar-container">
                                 <div className="header">
                                     <img src={left} onClick={prevMonth} alt="Previous Month" />
-                                    <h2 className="monthName">{date.toLocaleString("en-US", { month: "long" })}</h2>
+                                    <h2 className="monthName">{date.toLocaleString("en-US", { month: "long", year: "numeric" })}</h2>
                                     <img src={right} onClick={nextMonth} alt="Next Month" />
                                 </div>
                             </div>
@@ -892,35 +893,38 @@ function AdminUser() {
                                                     ) : (
                                                         <div className="projectAdd" onMouseOver={() => setShowDeleteButton(true)} onMouseOut={() => setShowDeleteButton(false)}>
                                                             <div className="timelineDiv">
-                                                                <OverlayTrigger placement="top" overlay={<Tooltip>{elements?.description}</Tooltip>}>
-                                                                    <p className="notes">
-                                                                        {elements?.time}
-                                                                        <a className="websiteLink" href="#">{elements?.description}</a>
-                                                                    </p>
-                                                                </OverlayTrigger>
-                                                                <img src={deleteIcon} alt="" style={{ marginRight: 15 }} onClick={() => handleOpenDeleteModal(element, elements)} />
-                                                                {elements?.visitedUrls?.length === 0 ?
-                                                                    <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
-                                                                        <div className="circular-progress">
-                                                                            <CircularProgressBar activityPercentage={100} size={30} emptyUrl={0} />
-                                                                        </div>
+                                                                <div>
+                                                                    <OverlayTrigger placement="top" overlay={<Tooltip>{elements?.description}</Tooltip>}>
+                                                                        <p className="notes">
+                                                                            <a className="websiteLink" href="#">{elements?.time} {elements?.description}</a>
+                                                                        </p>
                                                                     </OverlayTrigger>
-                                                                    :
-                                                                    elements?.visitedUrls?.map((e) => {
-                                                                        return e?.activityPercentage === 0 ? (
-                                                                            <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
-                                                                                <div className="circular-progress">
-                                                                                    <CircularProgressBar activityPercentage={100} size={30} emptyUrl={0} />
-                                                                                </div>
-                                                                            </OverlayTrigger>
-                                                                        ) : (
-                                                                            <OverlayTrigger placement="top" overlay={<Tooltip>{Math.floor(e?.activityPercentage)} %</Tooltip>}>
-                                                                                <div className="circular-progress">
-                                                                                    <CircularProgressBar activityPercentage={e?.activityPercentage} size={30} />
-                                                                                </div>
-                                                                            </OverlayTrigger>
-                                                                        )
-                                                                    })}
+                                                                </div>
+                                                                <div style={{ display: "flex" }}>
+                                                                    <img src={deleteIcon} alt="" style={{ marginRight: 15 }} onClick={() => handleOpenDeleteModal(element, elements)} />
+                                                                    {elements?.visitedUrls?.length === 0 ?
+                                                                        <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
+                                                                            <div className="circular-progress">
+                                                                                <CircularProgressBar activityPercentage={100} emptyUrl={0} />
+                                                                            </div>
+                                                                        </OverlayTrigger>
+                                                                        :
+                                                                        elements?.visitedUrls?.map((e) => {
+                                                                            return e?.activityPercentage === 0 ? (
+                                                                                <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
+                                                                                    <div className="circular-progress">
+                                                                                        <CircularProgressBar activityPercentage={100} emptyUrl={0} />
+                                                                                    </div>
+                                                                                </OverlayTrigger>
+                                                                            ) : (
+                                                                                <OverlayTrigger placement="top" overlay={<Tooltip>{Math.floor(e?.activityPercentage)} %</Tooltip>}>
+                                                                                    <div className="circular-progress">
+                                                                                        <CircularProgressBar activityPercentage={e?.activityPercentage} />
+                                                                                    </div>
+                                                                                </OverlayTrigger>
+                                                                            )
+                                                                        })}
+                                                                </div>
                                                             </div>
                                                             <div className="screenShotImg">
                                                                 <img className="screenshotiimage" onClick={() => openModal(element, elements?.key, index)} src={elements?.key} alt="ScreenShotImg.png" />

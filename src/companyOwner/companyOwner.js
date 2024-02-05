@@ -66,7 +66,7 @@ function CompanyOwner() {
 
     function moveOnlineUsers(userId) {
         console.log(userId);
-        navigate("/company-individual-user", {
+        navigate("/company-owner/company-individual-user", {
             state: userId,
         });
     }

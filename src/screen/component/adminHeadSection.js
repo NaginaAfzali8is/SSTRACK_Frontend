@@ -141,13 +141,13 @@ function AdminHead() {
                     margin: "0 30px 0 30px",
                 }}>
                 <div className="d-flex gap-1 align-items-center">
-                    <div className={location.pathname === "/admindashboard" ? "active-tab" : "ownerSectionUser"}>
+                    <div className={location.pathname === "/admindashboard" || location.pathname === "/admindashboard/adminuser" ? "active-tab" : "ownerSectionUser"}>
                         <p style={{ margin: 0 }} onClick={() => navigate('/admindashboard')} >Dashboard</p>
                     </div>
                     {/* <div className={location.pathname === "/company-owner-user-signup" ? "active-tab" : "ownerSectionUser"}>
                         <p style={{ margin: 0 }} onClick={() => navigate('/company-owner-user-signup')}>Add User</p>
                     </div> */}
-                    <div className={location.pathname === "/adminteam" ? "active-tab" : "ownerSectionUser"}>
+                    <div className={location.pathname === "/adminteam" || location.pathname === "/admindashboard/admin-user-signup" ? "active-tab" : "ownerSectionUser"}>
                         <p style={{ margin: 0 }} onClick={() => navigate('/adminteam')}>Team</p>
                     </div>
                     {/* <div className={location.pathname === "/setting" ? "active-tab" : "ownerSectionUser"}>

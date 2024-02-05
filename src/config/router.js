@@ -88,7 +88,6 @@ export default function AppRouter() {
           <Route path="/" element={<Home />} />
           <Route path="/capture-screen" element={<CaptureScreen />} />
           <Route path="/:token" element={<Home />} />
-          <Route path="/admin-user-signup" element={<AdminUserSignup />} />
           <Route path="/create-account/:code/:email" element={<CreateAccount />} />
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/update-password/:id" element={<UpdatePassword />} />
@@ -104,19 +103,20 @@ export default function AppRouter() {
 
           {/* Owner routes */}
           <Route path="/company-owner" element={token !== null && user?.userType === "owner" ? <CompanyOwner /> : <Navigate to="/" />} />
-          <Route path="/company-individual-user" element={token !== null && user?.userType === "owner" ? <CompanyIndividualUser /> : <Navigate to="/" />} />
+          <Route path="/company-owner/company-individual-user" element={token !== null && user?.userType === "owner" ? <CompanyIndividualUser /> : <Navigate to="/" />} />
           <Route path="/owner-settings" element={token !== null && user?.userType === "owner" ? <OwnerSettings /> : <Navigate to="/" />} />
           <Route path="/owner-team" element={token !== null && user?.userType === "owner" ? <OwnerTeam /> : <Navigate to="/" />} />
           <Route path="/owner-account" element={token !== null && user?.userType === "owner" ? <OwnerAccount /> : <Navigate to="/" />} />
-          <Route path="/company-owner-user-signup" element={token !== null && user?.userType === "owner" ? <OwnerUserSignup /> : <Navigate to="/" />} />
+          <Route path="/owner-team/company-owner-user-signup" element={token !== null && user?.userType === "owner" ? <OwnerUserSignup /> : <Navigate to="/" />} />
 
           {/* Admin routes */}
           <Route path="/admindashboard" element={token !== null && user?.userType === "admin" ? <AdminDashboard /> : <Navigate to="/" />} />
+          <Route path="/admindashboard/admin-user-signup" element={<AdminUserSignup />} />
           <Route path="/adminProject" element={token !== null && user?.userType === "admin" ? <AdminProject /> : <Navigate to="/" />} />
           <Route path="/adminClient" element={token !== null && user?.userType === "admin" ? <AdminClient /> : <Navigate to="/" />} />
           <Route path="/adminaccount" element={token !== null && user?.userType === "admin" ? <AccountAdmin /> : <Navigate to="/" />} />
           <Route path="/adminTeamComponent" element={token !== null && user?.userType === "admin" ? <AdminTeamComponent /> : <Navigate to="/" />} />
-          <Route path="/adminuser" element={token !== null && user?.userType === "admin" ? <AdminUser /> : <Navigate to="/" />} />
+          <Route path="/admindashboard/adminuser" element={token !== null && user?.userType === "admin" ? <AdminUser /> : <Navigate to="/" />} />
           <Route path="/adminteam" element={token !== null && user?.userType === "admin" ? <AdminTeam /> : <Navigate to="/" />} />
           <Route path="/setting" element={token !== null && user?.userType === "admin" ? <Setting /> : <Navigate to="/" />} />
           <Route path="/admin-reports" element={token !== null && user?.userType === "admin" ? <AdminReports /> : <Navigate to="/" />} />

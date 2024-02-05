@@ -21,13 +21,13 @@ function OwnerSection() {
                     margin: "0 30px 0 30px",
                 }}>
                 <div className="d-flex gap-1 align-items-center">
-                    <div className={location.pathname === "/company-owner" ? "active-tab" : "ownerSectionUser"}>
+                    <div className={location.pathname === "/company-owner" || location.pathname === "/company-owner/company-individual-user" ? "active-tab" : "ownerSectionUser"}>
                         <p style={{ margin: 0 }} onClick={() => navigate('/company-owner')} >Dashboard</p>
                     </div>
                     {/* <div className={location.pathname === "/company-owner-user-signup" ? "active-tab" : "ownerSectionUser"}>
                         <p style={{ margin: 0 }} onClick={() => navigate('/company-owner-user-signup')}>Add User</p>
                     </div> */}
-                    <div className={location.pathname === "/owner-team" ? "active-tab" : "ownerSectionUser"}>
+                    <div className={location.pathname === "/owner-team" || location.pathname === "/owner-team/company-owner-user-signup" ? "active-tab" : "ownerSectionUser"}>
                         <p style={{ margin: 0 }} onClick={() => navigate('/owner-team')}>Team</p>
                     </div>
                     {/* <div className={location.pathname === "/owner-settings" ? "active-tab" : "ownerSectionUser"}>

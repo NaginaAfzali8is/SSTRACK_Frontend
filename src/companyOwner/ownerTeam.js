@@ -278,7 +278,7 @@ function OwnerTeam() {
                                     display: "flex",
                                     // justifyContent: "space-between"
                                 }}>
-                                    <button style={{ margin: "0 10px 0 0" }} className="addUserButton" onClick={() => navigate('/company-owner-user-signup')}>CREATE</button>
+                                    <button style={{ margin: "0 10px 0 0" }} className="addUserButton" onClick={() => navigate('/owner-team/company-owner-user-signup')}>CREATE</button>
                                     <button className="addUserButton" onClick={() => setShow3(true)}>CREATE VIA LINK</button>
                                 </div>
 

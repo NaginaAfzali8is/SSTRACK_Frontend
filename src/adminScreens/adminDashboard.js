@@ -77,7 +77,7 @@ function AdminDashboard() {
     }, [])
 
     function moveOnlineUsers(userId) {
-        navigate("/adminuser", {
+        navigate("/admindashboard/adminuser", {
             state: userId,
         });
     }

@@ -1281,6 +1281,7 @@ nav li a {
   font-size: 18px;
   font-weight: 400;
   margin: 0;
+  width: 230px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

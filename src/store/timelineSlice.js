@@ -51,8 +51,17 @@ const timelineSlice = createSlice({
                 loading: payload
             }
         },
+        setLogout: (state, { payload }) => {
+            return {
+                timeline: [],
+                filterUsers: [],
+                userTimeline: [],
+                showTimelineData: null,
+                loading: false
+            }
+        }
     },
 })
 
-export const { getTimeline, setLoading, searchUsers, selectUserTimeline } = timelineSlice.actions
+export const { getTimeline, setLoading, searchUsers, selectUserTimeline, setLogout } = timelineSlice.actions
 export default timelineSlice.reducer

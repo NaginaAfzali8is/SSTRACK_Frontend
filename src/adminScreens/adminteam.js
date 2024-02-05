@@ -495,7 +495,7 @@ function AdminTeam() {
                                     marginTop: "20px",
                                     display: "flex",
                                 }}>
-                                    <button style={{ width: "150px", margin: "0 10px 0 0" }} className="addUserButton" onClick={() => navigate('/admin-user-signup')}>CREATE</button>
+                                    <button style={{ width: "150px", margin: "0 10px 0 0" }} className="addUserButton" onClick={() => navigate('/admindashboard/admin-user-signup')}>CREATE</button>
                                     <button className="addUserButton" onClick={() => setShow3(true)}>CREATE VIA LINK</button>
                                 </div>
 

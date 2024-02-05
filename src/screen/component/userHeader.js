@@ -9,16 +9,20 @@ import AdminHead from "../../screen/component/adminHeadSection";
 import UserDashboardSection from "../../screen/component/userDashboardsection";
 import OwnerSection from "../../companyOwner/ownerComponent/ownerSection";
 import SystemAdminHeader from "../../systemAdmin/component/systemAdminHeader";
+import { useDispatch } from "react-redux";
+import { setLogout } from "../../store/timelineSlice";
 
 function UserHeader() {
 
     const user = JSON.parse(localStorage.getItem('items'));
     const [showContent, setShowContent] = useState(false);
     const navigate = useNavigate("");
+    const dispatch = useDispatch()
 
     function logOut() {
         localStorage.removeItem("items");
         localStorage.removeItem("token");
+        dispatch(setLogout())
         navigate("/signin")
         setShowContent(false)
     }
