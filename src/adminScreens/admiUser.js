@@ -105,6 +105,8 @@ function AdminUser() {
     const dispatch = useDispatch()
     const userTimeline = useSelector((state) => state.userTimeline)
     const showUserTimeline = useSelector((state) => state.showTimelineData)
+    const [deleteActivity, setDeleteActivity] = useState(false)
+    
     // var pusher = new Pusher('334425b3c859ed2f1d2b', {
     //     cluster: 'ap2'
     // });
@@ -459,32 +461,55 @@ function AdminUser() {
         setShowOfflineTime(false)
         setShowTrimActivity(false)
         setShowSplitActivity(false)
-        const formattedStartTime = formattedDate + " " + trimActivity?.startTime;
-        const formattedEndTime = formattedDate + " " + trimActivity?.endTime;
         const timeEntryId = trimActivity?.timeentryId
-
-        try {
-            const response = await axios.patch(`${apiUrl}/superAdmin/trim-activity/${userId}/${timeEntryId}`, {
-                startTime: formattedStartTime,
-                endTime: formattedEndTime,
-            }, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-            });
-            if (response.status === 200) {
-                enqueueSnackbar(response.data.data.message, {
-                    variant: "success",
-                    anchorOrigin: {
-                        vertical: "top",
-                        horizontal: "right"
+        if (deleteActivity === false) {
+            const formattedStartTime = formattedDate + " " + trimActivity?.startTime;
+            const formattedEndTime = formattedDate + " " + trimActivity?.endTime;
+            try {
+                const response = await axios.patch(`${apiUrl}/superAdmin/trim-activity/${userId}/${timeEntryId}`, {
+                    startTime: formattedStartTime,
+                    endTime: formattedEndTime,
+                }, {
+                    headers: {
+                        Authorization: 'Bearer ' + token
                     }
-                })
-                fetchData()
-                console.log(response);
+                });
+                if (response.status === 200) {
+                    enqueueSnackbar(response.data.data.message, {
+                        variant: "success",
+                        anchorOrigin: {
+                            vertical: "top",
+                            horizontal: "right"
+                        }
+                    })
+                    fetchData()
+                    console.log(response);
+                }
+            } catch (error) {
+                console.log(error);
             }
-        } catch (error) {
-            console.log(error);
+        }
+        else {
+            try {
+                const response = await axios.post(`${apiUrl}/superAdmin/time-tracking/${showUserTimeline?.TimeTrackingId}/activityId/${timeEntryId}`, {
+                    headers: {
+                        Authorization: 'Bearer ' + token
+                    }
+                });
+                if (response.status === 200) {
+                    enqueueSnackbar(response.data.data.message, {
+                        variant: "success",
+                        anchorOrigin: {
+                            vertical: "top",
+                            horizontal: "right"
+                        }
+                    })
+                    fetchData()
+                    console.log(response);
+                }
+            } catch (error) {
+                console.log(error);
+            }
         }
     };
 
@@ -644,7 +669,7 @@ function AdminUser() {
                         <textarea placeholder="Note (optional)" rows="5" ></textarea>
                         <div className="deleteActivityPart">
                             <div style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
-                                <input id="editcheck" type="checkbox" />
+                                <input id="editcheck" type="checkbox" onChange={(e) => setDeleteActivity(e.target.checked)} />
                                 <p style={{ margin: "0 0 0 10px", padding: 0 }}>Delete this activity</p>
                             </div>
                             <p style={{ margin: 0, cursor: "pointer" }} onClick={() => {
