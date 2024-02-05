@@ -260,7 +260,7 @@ function OwnerTeamComponent(props) {
                             height: "43px",
                             fontSize: "17px",
                             fontWeight: 600,
-                        }}>update</button>}
+                        }}>save</button>}
                         {/* <div style={{
                             display: "flex",
                             alignItems: "center"

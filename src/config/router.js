@@ -97,7 +97,7 @@ export default function AppRouter() {
 
           {/* User routes */}
           <Route path="/userdashboard" element={token !== null && user?.userType === "user" ? <UserDasboard /> : <Navigate to="/" />} />
-          <Route path="/userdetail" element={token !== null && user?.userType === "user" ? <UserDetails /> : <Navigate to="/" />} />
+          <Route path="/userdashboard/userdetail" element={token !== null && user?.userType === "user" ? <UserDetails /> : <Navigate to="/" />} />
           <Route path="/usersummary" element={token !== null && user?.userType === "user" ? <UserSummary /> : <Navigate to="/" />} />
           <Route path="/account" element={token !== null && user?.userType === "user" ? <Account /> : <Navigate to="/" />} />
 

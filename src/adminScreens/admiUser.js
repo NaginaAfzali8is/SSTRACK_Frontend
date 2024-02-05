@@ -632,7 +632,7 @@ function AdminUser() {
                             <p>-{trimActivity?.totalHours ? trimActivity?.totalHours : "0h 0m"}</p>
                         </div>
                         <p className="sevenAm">eg 7am to 9:10am or 17:30 to 22:00</p>
-                        <div>
+                        {/* <div>
                             <select className="projectOption" defaultValue="">
                                 <option>Infiniti Solutions</option>
                                 <option>Y8HR</option>
@@ -640,7 +640,7 @@ function AdminUser() {
                                 <option>Geox HR</option>
                                 <option>Click HR</option>
                             </select>
-                        </div>
+                        </div> */}
                         <textarea placeholder="Note (optional)" rows="5" ></textarea>
                         <div className="deleteActivityPart">
                             <div style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
