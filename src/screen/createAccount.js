@@ -14,9 +14,12 @@ import link_expired from '../images/link-broken.svg'
 import { enqueueSnackbar, SnackbarProvider } from 'notistack'
 import axios from "axios";
 import { FerrisWheelSpinner } from "react-spinner-overlay";
+import showPasswordIcon from '../images/showPassword.svg';
+import hidePasswordIcon from '../images/hidePassword.svg';
 
 function CreateAccount() {
 
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false)
     const { code, email } = useParams()
     const [user, setUser] = useState(null);
@@ -116,15 +119,15 @@ function CreateAccount() {
     }
 
     const handleStartDateChange = (selectedtimezone) => {
-        // const localTime = moment().tz(selectedtimezone.value).format("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        // const mynewtime = localTime + selectedtimezone?.label
-        // console.log(mynewtime);
-        // console.log(localTime);
-        // console.log("timezone", selectedtimezone);
-        setSelectedTimezone(selectedtimezone);
-        setCurrentTimeZone(selectedtimezone)
-        fillModel("timezoneOffset", selectedtimezone?.offset)
-        fillModel("timezone", selectedtimezone?.value)
+        // Assuming selectedtimezone is an object with a 'value' property representing the time zone name
+        const timezoneName = selectedtimezone.value;
+        const offsetInMinutes = moment.tz(timezoneName).utcOffset();
+        const offsetInHours = offsetInMinutes / 60;
+        setSelectedTimezone(timezoneName);
+        setCurrentTimeZone(timezoneName);
+        fillModel("timezoneOffset", offsetInHours);
+        fillModel("timezone", timezoneName);
+        console.log(timezoneName);
     };
 
     let fillModel = (key, val) => {
@@ -134,9 +137,11 @@ function CreateAccount() {
 
     useEffect(() => {
         const defaultTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const offsetInMinutes = moment.tz(defaultTimezone).utcOffset();
+        const offsetInHours = offsetInMinutes / 60;
         setSelectedTimezone(defaultTimezone);
         setCurrentTimeZone(defaultTimezone);
-        fillModel("timezoneOffset", 5);
+        fillModel("timezoneOffset", offsetInHours);
         fillModel("timezone", defaultTimezone);
     }, []);
 
@@ -217,7 +222,8 @@ function CreateAccount() {
                             </div>
                             <div className="inputDiv">
                                 <div><img src={password} /></div>
-                                <input className="autofill" onChange={(e) => fillModel("password", e.target.value)} type="password" placeholder="Password (8 or more characters)" />
+                                <input className="autofill" type={showPassword ? 'text' : 'password'} value={model.password} onChange={(e) => fillModel("password", e.target.value)} placeholder="Password (8 or more characters)" />
+                                {model.password !== "" && <img style={{ cursor: "pointer" }} width={30} src={showPassword ? showPasswordIcon : hidePasswordIcon} alt="Password" onClick={() => setShowPassword(!showPassword)} />}
                             </div>
                             <div className="inputDiv2">
                                 {/* <div><img src={clock} /></div> */}
