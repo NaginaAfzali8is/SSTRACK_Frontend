@@ -15,6 +15,7 @@ function Header({ scrollToSection1, scrollToSection2 }) {
         localStorage.removeItem("items");
         localStorage.removeItem("token");
         dispatch(setLogout())
+        location.reload()
     }
 
     return (
