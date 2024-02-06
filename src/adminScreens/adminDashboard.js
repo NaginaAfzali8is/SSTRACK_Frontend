@@ -21,7 +21,7 @@ import axios from "axios";
 import noResultFound from '../images/no-result-found.svg'
 import Pusher from 'pusher-js';
 import { useDispatch, useSelector } from "react-redux";
-import { getTimeline } from "../store/timelineSlice";
+import { searchUsers } from "../store/timelineSlice";
 import { GetTimelineUsersAdmin } from "../middlewares/timeline";
 
 function AdminDashboard() {
@@ -83,23 +83,9 @@ function AdminDashboard() {
     }
 
     function handleSearchEmployee(e) {
-        setLoading2(true)
-        const searchData = data?.filter((user, index) => {
-            return user.userName.toLowerCase().includes(e.target.value.toLowerCase().trim())
-        })
-        setSearchResults(searchData)
-        setLoading2(false)
+        const searchValue = e?.target?.value;
+        dispatch(searchUsers(searchValue));
     }
-
-    useEffect(() => {
-        if (data !== null && data.length > 0) {
-            setSearchResults(data)
-        }
-    }, [data])
-
-    console.log("data =====>", data)
-
-    console.log(timeline);
 
     return (
         <div>

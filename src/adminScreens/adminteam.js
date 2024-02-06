@@ -634,16 +634,16 @@ function AdminTeam() {
                                     })}
                                 </div>
 
-                                <div className="archiveFont">
+                                <div className="companyFont">
                                     <p style={{
                                         margin: 0,
                                         padding: 0,
                                         fontSize: "20px",
-                                        color: "#727272",
+                                        color: "#0E4772",
                                         fontWeight: "600",
                                     }}>Pending invite</p>
                                     <div style={{
-                                        backgroundColor: "#727272",
+                                        backgroundColor: "#28659C",
                                         color: "white",
                                         fontSize: "600",
                                         width: "40px",
@@ -657,26 +657,27 @@ function AdminTeam() {
                                     </div>
                                 </div>
                                 <div style={{
-                                    height: searchUsers?.filter((d, i) => d.inviteStatus === true).length >= 5 && 300,
-                                    overflowY: searchUsers?.filter((d, i) => d.inviteStatus === true).length >= 5 && "scroll",
-                                    marginTop: 20
+                                     height: searchUsers?.filter((d, i) => d.inviteStatus === true).length >= 5 && 300,
+                                     overflowY: searchUsers?.filter((d, i) => d.inviteStatus === true).length >= 5 && "scroll",
+                                     marginTop: 20
                                 }}>
-                                    {loading ? <Skeleton count={1} height="20vh" style={{ margin: "10px 0 0 0" }} /> : users && searchUsers?.filter((d, i) => d.inviteStatus === true)?.map((e, i) => {
+                                    {loading ? <Skeleton count={1} height="40vh" style={{ margin: "10px 0 0 0" }} /> : users && searchUsers?.filter((d, i) => d.inviteStatus === true)?.map((e, i) => {
                                         return loading2 ? (
                                             <Skeleton count={1} height="56px" style={{ margin: "10px 0 0 0" }} />
                                         ) : (
                                             <div className={`adminTeamEmployess ${activeId === e._id ? "activeEmploy" : ""} align-items-center gap-1`} onClick={() => {
                                                 setMainId(e._id)
                                                 setActiveId(e._id)
-                                                setIsUserArchive(true)
-                                                setInviteStatus(true)
-                                                setResendEmail(e.email)
+                                                setIsUserArchive(false)
+                                                setInviteStatus(false)
+                                                setPayrate(e)
+                                                setSelectedUser(e)
                                             }}>
                                                 <div style={{ display: "flex", alignItems: "center" }}>
                                                     <div className="groupContentMainImg">
                                                         <p>{i + 1}</p>
                                                     </div>
-                                                    <p className="groupContent archive-user">{e?.email}</p>
+                                                    <p className="groupContent">{e?.email}</p>
                                                 </div>
                                                 {e?.userType === "owner" ? <div>
                                                     <AiFillStar color="#e7c741" size={20} />

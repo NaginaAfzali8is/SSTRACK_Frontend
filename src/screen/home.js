@@ -218,7 +218,7 @@ function Home() {
             <div className='cardSection'>
               <div className='box'>
                 <img src={ss1} alt="" style={{ width: "200px", height: "200px", borderRadius: "100%", objectFit: "cover", border: "10px solid #7ACB59" }} />
-                <p className='trackEffort'>Monitor employees work hours and screen captures.</p>
+                <p className='trackEffort'>Manage employee time logs and screen captures digitally.</p>
                 <p className='trackEffortPera'>Employees independently manage the start and stop of their tracking using a streamlined desktop app.</p>
                 {/* <img className='arrow' src={arrow} /> */}
               </div>

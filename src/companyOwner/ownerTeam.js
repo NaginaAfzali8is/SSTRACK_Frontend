@@ -419,16 +419,16 @@ function OwnerTeam() {
                                     })}
                                 </div>
 
-                                <div className="archiveFont">
+                                <div className="companyFont">
                                     <p style={{
                                         margin: 0,
                                         padding: 0,
                                         fontSize: "20px",
-                                        color: "#727272",
+                                        color: "#0E4772",
                                         fontWeight: "600",
                                     }}>Pending invite</p>
                                     <div style={{
-                                        backgroundColor: "#50AA00",
+                                        backgroundColor: "#28659C",
                                         color: "white",
                                         fontSize: "600",
                                         width: "40px",
@@ -442,26 +442,27 @@ function OwnerTeam() {
                                     </div>
                                 </div>
                                 <div style={{
-                                    height: searchUsers?.filter((d, i) => d.inviteStatus === true).length >= 5 && 300,
-                                    overflowY: searchUsers?.filter((d, i) => d.inviteStatus === true).length >= 5 && "scroll",
-                                    marginTop: 20
+                                     height: searchUsers?.filter((d, i) => d.inviteStatus === true).length >= 5 && 300,
+                                     overflowY: searchUsers?.filter((d, i) => d.inviteStatus === true).length >= 5 && "scroll",
+                                     marginTop: 20
                                 }}>
-                                    {loading ? <Skeleton count={1} height="20vh" style={{ margin: "10px 0 0 0" }} /> : searchUsers && searchUsers?.filter((d, i) => d.inviteStatus === true)?.map((e, i) => {
+                                    {loading ? <Skeleton count={1} height="40vh" style={{ margin: "10px 0 0 0" }} /> : searchUsers && searchUsers?.filter((d, i) => d.inviteStatus === true)?.map((e, i) => {
                                         return loading2 ? (
                                             <Skeleton count={1} height="56px" style={{ margin: "10px 0 0 0" }} />
                                         ) : (
-                                            <div className="groupContentMain align-items-center gap-4" style={{
-                                                backgroundColor: activeId === e._id ? "whitesmoke" : ""
-                                            }} onClick={() => {
+                                            <div className={`adminTeamEmployess ${activeId === e._id ? "activeEmploy" : ""} align-items-center gap-1`} onClick={() => {
                                                 setMainId(e._id)
                                                 setActiveId(e._id)
-                                                setInviteStatus(true)
+                                                setIsUserArchive(false)
+                                                setInviteStatus(false)
+                                                setPayrate(e)
+                                                setSelectedUser(e)
                                             }}>
                                                 <div style={{ display: "flex", alignItems: "center" }}>
                                                     <div className="groupContentMainImg">
                                                         <p>{i + 1}</p>
                                                     </div>
-                                                    <p className="groupContent archive-user">{e?.email}</p>
+                                                    <p className="groupContent">{e?.email}</p>
                                                 </div>
                                                 {e?.userType === "owner" ? <div>
                                                     <AiFillStar color="#e7c741" size={20} />
