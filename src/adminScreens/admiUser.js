@@ -491,7 +491,7 @@ function AdminUser() {
         }
         else {
             try {
-                const response = await axios.post(`${apiUrl}/superAdmin/time-tracking/${showUserTimeline?.TimeTrackingId}/activityId/${timeEntryId}`, {
+                const response = await axios.delete(`${apiUrl}/superAdmin/time-tracking/${showUserTimeline?.TimeTrackingId}/activity/${timeEntryId}`, {
                     headers: {
                         Authorization: 'Bearer ' + token
                     }
@@ -766,7 +766,6 @@ function AdminUser() {
             <SnackbarProvider />
             <div className="container">
                 <div className="mainwrapper">
-
                     <div className="userHeader">
                         <div className="headerTop">
                             <h5><img src={circle} alt="" /> {showUserTimeline?.name}</h5>
@@ -776,7 +775,6 @@ function AdminUser() {
                             <img src={setting} alt="setting.png" style={{ cursor: "pointer" }} onClick={() => navigate("/adminaccount")} />
                         </div>
                     </div>
-
                     <div className="userMainContent">
                         <div>
                             <div className="calendar-container">
@@ -867,11 +865,9 @@ function AdminUser() {
                                     </div>
                                 </div>
                             </div>
-
                             <div className="time-scale" style={{ display: "flex" }}>
                                 {renderTimeIntervals()}
                             </div>
-
                             <div>
                                 {showUserTimeline && (showUserTimeline?.groupedScreenshots?.map((element) => {
                                     return (
@@ -926,7 +922,7 @@ function AdminUser() {
                                                                     </OverlayTrigger>
                                                                 </div>
                                                                 <div style={{ display: "flex" }}>
-                                                                    <img src={deleteIcon} alt="" style={{ marginRight: 15 }} onClick={() => handleOpenDeleteModal(element, elements)} />
+                                                                    <img src={deleteIcon} alt="" style={{ marginRight: 5 }} onClick={() => handleOpenDeleteModal(element, elements)} />
                                                                     {elements?.visitedUrls?.length === 0 ?
                                                                         <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
                                                                             <div className="circular-progress">
@@ -957,7 +953,6 @@ function AdminUser() {
                                                         </div>
                                                     )
                                                 }))}
-
                                                 {selectedImage && (
                                                     <div className="fullscreen-screenshot-model">
                                                         <div style={{ margin: "20px 20px 0 20px", textAlign: "right" }}>
@@ -989,18 +984,14 @@ function AdminUser() {
                                     )
                                 }))}
                             </div>
-
                             <div className="historyButton">
                                 <img className="historyImg" src={historyIcon} alt="HistoryIcon.png" />
                                 <p className="historyOfChanges">History of Changes</p>
                             </div>
-
                             {/* <div className="editBoxMainDiv">
                                 {changeEdit && <TimeEntryModal edit={edit} setEdit={setEdit} splitsActivity={splitsActivity} changeOffline={changeOffline} />}
                             </div> */}
-
                         </div>
-
                     </div>
                 </div>
                 <img className="userDetailLine" src={line} />

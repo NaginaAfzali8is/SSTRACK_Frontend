@@ -1408,7 +1408,7 @@ nav li a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 5px 10px;
 }
 
 .websiteLink {
@@ -1437,7 +1437,7 @@ nav li a {
   width: 100%;
   height: auto;
   background-color: #E8F4FC;
-  padding: 9px 30px 17px 30px;
+  /* padding: 9px 30px 17px 30px; */
   /* border-radius: 10px; */
   /* margin-top: 10px; */
 }

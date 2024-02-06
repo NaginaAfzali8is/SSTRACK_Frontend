@@ -441,7 +441,6 @@ function CompanyIndividualUser() {
                 })
                 dispatch(GetTimelineUserOwner({ userId, formattedDate, headers }))
             }
-            fetchData()
         } catch (error) {
             console.log(error);
             enqueueSnackbar("network error", {
@@ -490,7 +489,6 @@ function CompanyIndividualUser() {
                             horizontal: "right"
                         }
                     })
-                    fetchData()
                     console.log(response);
                 }
             } catch (error) {
@@ -499,7 +497,7 @@ function CompanyIndividualUser() {
         }
         else {
             try {
-                const response = await axios.post(`${apiUrl}/superAdmin/time-tracking/${showUserTimeline?.TimeTrackingId}/activityId/${timeEntryId}`, {
+                const response = await axios.delete(`${apiUrl}/owner/time-tracking/${showUserTimeline?.TimeTrackingId}/activity/${timeEntryId}`, {
                     headers: {
                         Authorization: 'Bearer ' + token
                     }
@@ -512,7 +510,6 @@ function CompanyIndividualUser() {
                             horizontal: "right"
                         }
                     })
-                    fetchData()
                     console.log(response);
                 }
             } catch (error) {
@@ -543,7 +540,6 @@ function CompanyIndividualUser() {
                         horizontal: "right"
                     }
                 })
-                fetchData()
                 console.log(response);
             }
         } catch (error) {
@@ -580,7 +576,6 @@ function CompanyIndividualUser() {
                         horizontal: "right"
                     }
                 })
-                fetchData()
                 console.log(response);
             }
         } catch (error) {
@@ -956,7 +951,7 @@ function CompanyIndividualUser() {
                                                                 </OverlayTrigger>
                                                             </div>
                                                             <div style={{ display: "flex" }}>
-                                                                <img src={deleteIcon} alt="" style={{ marginRight: 15 }} onClick={() => handleOpenDeleteModal(element, elements)} />
+                                                                <img src={deleteIcon} alt="" style={{ marginRight: 5 }} onClick={() => handleOpenDeleteModal(element, elements)} />
                                                                 {elements?.visitedUrls?.length === 0 ?
                                                                     <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
                                                                         <div className="circular-progress">
