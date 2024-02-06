@@ -489,6 +489,7 @@ function CompanyIndividualUser() {
                             horizontal: "right"
                         }
                     })
+                    dispatch(GetTimelineUserOwner({ userId, formattedDate, headers }))
                     console.log(response);
                 }
             } catch (error) {
@@ -497,19 +498,20 @@ function CompanyIndividualUser() {
         }
         else {
             try {
-                const response = await axios.delete(`${apiUrl}/owner/time-tracking/${showUserTimeline?.TimeTrackingId}/activity/${timeEntryId}`, {
+                const response = await axios.delete(`${apiUrl}/superAdmin/time-tracking/${showUserTimeline?.TimeTrackingId}/activity/${timeEntryId}`, {
                     headers: {
                         Authorization: 'Bearer ' + token
                     }
                 });
                 if (response.status === 200) {
-                    enqueueSnackbar(response.data.data.message, {
+                    enqueueSnackbar(response.data.message, {
                         variant: "success",
                         anchorOrigin: {
                             vertical: "top",
                             horizontal: "right"
                         }
                     })
+                    dispatch(GetTimelineUserOwner({ userId, formattedDate, headers }))
                     console.log(response);
                 }
             } catch (error) {
@@ -592,9 +594,6 @@ function CompanyIndividualUser() {
     const offsetInHours = offsetInMinutes / 60;
     const offsetSign = offsetInHours >= 0 ? '+' : '-';
     const formattedOffset = `${offsetSign}${Math.abs(offsetInHours)}`;
-
-    console.log(userId);
-    console.log({ deleteActivity });
 
     return (
         <div>

@@ -444,7 +444,6 @@ function AdminUser() {
                 })
                 dispatch(GetTimelineUserSuperAdmin({ userId, formattedDate, headers }))
             }
-            fetchData()
         } catch (error) {
             console.log(error);
             enqueueSnackbar("network error", {
@@ -482,7 +481,7 @@ function AdminUser() {
                             horizontal: "right"
                         }
                     })
-                    fetchData()
+                    dispatch(GetTimelineUserSuperAdmin({ userId, formattedDate, headers }))
                     console.log(response);
                 }
             } catch (error) {
@@ -497,14 +496,14 @@ function AdminUser() {
                     }
                 });
                 if (response.status === 200) {
-                    enqueueSnackbar(response.data.data.message, {
+                    enqueueSnackbar(response.data.message, {
                         variant: "success",
                         anchorOrigin: {
                             vertical: "top",
                             horizontal: "right"
                         }
                     })
-                    fetchData()
+                    dispatch(GetTimelineUserSuperAdmin({ userId, formattedDate, headers }))
                     console.log(response);
                 }
             } catch (error) {
@@ -609,8 +608,6 @@ function AdminUser() {
     const offsetInHours = offsetInMinutes / 60;
     const offsetSign = offsetInHours >= 0 ? '+' : '-';
     const formattedOffset = `${offsetSign}${Math.abs(offsetInHours)}`;
-
-    console.log({ activeMonth })
 
     return (
         <div>

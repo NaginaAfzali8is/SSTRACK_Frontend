@@ -4929,9 +4929,10 @@ input.checkboxes:checked {
 }
 
 .hour-color {
-  background-color: #EFF9EC;
-  border: 1px solid #e3e3e3;
+  /* background-color: #EFF9EC; */
+  border: 1.5px solid #e3e3e3;
   text-align: center;
+  color: #0E4772;
 }
 
 /* Customize the scrollbar for webkit-based browsers */
