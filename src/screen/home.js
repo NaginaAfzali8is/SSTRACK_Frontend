@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import logo from "../images/logo.webp";
-import banner from '../images/banner.png';
+import banner from '../images/ss-track-banner.svg';
 import start from "../images/button.webp";
 import line from '../images/greenline.webp';
 // import banners from './images/banner.png';
