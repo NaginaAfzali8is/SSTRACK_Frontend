@@ -425,7 +425,7 @@ function Home() {
 
               <div style={{ display: "flex", alignItems: 'center', justifyContent: "space-between" }} className="how-it-work-container">
                 <div>
-                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Connecting Employees with Managers - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SS-TRACK.IO</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
+                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Connecting Employees with Managers - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SSTRACK.IO</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
                   <p className="features-working">When you sign up as a company owner or join as admin, you can invite employees to join. As an admin, you can add your team members. When employees log in, they can easily start keeping track of time and share screenshots for their work.</p>
                 </div>
                 <div>
@@ -435,9 +435,9 @@ function Home() {
 
               <div style={{ display: "flex", alignItems: 'center', justifyContent: "space-between" }} className="how-it-work-container">
                 <div>
-                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Simple Access with Log In - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SS-TRACK.IO</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
+                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Simple Access with Log In - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SSTRACK.IO</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
                   <p className="features-working">
-                    Employees just need to install the SS-TRACK.IO app on their computer. After logging in, they can click "Start" to begin tracking time and taking screenshots for their tasks. The app automatically sends this info to our website.
+                    Employees just need to install the SSTRACK.IO app on their computer. After logging in, they can click "Start" to begin tracking time and taking screenshots for their tasks. The app automatically sends this info to our website.
                   </p>
                 </div>
                 <div>
@@ -447,7 +447,7 @@ function Home() {
 
               <div style={{ display: "flex", alignItems: 'center', justifyContent: "space-between" }} className="how-it-work-container">
                 <div>
-                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Effortless Time Tracking - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SS-TRACK.IO</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
+                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Effortless Time Tracking - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SSTRACK.IO</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
                   <p className="features-working">
                     Our app records work hours and takes screenshots in the background. It does this randomly and stops when the user clicks "Stop." This feature is great for keeping tabs on in-office employees without being sneaky. Employees always know the app is running.
                   </p>
@@ -459,9 +459,9 @@ function Home() {
 
               <div style={{ display: "flex", alignItems: 'center', justifyContent: "space-between" }} className="how-it-work-container">
                 <div>
-                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Clear View - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SS-TRACK.IO</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
+                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Clear View - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SSTRACK.IO</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
                   <p className="features-working">
-                    Our app sends time and screenshot info to our website, so admins can see what's happening in real-time. Admins don't need to install anything else; they can check everything online on SS-TRACK.IO. The dashboard shows how long employees worked, who's active now, and the latest screenshots.
+                    Our app sends time and screenshot info to our website, so admins can see what's happening in real-time. Admins don't need to install anything else; they can check everything online on SSTRACK.IO. The dashboard shows how long employees worked, who's active now, and the latest screenshots.
                   </p>
                 </div>
                 <div>
@@ -471,7 +471,7 @@ function Home() {
 
               <div style={{ display: "flex", alignItems: 'center', justifyContent: "space-between" }} className="how-it-work-container">
                 <div>
-                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Detailed Timeline - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SS-TRACK.IO</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
+                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Detailed Timeline - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SSTRACK.IO</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
                   <p className="features-working">
                     The employee timeline gives a detailed view: time and money spent on each task, how active the user was, which apps were used, and visited websites. It also includes screenshots taken randomly (up to 30 per hour) throughout the day. This gives a complete picture of the employee's day.
                   </p>
@@ -493,7 +493,7 @@ function Home() {
             <div className="firstFormPart">
               <h3 className="contactUs">Contact us</h3>
               <p className="query">For any questions or feedback please feel free to contact us using
-                the form below, or email us at <span style={{ color: "#7ACB59" }}>info@SS-TRACK.IO</span></p>
+                the form below, or email us at <span style={{ color: "#7ACB59" }}>info@SSTRACK.IO</span></p>
             </div>
             <form className="fullForm">
               <div>
@@ -567,7 +567,7 @@ function Home() {
               }}>
                 <IoMdMail color="#09A144" size={20} />
               </div>
-              <p style={{ margin: "0", fontWeight: '600' }}>info@SS-TRACK.IO</p>
+              <p style={{ margin: "0", fontWeight: '600' }}>info@SSTRACK.IO</p>
             </div>
           </div>
           <div>
