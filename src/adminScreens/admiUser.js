@@ -1001,10 +1001,10 @@ function AdminUser() {
                                     )
                                 }))}
                             </div>
-                            <div className="historyButton">
+                            {/* <div className="historyButton">
                                 <img className="historyImg" src={historyIcon} alt="HistoryIcon.png" />
                                 <p className="historyOfChanges">History of Changes</p>
-                            </div>
+                            </div> */}
                             {/* <div className="editBoxMainDiv">
                                 {changeEdit && <TimeEntryModal edit={edit} setEdit={setEdit} splitsActivity={splitsActivity} changeOffline={changeOffline} />}
                             </div> */}

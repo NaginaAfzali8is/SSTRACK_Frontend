@@ -1016,10 +1016,10 @@ function CompanyIndividualUser() {
                             }))}
                         </div>
 
-                        <div className="historyButton">
+                        {/* <div className="historyButton">
                             <img className="historyImg" src={historyIcon} alt="HistoryIcon.png" />
                             <p className="historyOfChanges">History of Changes</p>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <img className="userDetailLine" src={line} />
