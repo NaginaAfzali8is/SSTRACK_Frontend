@@ -44,15 +44,8 @@ function CaptureScreen() {
         localStorage.setItem('percentage', newPercentage);
     };
 
-    const sendScreenshot = useCallback(async () => {
-        console.log({
-            activityPercentage: percentage,
-            description: localStorage.getItem('activeTab'),
-            description2: "Google chrome",
-            startTime: new Date(),
-            createdAt: new Date(),
-            file: imgFile
-        });
+    const sendScreenshot = useCallback(async (imgFile) => {
+        console.log({ imgFile });
         try {
             const model = {
                 activityPercentage: percentage,
@@ -85,21 +78,14 @@ function CaptureScreen() {
         if (type === "startTimer") {
             intervalId = setInterval(() => {
                 updatePercentage(localStorage.getItem('percentage'));
-                // Check if 1 minute has passed and call sendScreenshot
-                if (new Date() - lastScreenshotTime >= 120000) {
-                    console.log("Sending screenshot...");
-                    sendScreenshot();
-                    setLastScreenshotTime(new Date()); // Update lastScreenshotTime
-                }
             }, 5000);
         }
-        // Cleanup function that runs when the component unmounts or when `type` changes
         return () => {
             console.log("Clearing interval...");
             clearInterval(intervalId);
         };
-    }, [sendScreenshot, type, lastScreenshotTime]);
-        
+    }, [type]);
+
     useEffect(() => {
         const token = screenshotCapture?.token;
         const decoded = jwtDecode(token);
@@ -115,7 +101,7 @@ function CaptureScreen() {
                                     const base64 = base64Image.split(',')[1];
                                 })
                                 .catch((error) => console.error('Error capturing frame:', error));
-                        }, 115000)
+                        }, 120000)
                     );
                 } else {
                     navigator.mediaDevices
@@ -123,8 +109,8 @@ function CaptureScreen() {
                         .then((stream) => {
                             window.open(
                                 user?.userType === "owner" ? "https://www.sstrack.io/company-owner" :
-                                user?.userType === "admin" ? "https://www.sstrack.io/admindashboard" :
-                                user?.userType === "user" ? "https://www.sstrack.io/userdashboard" : ""
+                                    user?.userType === "admin" ? "https://www.sstrack.io/admindashboard" :
+                                        user?.userType === "user" ? "https://www.sstrack.io/userdashboard" : ""
                             )
                             setVideoStream(stream);
                             setCaptureInterval(
@@ -132,10 +118,10 @@ function CaptureScreen() {
                                     captureFrame(stream)
                                         .then((base64Image) => {
                                             const base64 = base64Image.split(',')[1];
-                                            setImgFile(base64)
+                                            sendScreenshot(base64);
                                         })
                                         .catch((error) => console.error('Error capturing frame:', error));
-                                }, 115000)
+                                }, 120000)
                             );
                         })
                         .catch((error) => console.error('Error capturing screen:', error));
