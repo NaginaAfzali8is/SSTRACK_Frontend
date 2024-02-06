@@ -124,6 +124,8 @@ function Signup() {
         setCurrentTimeZone(defaultTimezone);
         fillModel("timezoneOffset", offsetInHours);
         fillModel("timezone", defaultTimezone);
+        fillModel("email", "");
+        fillModel("password", "");
     }, []);
 
     console.log(model);
@@ -148,7 +150,7 @@ function Signup() {
                         </div>
                         <div className="inputDiv">
                             <div><img src={email} /></div>
-                            <input type="email" className="autofill" value={model.email} onChange={(e) => fillModel("email", e.target.value)} placeholder="Email" />
+                            <input className="autofill" value={model.email} onChange={(e) => fillModel("email", e.target.value)} placeholder="Email" />
                         </div>
                         <div className="inputDiv">
                             <div><img src={password} /></div>
