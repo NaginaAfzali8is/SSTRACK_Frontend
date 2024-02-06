@@ -438,7 +438,7 @@ function CompanyIndividualUser() {
                         horizontal: "right"
                     }
                 })
-                dispatch(GetTimelineUserOwner({ userId, formattedDate, headers }))
+                fetchData()
             }
         } catch (error) {
             console.log(error);
@@ -488,7 +488,7 @@ function CompanyIndividualUser() {
                             horizontal: "right"
                         }
                     })
-                    dispatch(GetTimelineUserOwner({ userId, formattedDate, headers }))
+                    fetchData()
                     console.log(response);
                 }
             } catch (error) {
@@ -497,7 +497,7 @@ function CompanyIndividualUser() {
         }
         else {
             try {
-                const response = await axios.delete(`${apiUrl}/superAdmin/time-tracking/${showUserTimeline?.TimeTrackingId}/activity/${timeEntryId}`, {
+                const response = await axios.delete(`${apiUrl}/superAdmin/time-tracking/${timeTrackingId}/activity/${timeEntryId}`, {
                     headers: {
                         Authorization: 'Bearer ' + token
                     }
@@ -510,7 +510,7 @@ function CompanyIndividualUser() {
                             horizontal: "right"
                         }
                     })
-                    dispatch(GetTimelineUserOwner({ userId, formattedDate, headers }))
+                    fetchData()
                     console.log(response);
                 }
             } catch (error) {

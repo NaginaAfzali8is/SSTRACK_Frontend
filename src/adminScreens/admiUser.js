@@ -456,7 +456,7 @@ function AdminUser() {
                         horizontal: "right"
                     }
                 })
-                dispatch(GetTimelineUserSuperAdmin({ userId, formattedDate, headers }))
+                fetchData()
             }
         } catch (error) {
             console.log(error);
@@ -495,7 +495,7 @@ function AdminUser() {
                             horizontal: "right"
                         }
                     })
-                    dispatch(GetTimelineUserSuperAdmin({ userId, formattedDate, headers }))
+                    fetchData()
                     console.log(response);
                 }
             } catch (error) {
@@ -504,7 +504,7 @@ function AdminUser() {
         }
         else {
             try {
-                const response = await axios.delete(`${apiUrl}/superAdmin/time-tracking/${showUserTimeline?.TimeTrackingId}/activity/${timeEntryId}`, {
+                const response = await axios.delete(`${apiUrl}/superAdmin/time-tracking/${timeTrackingId}/activity/${timeEntryId}`, {
                     headers: {
                         Authorization: 'Bearer ' + token
                     }
@@ -517,7 +517,7 @@ function AdminUser() {
                             horizontal: "right"
                         }
                     })
-                    dispatch(GetTimelineUserSuperAdmin({ userId, formattedDate, headers }))
+                    fetchData()
                     console.log(response);
                 }
             } catch (error) {
