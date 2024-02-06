@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import DownloadProduct from '../images/banner.png';
+import DownloadProduct from '../images/ss-track-banner.svg';
 import { BsWindows } from 'react-icons/bs'
 import axios from 'axios'
 
