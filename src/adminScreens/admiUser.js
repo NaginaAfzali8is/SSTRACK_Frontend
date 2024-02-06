@@ -444,7 +444,7 @@ function AdminUser() {
     const handleDeleteSS = async () => {
         setShowDeleteModal(false)
         try {
-            const response = await axios.delete(`${apiUrl}/superAdmin/deleteScreenshot/${screenshotId}/TimeTracking/${showUserTimeline?.TimeTrackingId}`, {
+            const response = await axios.delete(`${apiUrl}/superAdmin/deleteScreenshot/${screenshotId}/TimeTracking/${timeTrackingId}`, {
                 headers: headers
             })
             if (response.status === 200) {
