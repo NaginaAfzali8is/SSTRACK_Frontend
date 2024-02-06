@@ -9,6 +9,7 @@ function Header({ scrollToSection1, scrollToSection2 }) {
 
     const navigate = useNavigate()
     const token = localStorage.getItem('token');
+    const currentUser = JSON.parse(localStorage.getItem('items'));
     const dispatch = useDispatch()
 
     function logOut() {
@@ -16,6 +17,18 @@ function Header({ scrollToSection1, scrollToSection2 }) {
         localStorage.removeItem("token");
         dispatch(setLogout())
         window.location.reload()
+    }
+
+    function goToDashboard() {
+        if (currentUser.userType === "owner") {
+            navigate('/company-owner')
+        }
+        if (currentUser.userType === "admin") {
+            navigate('/admindashboard')
+        }
+        if (currentUser.userType === "user") {
+            navigate('/userdashboard')
+        }
     }
 
     return (
@@ -39,7 +52,10 @@ function Header({ scrollToSection1, scrollToSection2 }) {
                                 <button onClick={() => navigate('/signup')} class="btn signUpButton" type="submit">Sign Up</button>
                             </>
                         ) : (
-                            <button onClick={() => logOut()} class="btn signUpButton" type="submit">Log out</button>
+                            <>
+                                <button onClick={() => goToDashboard()} class="btn loginButton" type="submit">Dashboard</button>
+                                <button onClick={() => logOut()} class="btn signUpButton" type="submit">Log out</button>
+                            </>
                         )}
                     </div>
                 </div>
