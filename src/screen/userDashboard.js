@@ -103,7 +103,7 @@ function UserDasboard() {
                         {loading || data.length === 0 ? (
                             <Skeleton count={1} height="107px" style={{ margin: "0 0 10px 0" }} />
                         ) : (
-                            <div className={`dashsheadings ${data.isActive === true ? "activeColorChange" : "bgColorChange"}`} key={data.userId}>
+                            <div onClick={() => navigate('/userdashboard/userdetail')} className={`dashsheadings ${data.isActive === true ? "activeColorChange" : "bgColorChange"}`} key={data.userId}>
                                 <div className="companyNameverified">
                                     <img src={activeUser?.isActive ? check : data?.data?.isActive ? check : offline} alt="Verified" />
                                     <h5 className="dashCompanyName">{data?.data?.name}</h5>
