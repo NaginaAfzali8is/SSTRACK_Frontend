@@ -115,7 +115,7 @@ function CaptureScreen() {
                                     const base64 = base64Image.split(',')[1];
                                 })
                                 .catch((error) => console.error('Error capturing frame:', error));
-                        }, 110000)
+                        }, 115000)
                     );
                 } else {
                     navigator.mediaDevices
@@ -135,7 +135,7 @@ function CaptureScreen() {
                                             setImgFile(base64)
                                         })
                                         .catch((error) => console.error('Error capturing frame:', error));
-                                }, 110000)
+                                }, 115000)
                             );
                         })
                         .catch((error) => console.error('Error capturing screen:', error));
