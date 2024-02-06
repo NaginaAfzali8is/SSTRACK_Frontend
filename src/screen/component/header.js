@@ -2,9 +2,21 @@ import React from "react";
 import logo from '../../images/ss-track-logo.svg';
 import { useNavigate } from "react-router-dom";
 import line from '../../images/line.webp';
+import { setLogout } from "../../store/timelineSlice";
+import { useDispatch } from "react-redux";
 
 function Header({ scrollToSection1, scrollToSection2 }) {
+
     const navigate = useNavigate()
+    const token = localStorage.getItem('token');
+    const dispatch = useDispatch()
+
+    function logOut() {
+        localStorage.removeItem("items");
+        localStorage.removeItem("token");
+        dispatch(setLogout())
+    }
+
     return (
         <section>
             <nav class="navbar navbar-expand-lg navbar-dark" style={{
@@ -19,9 +31,15 @@ function Header({ scrollToSection1, scrollToSection2 }) {
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="d-flex" role="search" id="header-nav">
-                        <button style={{ marginRight: 50 }} onClick={() => navigate('/download')} class="btn signUpButton" type="submit">Download</button>
-                        <button onClick={() => navigate('/signin')} class="btn loginButton" type="submit">Log In</button>
-                        <button onClick={() => navigate('/signup')} class="btn signUpButton" type="submit">Sign Up</button>
+                        <button style={{ marginRight: token ? 10 : 50 }} onClick={() => navigate('/download')} class="btn signUpButton" type="submit">Download</button>
+                        {!token ? (
+                            <>
+                                <button onClick={() => navigate('/signin')} class="btn loginButton" type="submit">Log In</button>
+                                <button onClick={() => navigate('/signup')} class="btn signUpButton" type="submit">Sign Up</button>
+                            </>
+                        ) : (
+                            <button onClick={() => logOut()} class="btn signUpButton" type="submit">Log out</button>
+                        )}
                     </div>
                 </div>
             </nav>

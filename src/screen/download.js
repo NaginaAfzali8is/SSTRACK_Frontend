@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DownloadProduct from '../images/banner.png';
 import { BsWindows } from 'react-icons/bs'
 import axios from 'axios'
@@ -35,6 +35,13 @@ const Download = () => {
             console.log("download link error 2 =====>", error);
         }
     }
+
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }, [])
 
     return (
         <>

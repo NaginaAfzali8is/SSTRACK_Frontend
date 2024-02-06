@@ -106,7 +106,7 @@ function AdminUser() {
     const userTimeline = useSelector((state) => state.userTimeline)
     const showUserTimeline = useSelector((state) => state.showTimelineData)
     const [deleteActivity, setDeleteActivity] = useState(false)
-    
+
     // var pusher = new Pusher('334425b3c859ed2f1d2b', {
     //     cluster: 'ap2'
     // });
@@ -229,12 +229,26 @@ function AdminUser() {
     };
 
     const fetchData = async () => {
-        const findTimeline = userTimeline?.find((f) => f.formattedDate === formattedDate)
-        if (findTimeline) {
-            dispatch(selectUserTimeline({ findTimeline, formattedDate }))
+        // const findTimeline = userTimeline?.find((f) => f.formattedDate === formattedDate)
+        // if (findTimeline) {
+        //     dispatch(selectUserTimeline({ findTimeline, formattedDate }))
+        // }
+        // else {
+        //     dispatch(GetTimelineUserSuperAdmin({ userId, formattedDate, headers }))
+        // }
+        try {
+            const response = await axios.get(`${apiUrl}/superAdmin/sorted-datebased/${userId}?date=${encodeURIComponent(formattedDate)}`, { headers });
+            if (response.data) {
+                setData(response.data.data);
+                setTimeBill(response.data.data.timeBill);
+                setTimeEntries(response?.data?.data?.groupedScreenshots || []);
+                setTimeTrackingId(response.data.data.TimeTrackingId)
+                setTrimActivity({ ...trimActivity, totalHours: response?.data?.data?.totalHours.daily })
+                console.log(response);
+            }
         }
-        else {
-            dispatch(GetTimelineUserSuperAdmin({ userId, formattedDate, headers }))
+        catch (error) {
+            console.log(error);
         }
     };
 
@@ -609,6 +623,12 @@ function AdminUser() {
     const offsetSign = offsetInHours >= 0 ? '+' : '-';
     const formattedOffset = `${offsetSign}${Math.abs(offsetInHours)}`;
 
+    const handleDivClick = () => {
+        setDeleteActivity(!deleteActivity);
+    };
+
+    console.log({ deleteActivity });
+
     return (
         <div>
 
@@ -665,8 +685,8 @@ function AdminUser() {
                         </div> */}
                         <textarea placeholder="Note (optional)" rows="5" ></textarea>
                         <div className="deleteActivityPart">
-                            <div style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
-                                <input id="editcheck" type="checkbox" onChange={(e) => setDeleteActivity(e.target.checked)} />
+                            <div style={{ cursor: "pointer", display: "flex", alignItems: "center" }} onClick={handleDivClick}>
+                                <input id="editcheck" type="checkbox" checked={deleteActivity} onChange={(e) => setDeleteActivity(e.target.checked)} />
                                 <p style={{ margin: "0 0 0 10px", padding: 0 }}>Delete this activity</p>
                             </div>
                             <p style={{ margin: 0, cursor: "pointer" }} onClick={() => {
@@ -765,7 +785,7 @@ function AdminUser() {
                 <div className="mainwrapper">
                     <div className="userHeader">
                         <div className="headerTop">
-                            <h5><img src={circle} alt="" /> {showUserTimeline?.name}</h5>
+                            <h5><img src={circle} alt="" /> {data?.name}</h5>
                         </div>
                         <div className="headerTop">
                             <p>All times are UTC {formattedOffset}</p>
@@ -791,19 +811,19 @@ function AdminUser() {
                                         <p className="weekDayTimer">{formattedDate == todayDate ? days[currentDay] : days[clickDay]} </p>
                                         <p className="weekDayTimer">{formattedDate && formattedDate.split('-')[2]}</p>
                                         <p className="weekDateTimer">{formattedDate == todayDate ? months[currentMonth] : months[month]}</p>
-                                        <OverlayTrigger placement="top" overlay={<Tooltip>{Math.floor(showUserTimeline?.totalactivity)} %</Tooltip>}>
+                                        <OverlayTrigger placement="top" overlay={<Tooltip>{Math.floor(data?.totalactivity)} %</Tooltip>}>
                                             <div className="circular-progress" style={{
                                                 cursor: "pointer"
                                             }}>
-                                                <CircularProgressBar activityPercentage={showUserTimeline?.totalactivity} size={30} />
+                                                <CircularProgressBar activityPercentage={data?.totalactivity} size={30} />
                                             </div>
                                         </OverlayTrigger>
-                                        <p className="timerClock">{showUserTimeline?.totalHours?.daily}</p>
+                                        <p className="timerClock">{data?.totalHours?.daily}</p>
                                         <p className="weekTimer">Week</p>
-                                        <p className="weekTimerDigit">{showUserTimeline?.totalHours?.weekly}</p>
+                                        <p className="weekTimerDigit">{data?.totalHours?.weekly}</p>
                                         <img src={circleDot} alt="CircleDot.png" />
                                         <p className="weekTimer">Month</p>
-                                        <p className="monthTimerDigit">{showUserTimeline?.totalHours?.monthly}</p>
+                                        <p className="monthTimerDigit">{data?.totalHours?.monthly}</p>
                                     </div>
                                 </div>
                                 <div className="activity-image-container">
@@ -841,17 +861,17 @@ function AdminUser() {
                                                     <div
                                                         className="needleContainerMainAlingment"
                                                         style={{
-                                                            transform: `translateY(-50%) rotate(${Math.floor(showUserTimeline?.totalactivity) <= 20 ? -75 :
-                                                                Math.floor(showUserTimeline?.totalactivity) > 20 && Math.floor(showUserTimeline?.totalactivity) <= 40 ? -38 :
-                                                                    Math.floor(showUserTimeline?.totalactivity) > 40 && Math.floor(showUserTimeline?.totalactivity) <= 60 ? 0 :
-                                                                        Math.floor(showUserTimeline?.totalactivity) > 60 && Math.floor(showUserTimeline?.totalactivity) <= 80 ? 35 :
-                                                                            Math.floor(showUserTimeline?.totalactivity) > 80 ? 75 : -108
+                                                            transform: `translateY(-50%) rotate(${Math.floor(data?.totalactivity) <= 20 ? -75 :
+                                                                Math.floor(data?.totalactivity) > 20 && Math.floor(data?.totalactivity) <= 40 ? -38 :
+                                                                    Math.floor(data?.totalactivity) > 40 && Math.floor(data?.totalactivity) <= 60 ? 0 :
+                                                                        Math.floor(data?.totalactivity) > 60 && Math.floor(data?.totalactivity) <= 80 ? 35 :
+                                                                            Math.floor(data?.totalactivity) > 80 ? 75 : -108
                                                                 }deg)`
                                                         }}>
                                                         <div className="needleContainerAlingment">
                                                             <div className="diamond"></div>
                                                             <div className="needlePointerMain"></div>
-                                                            <OverlayTrigger placement="bottom" overlay={<Tooltip>{Math.floor(showUserTimeline?.totalactivity)} %</Tooltip>}>
+                                                            <OverlayTrigger placement="bottom" overlay={<Tooltip>{Math.floor(data?.totalactivity)} %</Tooltip>}>
                                                                 <div className="needleScrewMain"></div>
                                                             </OverlayTrigger>
                                                         </div>
@@ -866,7 +886,7 @@ function AdminUser() {
                                 {renderTimeIntervals()}
                             </div>
                             <div>
-                                {showUserTimeline && (showUserTimeline?.groupedScreenshots?.map((element) => {
+                                {data && (data?.groupedScreenshots?.map((element) => {
                                     return (
                                         <div>
                                             {loading ? <Skeleton count={1} width="300px" height="34.5px" style={{ margin: "40px 0 0 0" }} /> : <div className="timeZone" onMouseOver={() => setShowEditButton(true)} onMouseOut={() => setShowEditButton(false)}>
@@ -923,7 +943,7 @@ function AdminUser() {
                                                                     {elements?.visitedUrls?.length === 0 ?
                                                                         <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
                                                                             <div className="circular-progress">
-                                                                                <CircularProgressBar activityPercentage={100} emptyUrl={0} />
+                                                                                <CircularProgressBar activityPercentage={0} emptyUrl={0} />
                                                                             </div>
                                                                         </OverlayTrigger>
                                                                         :
@@ -931,7 +951,7 @@ function AdminUser() {
                                                                             return e?.activityPercentage === 0 ? (
                                                                                 <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
                                                                                     <div className="circular-progress">
-                                                                                        <CircularProgressBar activityPercentage={100} emptyUrl={0} />
+                                                                                        <CircularProgressBar activityPercentage={0} emptyUrl={0} />
                                                                                     </div>
                                                                                 </OverlayTrigger>
                                                                             ) : (

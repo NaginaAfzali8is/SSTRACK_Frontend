@@ -859,7 +859,7 @@ function UserDetails() {
                                                                     {elements?.visitedUrls?.length === 0 ?
                                                                         <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
                                                                             <div className="circular-progress">
-                                                                                <CircularProgressBar activityPercentage={100} size={30} emptyUrl={0} />
+                                                                                <CircularProgressBar activityPercentage={0} size={30} emptyUrl={0} />
                                                                             </div>
                                                                         </OverlayTrigger>
                                                                         :
@@ -867,7 +867,7 @@ function UserDetails() {
                                                                             return e?.activityPercentage === 0 ? (
                                                                                 <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
                                                                                     <div className="circular-progress">
-                                                                                        <CircularProgressBar activityPercentage={100} size={30} emptyUrl={0} />
+                                                                                        <CircularProgressBar activityPercentage={0} size={30} emptyUrl={0} />
                                                                                     </div>
                                                                                 </OverlayTrigger>
                                                                             ) : (

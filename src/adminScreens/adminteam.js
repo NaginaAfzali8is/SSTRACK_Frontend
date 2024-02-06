@@ -242,19 +242,15 @@ function AdminTeam() {
             const json = await response.json();
             setUsers(() => {
                 const filterCompanies = json?.convertedEmployees?.filter((employess, index) => {
-                    return user.company === employess.company && employess.userType !== "owner"
+                    return user.company === employess.company && user.email !== employess.email && employess.userType !== "owner"
                 })
                 return filterCompanies
             })
             setLoading(false)
-            setTimeout(() => {
-                setLoading2(false)
-            }, 1000);
+            setLoading2(false)
         } catch (err) {
             setLoading(false)
-            setTimeout(() => {
-                setLoading2(false)
-            }, 1000);
+            setLoading2(false)
             console.log(err);
         }
     }
@@ -489,14 +485,15 @@ function AdminTeam() {
                 <div className="mainwrapper">
                     <div className="ownerTeamContainer">
                         <div className="d-flex gap-3">
-                            <div style={{ width: "500px" }}>
+                            <div style={{ width: "400px" }}>
 
                                 <div style={{
                                     marginTop: "20px",
                                     display: "flex",
+                                    justifyContent:"space-between"
                                 }}>
-                                    <button style={{ width: "150px", margin: "0 10px 0 0" }} className="addUserButton" onClick={() => navigate('/admindashboard/admin-user-signup')}>CREATE</button>
-                                    <button className="addUserButton" onClick={() => setShow3(true)}>CREATE VIA LINK</button>
+                                    <button style={{ width: "100%", margin: "0 10px 0 0" }} className="addUserButton" onClick={() => navigate('/admindashboard/admin-user-signup')}>CREATE</button>
+                                    <button style={{ width: "100%"}} className="addUserButton" onClick={() => setShow3(true)}>CREATE VIA LINK</button>
                                 </div>
 
                                 {/* <div className="searchDiv">
@@ -542,8 +539,8 @@ function AdminTeam() {
                                         backgroundColor: "#28659C",
                                         color: "white",
                                         fontSize: "600",
-                                        width: "40px",
-                                        height: "40px",
+                                        width: "30px",
+                                        height: "30px",
                                         borderRadius: "100%",
                                         display: "flex",
                                         justifyContent: "center",
@@ -557,10 +554,8 @@ function AdminTeam() {
                                     overflowY: searchUsers?.filter((d, i) => d.isArchived === false && d.inviteStatus === false).length >= 5 && "scroll",
                                     marginTop: 20
                                 }}>
-                                    {loading ? <Skeleton count={1} height="40vh" style={{ margin: "10px 0 0 0" }} /> : users && searchUsers?.filter((d, i) => d.isArchived === false && d.inviteStatus === false)?.map((e, i) => {
-                                        return loading2 ? (
-                                            <Skeleton count={1} height="56px" style={{ margin: "10px 0 0 0" }} />
-                                        ) : (
+                                    {users && searchUsers?.filter((d, i) => d.isArchived === false && d.inviteStatus === false)?.map((e, i) => {
+                                        return (
                                             <div className={`adminTeamEmployess ${activeId === e._id ? "activeEmploy" : ""} align-items-center gap-1`} onClick={() => {
                                                 setMainId(e._id)
                                                 setActiveId(e._id)
@@ -595,8 +590,8 @@ function AdminTeam() {
                                         backgroundColor: "#727272",
                                         color: "white",
                                         fontSize: "600",
-                                        width: "40px",
-                                        height: "40px",
+                                        width: "30px",
+                                        height: "30px",
                                         borderRadius: "100%",
                                         display: "flex",
                                         justifyContent: "center",
@@ -610,10 +605,8 @@ function AdminTeam() {
                                     overflowY: searchUsers?.filter((d, i) => d.isArchived === true && d.inviteStatus === false).length >= 5 && "scroll",
                                     marginTop: 20
                                 }}>
-                                    {loading ? <Skeleton count={1} height="20vh" style={{ margin: "10px 0 0 0" }} /> : users && searchUsers?.filter((d, i) => d.isArchived === true && d.inviteStatus === false)?.map((e, i) => {
-                                        return loading2 ? (
-                                            <Skeleton count={1} height="56px" style={{ margin: "10px 0 0 0" }} />
-                                        ) : (
+                                    {users && searchUsers?.filter((d, i) => d.isArchived === true && d.inviteStatus === false)?.map((e, i) => {
+                                        return (
                                             <div className={`adminTeamEmployess ${activeId === e._id ? "activeEmploy" : ""} align-items-center gap-1`} onClick={() => {
                                                 setMainId(e._id)
                                                 setActiveId(e._id)
@@ -634,20 +627,20 @@ function AdminTeam() {
                                     })}
                                 </div>
 
-                                <div className="companyFont">
+                                <div className="archiveFont">
                                     <p style={{
                                         margin: 0,
                                         padding: 0,
                                         fontSize: "20px",
-                                        color: "#0E4772",
+                                        color: "#727272",
                                         fontWeight: "600",
                                     }}>Pending invite</p>
                                     <div style={{
-                                        backgroundColor: "#28659C",
+                                        backgroundColor: "#727272",
                                         color: "white",
                                         fontSize: "600",
-                                        width: "40px",
-                                        height: "40px",
+                                        width: "30px",
+                                        height: "30px",
                                         borderRadius: "100%",
                                         display: "flex",
                                         justifyContent: "center",
@@ -657,27 +650,24 @@ function AdminTeam() {
                                     </div>
                                 </div>
                                 <div style={{
-                                     height: searchUsers?.filter((d, i) => d.inviteStatus === true).length >= 5 && 300,
-                                     overflowY: searchUsers?.filter((d, i) => d.inviteStatus === true).length >= 5 && "scroll",
-                                     marginTop: 20
+                                    height: searchUsers?.filter((d, i) => d.inviteStatus === true).length >= 5 && 300,
+                                    overflowY: searchUsers?.filter((d, i) => d.inviteStatus === true).length >= 5 && "scroll",
+                                    marginTop: 20
                                 }}>
-                                    {loading ? <Skeleton count={1} height="40vh" style={{ margin: "10px 0 0 0" }} /> : users && searchUsers?.filter((d, i) => d.inviteStatus === true)?.map((e, i) => {
-                                        return loading2 ? (
-                                            <Skeleton count={1} height="56px" style={{ margin: "10px 0 0 0" }} />
-                                        ) : (
+                                    {users && searchUsers?.filter((d, i) => d.inviteStatus === true)?.map((e, i) => {
+                                        return (
                                             <div className={`adminTeamEmployess ${activeId === e._id ? "activeEmploy" : ""} align-items-center gap-1`} onClick={() => {
                                                 setMainId(e._id)
                                                 setActiveId(e._id)
-                                                setIsUserArchive(false)
-                                                setInviteStatus(false)
-                                                setPayrate(e)
-                                                setSelectedUser(e)
+                                                setIsUserArchive(true)
+                                                setInviteStatus(true)
+                                                setResendEmail(e.email)
                                             }}>
                                                 <div style={{ display: "flex", alignItems: "center" }}>
                                                     <div className="groupContentMainImg">
                                                         <p>{i + 1}</p>
                                                     </div>
-                                                    <p className="groupContent">{e?.email}</p>
+                                                    <p className="groupContent archive-user">{e?.email}</p>
                                                 </div>
                                                 {e?.userType === "owner" ? <div>
                                                     <AiFillStar color="#e7c741" size={20} />

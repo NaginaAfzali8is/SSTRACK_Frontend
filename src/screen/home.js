@@ -368,7 +368,7 @@ function Home() {
         <div>
           <p className="employetime">Managers view it on the web</p>
           <p className="managerFont">Within their ss.track dashboards, both the employee and manager have access to insights on the employee's working periods, task duration, screen captures taken at random moments, activity metrics, applications operated, along with the websites visited and their respective browsing times.</p>
-          <button className="startedButton">Explore</button>
+          {/* <button className="startedButton">Explore</button> */}
         </div>
         <div>
           <img className="deanBanner" src={dean} />
@@ -579,7 +579,7 @@ function Home() {
       <section className="eightSection">
         <div className="container">
           <p className="employeeTracking">Start employee time tracking!</p>
-          <button className="startnowButton">Start Now</button>
+          <button className="startnowButton" onClick={() => navigate("/download")}>Start Now</button>
           <p className="creditCancel">No credit card required. Cancel anytime.</p>
         </div>
         <div>
