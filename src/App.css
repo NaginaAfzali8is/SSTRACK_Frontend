@@ -52,8 +52,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.cdnfonts.com/css/euclid-circular-a');
 
+@font-face {
+  font-family: "Euclid-light";
+  src: url(./font/Euclid/Euclid\ Circular\ B\ Light.ttf);
+}
+
+@font-face {
+  font-family: "Euclid-medium";
+  src: url(./font/Euclid/Euclid\ Circular\ B\ Medium.ttf);
+}
+
+@font-face {
+  font-family: "Euclid-regular";
+  src: url(./font/Euclid/Euclid\ Circular\ B\ Regular.ttf);
+}
+
+@font-face {
+  font-family: "Euclid-bold";
+  src: url(./font/Euclid/Euclid\ Circular\ B\ Bold.ttf);
+}
+
+@font-face {
+  font-family: "Euclid-semibold";
+  src: url(./font/Euclid/Euclid\ Circular\ B\ SemiBold.ttf);
+}
+
 * {
-  font-family: 'Poppins', sans-serif !important;
+  font-family: "Euclid-medium";
 }
 
 .App {
@@ -807,7 +832,7 @@ nav li a {
 
 .dashCompanyName {
   margin: 0;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: 500;
   margin-left: 10px;
   color: #0E4772;

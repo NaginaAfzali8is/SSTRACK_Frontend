@@ -255,7 +255,7 @@ function OwnerTeam() {
                 <div className="mainwrapper">
                     <div className="ownerTeamContainer">
                         <div className="d-flex gap-3">
-                            <div style={{ width: "400px" }}>
+                            <div style={{ width: "500px" }}>
                                 <p className="addUserButton" onClick={() => navigate('/admindashboard/admin-user-signup')}>+ Create user</p>
                                 <div style={{
                                     marginTop: "20px",
