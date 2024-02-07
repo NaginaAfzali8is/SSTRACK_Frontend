@@ -71,13 +71,13 @@ function Home() {
         {
           username: "Olivia Rhye",
           designation: "Expect Best",
-          feedback: "“ss.track allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          feedback: "“sstrack.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
           img: olivia,
         },
         {
           username: "Phoenix Baker",
           designation: "Engineering Manager",
-          feedback: "“ss.track makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you ss.track!”",
+          feedback: "“sstrack.io makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you sstrack.io!”",
           img: pheonix,
         },
         {
@@ -89,13 +89,13 @@ function Home() {
         {
           username: "Candice Wu",
           designation: "Backend Developer",
-          feedback: "“ss.track allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          feedback: "“sstrack.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
           img: candice,
         },
         {
           username: "Phoenix Baker",
           designation: "Product Designer",
-          feedback: "“ss.track makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you ss.track!”",
+          feedback: "“sstrack.io makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you sstrack.io!”",
           img: pheonix,
         },
         {
@@ -118,19 +118,19 @@ function Home() {
         {
           username: "Phoenix Baker",
           designation: "Engineering Manager",
-          feedback: "“ss.track makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you ss.track!”",
+          feedback: "“sstrack.io makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you sstrack.io!”",
           img: pheonix,
         },
         {
           username: "Olivia Rhye",
           designation: "Expect Best",
-          feedback: "“ss.track allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          feedback: "“sstrack.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
           img: olivia,
         },
         {
           username: "Phoenix Baker",
           designation: "Product Designer",
-          feedback: "“ss.track makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you ss.track!”",
+          feedback: "“sstrack.io makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you sstrack.io!”",
           img: pheonix,
         },
         {
@@ -142,7 +142,7 @@ function Home() {
         {
           username: "Candice Wu",
           designation: "Backend Developer",
-          feedback: "“ss.track allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          feedback: "“sstrack.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
           img: candice,
         },
       ]
@@ -277,7 +277,7 @@ function Home() {
               <div className="oliviaDiv">
                 <p className="oliviafont">Phoenix Baker</p>
                 <p className="oliviaGreen">Engineering Manager</p>
-                <p className="oliviaPera">“ss.track makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you ss.track!”</p>
+                <p className="oliviaPera">“sstrack.io makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you sstrack.io!”</p>
               </div>
             </div>
 
@@ -299,7 +299,7 @@ function Home() {
               <div className="oliviaDiv">
                 <p className="oliviafont">Candice Wu</p>
                 <p className="oliviaGreen">Backend Developer</p>
-                <p className="oliviaPera">“ss.track is the most efficient way to track hours, manage projects, and most importantly your people! With one scroll through the home page, you'll know what everyone is working on.”</p>
+                <p className="oliviaPera">“sstrack.io is the most efficient way to track hours, manage projects, and most importantly your people! With one scroll through the home page, you'll know what everyone is working on.”</p>
               </div>
             </div>
 
@@ -310,7 +310,7 @@ function Home() {
               <div className="oliviaDiv">
                 <p className="oliviafont">Natali Craig</p>
                 <p className="oliviaGreen">Product Designer</p>
-                <p className="oliviaPera">“I've been using ss.track for several years and it has been a great tool. As my company grows, it’s easy to add people and get reports sent to me every week.”</p>
+                <p className="oliviaPera">“I've been using sstrack.io for several years and it has been a great tool. As my company grows, it’s easy to add people and get reports sent to me every week.”</p>
               </div>
             </div>
 
@@ -321,7 +321,7 @@ function Home() {
               <div className="oliviaDiv">
                 <p className="oliviafont">Drew Cano</p>
                 <p className="oliviaGreen">UX Researcher</p>
-                <p className="oliviaPera">“ss.track is price competitive and the most reliable tool on the market. It tracks screens, prevents cheating, and doesn’t provide unnecessary features.”</p>
+                <p className="oliviaPera">“sstrack.io is price competitive and the most reliable tool on the market. It tracks screens, prevents cheating, and doesn’t provide unnecessary features.”</p>
               </div>
             </div> */}
 
@@ -337,19 +337,14 @@ function Home() {
             </div>
           </div>
 
-          <div className="trialDiv">
+          {/* <div className="trialDiv">
             <div className="freeTrialDiv">
               <div>
                 <p className="startedFont">Start your 30-day free trial</p>
                 <p className="unitedFont">Become part of the 4,000+ startups thriving with Untitled.</p>
               </div>
-              {/* <div className="startedButtonDiv">
-                <button className="learnMoreButton">Learn More</button>
-                <button className="startedButton">Get Started</button>
-              </div> */}
-
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
 
@@ -360,14 +355,14 @@ function Home() {
         <div>
           <p className="employetime">Employees track time</p>
           <p className="managerFont">
-            A manager invites employees to ss.track, where they download a streamlined desktop application, choose a project to work on, and hit the Start button. This initiates tracking, sending data to the web instantly until they press the Stop button.
+            A manager invites employees to sstrack.io, where they download a streamlined desktop application, choose a project to work on, and hit the Start button. This initiates tracking, sending data to the web instantly until they press the Stop button.
           </p>
         </div>
       </section>
       <section className="deanDiv container">
         <div>
           <p className="employetime">Managers view it on the web</p>
-          <p className="managerFont">Within their ss.track dashboards, both the employee and manager have access to insights on the employee's working periods, task duration, screen captures taken at random moments, activity metrics, applications operated, along with the websites visited and their respective browsing times.</p>
+          <p className="managerFont">Within their sstrack.io dashboards, both the employee and manager have access to insights on the employee's working periods, task duration, screen captures taken at random moments, activity metrics, applications operated, along with the websites visited and their respective browsing times.</p>
           {/* <button className="startedButton">Explore</button> */}
         </div>
         <div>
@@ -410,7 +405,7 @@ function Home() {
         <div>
           <img className="wifi" src={innerSetting} />
           <p className="internetFont">Integrate using Web API</p>
-          <p className="internetPera">Connect your existing software to ss.track via API to retrieve tracked time and notes.</p>
+          <p className="internetPera">Connect your existing software to sstrack.io via API to retrieve tracked time and notes.</p>
         </div>
       </section>
 

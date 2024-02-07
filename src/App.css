@@ -831,7 +831,7 @@ nav li a {
 }
 
 .dashCompanyName {
-  margin: 0;
+  /* margin: 0; */
   font-size: 25px;
   font-weight: 500;
   margin-left: 10px;
