@@ -104,14 +104,14 @@ input:checked+.slider:before {
 }
 
 .addUserButton {
-  background-color: #50AA00;
-  border: 1px solid #50AA00;
-  padding: 8px 12px;
-  font-size: 14px;
+  cursor: pointer;
+  color: #4172ac;
+  font-size: 16px;
   font-weight: 600;
-  color: white;
-  transition: 0.5s;
-  border-radius: 5px;
+}
+
+.addUserButton:hover {
+  text-decoration: underline;
 }
 
 .teamActionButtonDisabled {

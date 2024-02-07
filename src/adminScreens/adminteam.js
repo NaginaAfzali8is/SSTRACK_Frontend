@@ -188,7 +188,8 @@ import React, { useEffect, useState } from "react";
 import UserHeader from "../screen/component/userHeader";
 import OwnerSection from "../companyOwner/ownerComponent/ownerSection";
 import groupCompany from "../images/Group.webp";
-import search from "../images/searchIcon.webp";
+import archiveIcon from "../images/archive.svg";
+import inviteIcon from "../images/invitation.svg";
 import line from "../images/Line 3.webp";
 import OwnerTeamComponent from "../companyOwner/ownerTeamComponent";
 import AdminHead from "../screen/component/adminHeadSection";
@@ -217,14 +218,12 @@ function AdminTeam() {
     const [payrate, setPayrate] = useState(null)
     const [inviteStatus, setInviteStatus] = useState("")
     const [isUserArchive, setIsUserArchive] = useState(false)
-    const [isArchived, setIsArchived] = useState(false)
     const [activeId, setActiveId] = useState(null)
     const [mainId, setMainId] = useState(null)
     const [email, setEmail] = useState("")
     const [resendEmail, setResendEmail] = useState("")
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
-    const [searchUsers, setSearchUsers] = useState(null);
     const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
     const token = localStorage.getItem('token');
     const headers = {
@@ -260,9 +259,10 @@ function AdminTeam() {
     }, [])
 
     async function archived_unarchived_users() {
+        setShow2(false)
         try {
             const res = await axios.patch(`${apiUrl}/superAdmin/archived/${mainId}`, {
-                isArchived: isUserArchive ? false : true
+                isArchived: isUserArchive
             }, {
                 headers: headers
             })
@@ -395,14 +395,6 @@ function AdminTeam() {
         }
     }
 
-    useEffect(() => {
-        if (users !== null) {
-            setSearchUsers(users)
-        }
-    }, [users])
-
-    console.log(searchUsers);
-
     return (
         <div>
             {show ? <Modal show={show} onHide={() => setShow(false)} animation={false} centered>
@@ -427,9 +419,9 @@ function AdminTeam() {
             </Modal> : null}
             {show2 ? <Modal show={show2} onHide={() => setShow2(false)} animation={false} centered>
                 <Modal.Body>
-                    <p style={{ marginBottom: "20px", fontWeight: "600", fontSize: "20px" }}>Archive {selectedUser?.name} ?</p>
+                    <p style={{ marginBottom: "20px", fontWeight: "600", fontSize: "20px" }}>{!isUserArchive ? "Unarchive" : "Archive"} {selectedUser?.name} ?</p>
                     <p>The user:</p>
-                    {isArchived ? (
+                    {!isUserArchive ? (
                         <ul>
                             <li>Will be able to track time for your company</li>
                             <li>Will appear in the list of users on your home or timeline</li>
@@ -444,11 +436,11 @@ function AdminTeam() {
                             <li>You will not be charged for this user</li>
                         </ul>
                     )}
-                    {!isArchived && <p>You can restore this user any time</p>}
+                    {!isUserArchive && <p>You can restore this user any time</p>}
                 </Modal.Body>
                 <Modal.Footer>
                     <button className="teamActionButton" onClick={archived_unarchived_users}>
-                        {isArchived ? "UN-ARCHIVE" : "ARCHIVE"}
+                        {!isUserArchive ? "UN-ARCHIVE" : "ARCHIVE"}
                     </button>
                     <button className="teamActionButton" onClick={() => setShow2(false)}>
                         CANCEL
@@ -485,47 +477,33 @@ function AdminTeam() {
                 <div className="mainwrapper">
                     <div className="ownerTeamContainer">
                         <div className="d-flex gap-3">
-                            <div style={{ width: "400px" }}>
-
+                            <div style={{ width: "500px" }}>
+                                <p className="addUserButton" onClick={() => navigate('/admindashboard/admin-user-signup')}>+ Create user</p>
                                 <div style={{
                                     marginTop: "20px",
                                     display: "flex",
-                                    justifyContent:"space-between"
+                                    justifyContent: "space-between"
                                 }}>
-                                    <button style={{ width: "100%", margin: "0 10px 0 0" }} className="addUserButton" onClick={() => navigate('/admindashboard/admin-user-signup')}>CREATE</button>
-                                    <button style={{ width: "100%"}} className="addUserButton" onClick={() => setShow3(true)}>CREATE VIA LINK</button>
+                                    <input value={email} onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Add employee by email" style={{
+                                        fontSize: "18px",
+                                        padding: "6px 10px",
+                                        width: "100%",
+                                        border: "1px solid #cacaca",
+                                        outline: "none",
+                                        borderTopLeftRadius: '5px',
+                                        borderBottomLeftRadius: '5px',
+                                    }} />
+                                    <button style={{
+                                        backgroundColor: "#7acb59",
+                                        borderTopRightRadius: "4px",
+                                        borderBottomRightRadius: "4px",
+                                        padding: "10px 25px",
+                                        color: "white",
+                                        border: "none"
+                                    }} onClick={handleSendInvitation}>
+                                        INVITE
+                                    </button>
                                 </div>
-
-                                {/* <div className="searchDiv">
-                                <input
-                                    placeholder="Enter user email"
-                                    value={invitationEmail}
-                                    onChange={(e) => {
-                                        setInvitationEmail(e.target.value)
-                                    }}
-                                />
-                                <button className="send-invite-btn" onClick={() => {
-                                    handleSendInvitation()
-                                }}>Send invite</button>
-                            </div> */}
-
-                                {/* <div className="add-user-div">
-                                <div><img className="searchLogo" src={search} /></div>
-                                <input
-                                    placeholder="Search"
-                                    onChange={(e) => {
-                                        const { value } = e.target;
-                                        setLoading2(true)
-                                        const filterUsers = users.filter((user) => {
-                                            return user?.name?.toLowerCase().includes(value.toLowerCase())
-                                        });
-                                        setSearchUsers(filterUsers)
-                                        setTimeout(() => {
-                                            setLoading2(false)
-                                        }, 1000);
-                                    }}
-                                />
-                            </div> */}
 
                                 <div className="companyFont">
                                     <p style={{
@@ -546,29 +524,56 @@ function AdminTeam() {
                                         justifyContent: "center",
                                         alignItems: "center"
                                     }}>
-                                        {searchUsers?.filter((d, i) => d.isArchived === false && d.inviteStatus === false)?.length}
+                                        {users?.length}
                                     </div>
                                 </div>
                                 <div style={{
-                                    height: searchUsers?.filter((d, i) => d.isArchived === false && d.inviteStatus === false).length >= 5 && 300,
-                                    overflowY: searchUsers?.filter((d, i) => d.isArchived === false && d.inviteStatus === false).length >= 5 && "scroll",
+                                    height: users?.length >= 5 && 300,
+                                    overflowY: users?.length >= 5 && "scroll",
                                     marginTop: 20
                                 }}>
-                                    {users && searchUsers?.filter((d, i) => d.isArchived === false && d.inviteStatus === false)?.map((e, i) => {
+                                    {users?.map((e, i) => {
                                         return (
                                             <div className={`adminTeamEmployess ${activeId === e._id ? "activeEmploy" : ""} align-items-center gap-1`} onClick={() => {
                                                 setMainId(e._id)
                                                 setActiveId(e._id)
-                                                setIsUserArchive(false)
+                                                setIsUserArchive(e?.isArchived ? false : true)
                                                 setInviteStatus(false)
                                                 setPayrate(e)
                                                 setSelectedUser(e)
                                             }}>
-                                                <div style={{ display: "flex", alignItems: "center" }}>
-                                                    <div className="groupContentMainImg">
-                                                        <p>{i + 1}</p>
+                                                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: '100%' }}>
+                                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                                        <div className="groupContentMainImg">
+                                                            <p>{i + 1}</p>
+                                                        </div>
+                                                        <p className="groupContent">{e?.inviteStatus === true ? e?.email : e?.name}</p>
                                                     </div>
-                                                    <p className="groupContent">{e?.name}</p>
+                                                    {e?.inviteStatus === true ? (
+                                                        <div style={{
+                                                            marginRight: "3px",
+                                                            padding: "3px 10px",
+
+                                                            borderRadius: "3px",
+                                                            color: "#fff",
+                                                            fontSize: "12px",
+                                                            lineHeight: 1.4,
+                                                        }}>
+                                                            <img width={30} src={inviteIcon} />
+                                                        </div>
+                                                    ) : e?.isArchived === true ? (
+                                                        <div style={{
+                                                            marginRight: "3px",
+                                                            padding: "3px 10px",
+
+                                                            borderRadius: "3px",
+                                                            color: "#fff",
+                                                            fontSize: "12px",
+                                                            lineHeight: 1.4,
+                                                        }}>
+                                                            <img width={30} src={archiveIcon} />
+                                                        </div>
+                                                    ) : null}
                                                 </div>
                                                 {e?.userType === "owner" ? <div>
                                                     <AiFillStar color="#e7c741" size={20} />
@@ -578,7 +583,7 @@ function AdminTeam() {
                                     })}
                                 </div>
 
-                                <div className="archiveFont">
+                                {/* <div className="archiveFont">
                                     <p style={{
                                         margin: 0,
                                         padding: 0,
@@ -625,9 +630,9 @@ function AdminTeam() {
                                             </div>
                                         )
                                     })}
-                                </div>
+                                </div> */}
 
-                                <div className="archiveFont">
+                                {/* <div className="archiveFont">
                                     <p style={{
                                         margin: 0,
                                         padding: 0,
@@ -675,7 +680,7 @@ function AdminTeam() {
                                             </div>
                                         )
                                     })}
-                                </div>
+                                </div> */}
 
                             </div>
 
@@ -687,8 +692,6 @@ function AdminTeam() {
                                     fixId={mainId}
                                     archived_unarchived_users={() => setShow2(true)}
                                     deleteUser={() => setShow(true)}
-                                    isArchived={isArchived}
-                                    setIsArchived={setIsArchived}
                                     isUserArchive={isUserArchive}
                                     inviteStatus={inviteStatus}
                                     handleSendInvitation={handleSendInvitation}

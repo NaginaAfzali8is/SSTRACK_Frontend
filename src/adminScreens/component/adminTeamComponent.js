@@ -338,7 +338,7 @@ function AdminTeamComponent(props) {
                                         <p><img className="paueIcon" src={pause} alt="pauseIcon.png" />Pause</p>
                                     </div>
                                     <div className="archiveMain" onClick={archived_unarchived_users}>
-                                        <p><img className="paueIcon" src={archive} alt="Archive.png" />{isUserArchive ? "UnArchive" : "Archive"}</p>
+                                        <p><img className="paueIcon" src={archive} alt="Archive.png" />{isUserArchive === false ? "Unarchive" : "Archive"}</p>
                                     </div>
                                 </>
                             )}
