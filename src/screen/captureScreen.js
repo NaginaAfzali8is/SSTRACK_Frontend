@@ -37,68 +37,68 @@ function CaptureScreen() {
         return () => clearInterval(intervalId);
     }, [type]);
 
-    const [percentage, setPercentage] = useState(localStorage.getItem('percentage') || '');
+    // const [percentage, setPercentage] = useState(localStorage.getItem('percentage') || '');
 
-    const updatePercentage = (newPercentage) => {
-        setPercentage(newPercentage);
-        localStorage.setItem('percentage', newPercentage);
-    };
+    // const updatePercentage = (newPercentage) => {
+    //     setPercentage(newPercentage);
+    //     localStorage.setItem('percentage', newPercentage);
+    // };
 
-    const sendScreenshot = useCallback(async () => {
-        console.log({
-            activityPercentage: percentage,
-            description: localStorage.getItem('activeTab'),
-            description2: "Google chrome",
-            startTime: new Date(),
-            createdAt: new Date(),
-            file: imgFile
-        });
-        try {
-            const model = {
-                activityPercentage: percentage,
-                description: localStorage.getItem('activeTab'),
-                description2: "Google chrome",
-                startTime: new Date(),
-                createdAt: new Date(),
-                file: imgFile
-            };
-            const response = await fetch(`${API_URL}/timetrack/capture-screenshot/${screenshotCapture?.timeEntryId}/screenshots`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    ...headers
-                },
-                method: "PATCH",
-                mode: 'cors',
-                body: JSON.stringify(model)
-            });
-            console.log("capture ss response", response);
-        } catch (error) {
-            console.error("Error in captureScreenshot:", error);
-        }
-    }, [percentage, screenshotCapture?.timeEntryId, headers]);
+    // const sendScreenshot = useCallback(async () => {
+    //     console.log({
+    //         activityPercentage: percentage,
+    //         description: localStorage.getItem('activeTab'),
+    //         description2: "Google chrome",
+    //         startTime: new Date(),
+    //         createdAt: new Date(),
+    //         file: imgFile
+    //     });
+    //     try {
+    //         const model = {
+    //             activityPercentage: percentage,
+    //             description: localStorage.getItem('activeTab'),
+    //             description2: "Google chrome",
+    //             startTime: new Date(),
+    //             createdAt: new Date(),
+    //             file: imgFile
+    //         };
+    //         const response = await fetch(`${API_URL}/timetrack/capture-screenshot/${screenshotCapture?.timeEntryId}/screenshots`, {
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 ...headers
+    //             },
+    //             method: "PATCH",
+    //             mode: 'cors',
+    //             body: JSON.stringify(model)
+    //         });
+    //         console.log("capture ss response", response);
+    //     } catch (error) {
+    //         console.error("Error in captureScreenshot:", error);
+    //     }
+    // }, [percentage, screenshotCapture?.timeEntryId, headers]);
 
-    const [lastScreenshotTime, setLastScreenshotTime] = useState(new Date());
+    // const [lastScreenshotTime, setLastScreenshotTime] = useState(new Date());
 
-    useEffect(() => {
-        let intervalId;
-        console.log("Effect triggered. Type:", type);
-        if (type === "startTimer") {
-            intervalId = setInterval(() => {
-                updatePercentage(localStorage.getItem('percentage'));
-                // Check if 1 minute has passed and call sendScreenshot
-                if (new Date() - lastScreenshotTime >= 120000) {
-                    console.log("Sending screenshot...");
-                    sendScreenshot();
-                    setLastScreenshotTime(new Date()); // Update lastScreenshotTime
-                }
-            }, 5000);
-        }
-        // Cleanup function that runs when the component unmounts or when `type` changes
-        return () => {
-            console.log("Clearing interval...");
-            clearInterval(intervalId);
-        };
-    }, [sendScreenshot, type, lastScreenshotTime]);
+    // useEffect(() => {
+    //     let intervalId;
+    //     console.log("Effect triggered. Type:", type);
+    //     if (type === "startTimer") {
+    //         intervalId = setInterval(() => {
+    //             updatePercentage(localStorage.getItem('percentage'));
+    //             // Check if 1 minute has passed and call sendScreenshot
+    //             if (new Date() - lastScreenshotTime >= 120000) {
+    //                 console.log("Sending screenshot...");
+    //                 sendScreenshot();
+    //                 setLastScreenshotTime(new Date()); // Update lastScreenshotTime
+    //             }
+    //         }, 5000);
+    //     }
+    //     // Cleanup function that runs when the component unmounts or when `type` changes
+    //     return () => {
+    //         console.log("Clearing interval...");
+    //         clearInterval(intervalId);
+    //     };
+    // }, [sendScreenshot, type, lastScreenshotTime]);
         
     useEffect(() => {
         const token = screenshotCapture?.token;
@@ -115,7 +115,7 @@ function CaptureScreen() {
                                     const base64 = base64Image.split(',')[1];
                                 })
                                 .catch((error) => console.error('Error capturing frame:', error));
-                        }, 110000)
+                        }, 53000)
                     );
                 } else {
                     navigator.mediaDevices
@@ -132,10 +132,10 @@ function CaptureScreen() {
                                     captureFrame(stream)
                                         .then((base64Image) => {
                                             const base64 = base64Image.split(',')[1];
-                                            setImgFile(base64)
+                                            localStorage.setItem("imgFile", base64)
                                         })
                                         .catch((error) => console.error('Error capturing frame:', error));
-                                }, 110000)
+                                }, 53000)
                             );
                         })
                         .catch((error) => console.error('Error capturing screen:', error));
