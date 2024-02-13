@@ -2118,12 +2118,12 @@ nav li a {
 }
 
 .crossButtonDiv {
-  display: flex;
-  justify-content: space-between;
-  background-color: #E6F1F9;
-  padding: 10px;
-  border-radius: 5px;
-  margin-top: 20px;
+  /* display: flex; */
+  /* justify-content: space-between; */
+  /* background-color: #E6F1F9; */
+  /* padding: 10px; */
+  /* border-radius: 5px; */
+  margin: 20px 0;
 }
 
 .downArrowDiv {
@@ -2148,9 +2148,7 @@ nav li a {
 }
 
 .summaryButton {
-  display: flex;
-  align-items: center;
-  gap: 25px;
+  text-align: end;
   margin-top: 50px;
   font-size: 18px;
   font-weight: 400;
@@ -2158,13 +2156,12 @@ nav li a {
 }
 
 .summaryButton button {
-
   background: #E6F1F9;
   border-radius: 5.22222px;
   border: none;
   color: #0E4772;
-  padding: 10px 20px;
-  width: 200px;
+  padding: 10px;
+  width: 180px;
 }
 
 .summaryButton button.activeButton {
@@ -2199,6 +2196,15 @@ nav li a {
   font-size: 62px;
   font-weight: 500;
   color: #7ACB59;
+  margin: 0;
+  text-align: center;
+}
+
+.report-percentage {
+  font-size: 21px;
+  font-weight: 500;
+  color: #0E4772;
+  margin: -20px 0 0 0;
   text-align: center;
 }
 
@@ -4894,12 +4900,16 @@ input.checkboxes:checked {
 
 }
 
-.summaryDiv {
+/* .summaryDiv {
   background-color: #8BAFC0;
   height: 300px;
   width: 700px;
   opacity: 0.5;
+} */
 
+.summaryDiv canvas {
+  width: 300px;
+  height: 300px;
 }
 
 .summaryDiv p {
@@ -4909,7 +4919,11 @@ input.checkboxes:checked {
 }
 
 .summaryTodayDiv p {
-  cursor: default;
+  cursor: pointer !important;
+}
+
+.summaryTodayDiv p:hover {
+  text-decoration: underline;
 }
 
 .backgroundColor {
@@ -5017,13 +5031,13 @@ input.checkboxes:checked {
 
 }
 
-.summaryDiv {
+/* .summaryDiv {
   background-color: #8BAFC0;
   height: 300px;
   width: 700px;
   opacity: 0.5;
 
-}
+} */
 
 .summaryDiv p {
   font-size: 24px;

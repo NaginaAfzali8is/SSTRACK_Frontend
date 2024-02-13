@@ -16,7 +16,7 @@ import Home from "../screen/home";
 import UserDetails from "../screen/userDetails";
 import Account from "../screen/account";
 import Profile from "../screen/profile";
-import SummaryReport from "../screen/summary";
+import SummaryReport from "../screen/owner-reports";
 import AdminDashboard from "../adminScreens/adminDashboard";
 import AdminUser from "../adminScreens/admiUser";
 import AdminReport1 from "../adminScreens/admin1";
@@ -53,6 +53,7 @@ import VerificationCode from "../screen/verificationCode";
 import { CaptureScreenshot } from "../screen/component/captureScreenshot";
 import CaptureScreen from "../screen/captureScreen";
 import GeoxHR from "../screen/geoxHR";
+import OwnerReport from "../screen/owner-reports";
 
 export default function AppRouter() {
 
@@ -108,6 +109,7 @@ export default function AppRouter() {
           <Route path="/owner-team" element={token !== null && user?.userType === "owner" ? <OwnerTeam /> : <Navigate to="/" />} />
           <Route path="/owner-account" element={token !== null && user?.userType === "owner" ? <OwnerAccount /> : <Navigate to="/" />} />
           <Route path="/owner-team/company-owner-user-signup" element={token !== null && user?.userType === "owner" ? <OwnerUserSignup /> : <Navigate to="/" />} />
+          <Route path="/owner-reports" element={token !== null && user?.userType === "owner" ? <OwnerReport /> : <Navigate to="/" />} />
 
           {/* Admin routes */}
           <Route path="/admindashboard" element={token !== null && user?.userType === "admin" ? <AdminDashboard /> : <Navigate to="/" />} />
@@ -136,7 +138,6 @@ export default function AppRouter() {
           <Route path="/profile" element={token !== null ? <Profile /> : <Navigate to="/" />} />
           <Route path="*" element={<Navigate to="/" />} />
 
-          <Route path="/summary" element={<SummaryReport />} />
           <Route path="/adminReport1" element={<AdminReport1 />} />
           <Route path="/adminreport2" element={<AdminReport2 />} />
           <Route path="/adminreport3" element={<AdminReport3 />} />

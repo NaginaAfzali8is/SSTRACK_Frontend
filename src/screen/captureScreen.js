@@ -9,6 +9,7 @@ function CaptureScreen() {
     const [videoStream, setVideoStream] = useState(null);
     const [captureInterval, setCaptureInterval] = useState(null);
     const [type, setType] = useState("");
+    const [totalInterval, setTotalInterval] = useState("");
     const [imgFile, setImgFile] = useState(null);
     const [modal, setModal] = useState({});
     const location = useLocation();
@@ -99,7 +100,7 @@ function CaptureScreen() {
     //         clearInterval(intervalId);
     //     };
     // }, [sendScreenshot, type, lastScreenshotTime]);
-        
+
     useEffect(() => {
         const token = screenshotCapture?.token;
         const decoded = jwtDecode(token);
@@ -109,13 +110,23 @@ function CaptureScreen() {
             const startScreenCapture = () => {
                 if (videoStream) {
                     setCaptureInterval(
-                        setInterval(() => {
-                            captureFrame(videoStream)
-                                .then((base64Image) => {
-                                    const base64 = base64Image.split(',')[1];
-                                })
-                                .catch((error) => console.error('Error capturing frame:', error));
-                        }, 53000)
+                        captureFrame(videoStream)
+                            .then((base64Image) => {
+                                const base64 = base64Image.split(',')[1];
+                                localStorage.setItem("imgFile", base64)
+                                const base64String = localStorage.getItem("imgFile");
+                                const byteCharacters = atob(base64String);
+                                const byteNumbers = new Array(byteCharacters.length);
+                                for (let i = 0; i < byteCharacters.length; i++) {
+                                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                                }
+                                const byteArray = new Uint8Array(byteNumbers);
+                                const blob = new Blob([byteArray], { type: 'image/jpeg' }); // Adjust the MIME type if necessary
+                                const imageUrl = URL.createObjectURL(blob);
+                                setImgFile(imageUrl)
+                                console.log({ imageUrl });
+                            })
+                            .catch((error) => console.error('Error capturing frame:', error))
                     );
                 } else {
                     navigator.mediaDevices
@@ -123,8 +134,8 @@ function CaptureScreen() {
                         .then((stream) => {
                             window.open(
                                 user?.userType === "owner" ? "https://www.sstrack.io/company-owner" :
-                                user?.userType === "admin" ? "https://www.sstrack.io/admindashboard" :
-                                user?.userType === "user" ? "https://www.sstrack.io/userdashboard" : ""
+                                    user?.userType === "admin" ? "https://www.sstrack.io/admindashboard" :
+                                        user?.userType === "user" ? "https://www.sstrack.io/userdashboard" : ""
                             )
                             setVideoStream(stream);
                             setCaptureInterval(
@@ -133,9 +144,20 @@ function CaptureScreen() {
                                         .then((base64Image) => {
                                             const base64 = base64Image.split(',')[1];
                                             localStorage.setItem("imgFile", base64)
+                                            const base64String = localStorage.getItem("imgFile");
+                                            const byteCharacters = atob(base64String);
+                                            const byteNumbers = new Array(byteCharacters.length);
+                                            for (let i = 0; i < byteCharacters.length; i++) {
+                                                byteNumbers[i] = byteCharacters.charCodeAt(i);
+                                            }
+                                            const byteArray = new Uint8Array(byteNumbers);
+                                            const blob = new Blob([byteArray], { type: 'image/jpeg' }); // Adjust the MIME type if necessary
+                                            const imageUrl = URL.createObjectURL(blob);
+                                            console.log({ imageUrl });
+                                            setImgFile(imageUrl)
                                         })
                                         .catch((error) => console.error('Error capturing frame:', error));
-                                }, 53000)
+                                }, 50000)
                             );
                         })
                         .catch((error) => console.error('Error capturing screen:', error));
@@ -178,6 +200,12 @@ function CaptureScreen() {
         }
     }, [type])
 
+    useEffect(() => {
+        const updateTotalInterval = () => setTotalInterval(localStorage.getItem("totalInterval"));
+        const intervalId = setInterval(updateTotalInterval, 1000);
+        return () => clearInterval(intervalId);
+    }, [type]);
+
     return (
         <div style={{
             display: "flex",
@@ -186,6 +214,7 @@ function CaptureScreen() {
             flexDirection: "column",
             height: "100vh"
         }}>
+            <img src={imgFile} width={800} />
             <div style={{ margin: "0 0 20px 0" }}>
                 <img src={logo} />
             </div>

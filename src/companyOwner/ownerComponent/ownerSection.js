@@ -30,6 +30,9 @@ function OwnerSection() {
                     <div className={location.pathname === "/owner-team" || location.pathname === "/owner-team/company-owner-user-signup" ? "active-tab" : "ownerSectionUser"}>
                         <p style={{ margin: 0 }} onClick={() => navigate('/owner-team')}>Team</p>
                     </div>
+                    <div className={location.pathname === "/owner-reports" ? "active-tab" : "ownerSectionUser"}>
+                        <p style={{ margin: 0 }} onClick={() => navigate('/owner-reports')}>Reports</p>
+                    </div>
                     {/* <div className={location.pathname === "/owner-settings" ? "active-tab" : "ownerSectionUser"}>
                         <p style={{ margin: 0 }} onClick={() => navigate('/owner-settings')}>Settings</p>
                     </div> */}

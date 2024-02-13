@@ -426,7 +426,7 @@ function AdminUser() {
     };
 
     const getColorForTime = (time) => {
-        const matchingEntry = showUserTimeline?.groupedScreenshots?.find(entry => {
+        const matchingEntry = data?.groupedScreenshots?.find(entry => {
             const [startTime, endTime] = entry?.time?.split(' - ');
             const startTimeFormatted = new Date(`${encodeURIComponent(formattedDate)} ${startTime}`).getTime();
             const endTimeFormatted = new Date(`${encodeURIComponent(formattedDate)} ${endTime}`).getTime();
