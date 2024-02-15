@@ -150,7 +150,6 @@ function OwnerUserSignup() {
         fillModel("company", currentUser?.company);
     }, []);
     
-
     console.log(model);
     console.log(currentUser);
 

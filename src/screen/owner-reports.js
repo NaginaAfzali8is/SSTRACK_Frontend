@@ -176,24 +176,15 @@ function OwnerReport() {
         </div>
         <div className="mainwrapper">
           <div className="summaryContainer">
-            <div className="d-flex gap-5">
-              <p>Start Date</p>
-              <p>End Date</p>
-            </div>
             <div className="calenderDiv">
 
               <div className="calenderInnerDiv">
                 <div className="dateDiv">
-
                   <div> <button> <DatePicker placeholderText={new Date().toLocaleDateString()} className="bg-transparent border-0 text-center " selected={startDate} onChange={date => setStartDate(date)} /></button>
                   </div>
-
-
                   <div>  ►  </div>
                   <div>
-
                     <button>  <DatePicker placeholderText={new Date().toLocaleDateString()} className="bg-transparent border-0 text-center " selected={endDate} onChange={date => setEndDate(date)} /></button>
-
                   </div>
                 </div>
                 <div className="dayDiv">
