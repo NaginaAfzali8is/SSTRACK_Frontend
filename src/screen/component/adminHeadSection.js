@@ -150,6 +150,9 @@ function AdminHead() {
                     <div className={location.pathname === "/adminteam" || location.pathname === "/admindashboard/admin-user-signup" ? "active-tab" : "ownerSectionUser"}>
                         <p style={{ margin: 0 }} onClick={() => navigate('/adminteam')}>Team</p>
                     </div>
+                    <div className={location.pathname === "/admin-reports" ? "active-tab" : "ownerSectionUser"}>
+                        <p style={{ margin: 0 }} onClick={() => navigate('/admin-reports')}>Reports</p>
+                    </div>
                     {/* <div className={location.pathname === "/setting" ? "active-tab" : "ownerSectionUser"}>
                         <p style={{ margin: 0 }} onClick={() => navigate('/setting')}>Settings</p>
                     </div>

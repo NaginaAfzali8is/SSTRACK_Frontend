@@ -2236,11 +2236,12 @@ nav li a {
 .asadMehmoodDiv {
   display: flex;
   justify-content: space-between;
-  color: #28659C;
+  background-color: #f1f1f1 !important;
   align-items: center;
-  padding: 0px 30px;
+  padding: 20px 30px;
   border-radius: 5px;
   margin-top: 30px;
+  cursor: pointer;
 }
 
 .asadMehmoodDiv span {
@@ -2257,16 +2258,17 @@ nav li a {
   margin-bottom: 0px;
   font-size: 21px;
   font-weight: 500;
+  color: black;
 }
 
 .durationDiv {
   display: flex;
   justify-content: space-evenly;
-  width: 500px
+  width: 300px
 }
 
 .durationDiv p {
-  margin-bottom: 0px;
+  margin: 0;
 }
 
 .admin1Line {

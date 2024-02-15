@@ -160,3 +160,11 @@ input:checked+.slider:before {
     transform: rotate(1turn)
   }
 }
+
+#pie {
+  height: 840px;
+}
+
+.dxc-legend {
+  display: none !important;
+}

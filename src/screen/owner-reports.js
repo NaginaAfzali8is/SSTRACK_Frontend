@@ -31,6 +31,7 @@ function OwnerReport() {
   let token = localStorage.getItem('token');
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  const [employeeId, setEmployeeId] = useState(null);
   const [dateFilter, setDateFilter] = useState({
     today: false,
     yesterday: false,
@@ -95,7 +96,7 @@ function OwnerReport() {
   const getReports = async (id) => {
     setLoading(true)
     try {
-      const response = await axios.get(`${apiUrl}/owner/year?yearSpecifier=this&userId=${id}`, { headers })
+      const response = await axios.get(`${apiUrl}/timetrack/totalDate?startDate=${new Date().toLocaleDateString()}&endDate=${new Date().toLocaleDateString()}`, { headers })
       if (response.status) {
         console.log(response);
         setReportData(response.data.data)
@@ -105,54 +106,141 @@ function OwnerReport() {
     catch (err) {
       setLoading(false)
       console.log(err);
+    }
+  }
+
+  const getDailyReports = async (type) => {
+    if (employeeId) {
+      setLoading(true)
+      try {
+        const response = await axios.get(`${apiUrl}/owner/timetrack/day?daySpecifier=${type}&userId=${employeeId}`, { headers })
+        if (response.status) {
+          console.log(response);
+          setReportData(response.data.data)
+          setLoading(false)
+        }
+      }
+      catch (err) {
+        setLoading(false)
+        console.log(err);
+      }
+    }
+    else {
+      setLoading(true)
+      try {
+        const response = await axios.get(`${apiUrl}/owner/timetrack/day?daySpecifier=${type}`, { headers })
+        if (response.status) {
+          console.log(response);
+          setReportData(response.data.data)
+          setLoading(false)
+        }
+      }
+      catch (err) {
+        setLoading(false)
+        console.log(err);
+      }
     }
   }
 
   const getWeeklyReports = async (type) => {
-    setLoading(true)
-    try {
-      const response = await axios.get(`${apiUrl}/owner/week?weekSpecifier=${type}`, { headers })
-      if (response.status) {
-        console.log(response);
-        setReportData(response.data.data)
+    if (employeeId) {
+      setLoading(true)
+      try {
+        const response = await axios.get(`${apiUrl}/owner/week?weekSpecifier=${type}&userId=${employeeId}`, { headers })
+        if (response.status) {
+          console.log(response);
+          setReportData(response.data.data)
+          setLoading(false)
+        }
+      }
+      catch (err) {
         setLoading(false)
+        console.log(err);
       }
     }
-    catch (err) {
-      setLoading(false)
-      console.log(err);
+    else {
+      setLoading(true)
+      try {
+        const response = await axios.get(`${apiUrl}/owner/week?weekSpecifier=${type}`, { headers })
+        if (response.status) {
+          console.log(response);
+          setReportData(response.data.data)
+          setLoading(false)
+        }
+      }
+      catch (err) {
+        setLoading(false)
+        console.log(err);
+      }
     }
   }
 
   const getMonthlyReports = async (type) => {
-    setLoading(true)
-    try {
-      const response = await axios.get(`${apiUrl}/owner/month?monthSpecifier=${type}`, { headers })
-      if (response.status) {
-        console.log(response);
-        setReportData(response.data.data)
+    if (employeeId) {
+      setLoading(true)
+      try {
+        const response = await axios.get(`${apiUrl}/owner/month?monthSpecifier=${type}&userId=${employeeId}`, { headers })
+        if (response.status) {
+          console.log(response);
+          setReportData(response.data.data)
+          setLoading(false)
+        }
+      }
+      catch (err) {
         setLoading(false)
+        console.log(err);
       }
     }
-    catch (err) {
-      setLoading(false)
-      console.log(err);
+    else {
+      setLoading(true)
+      try {
+        const response = await axios.get(`${apiUrl}/owner/month?monthSpecifier=${type}`, { headers })
+        if (response.status) {
+          console.log(response);
+          setReportData(response.data.data)
+          setLoading(false)
+        }
+      }
+      catch (err) {
+        setLoading(false)
+        console.log(err);
+      }
+      return null
     }
   }
 
   const getYearlyReports = async (type) => {
-    setLoading(true)
-    try {
-      const response = await axios.get(`${apiUrl}/owner/year?yearSpecifier=${type}`, { headers })
-      if (response.status) {
-        console.log(response);
-        setReportData(response.data.data)
-        setLoading(false)
+    if (employeeId) {
+      setLoading(true)
+      try {
+        const response = await axios.get(`${apiUrl}/owner/year?yearSpecifier=${type}&userId=${employeeId}`, { headers })
+        if (response.status) {
+          console.log(response);
+          setReportData(response.data.data)
+          setLoading(false)
+        }
       }
+      catch (err) {
+        setLoading(false)
+        console.log(err);
+      }
+      return null
     }
-    catch (err) {
-      setLoading(false)
-      console.log(err);
+    else {
+      setLoading(true)
+      try {
+        const response = await axios.get(`${apiUrl}/owner/year?yearSpecifier=${type}`, { headers })
+        if (response.status) {
+          console.log(response);
+          setReportData(response.data.data)
+          setLoading(false)
+        }
+      }
+      catch (err) {
+        setLoading(false)
+        console.log(err);
+      }
+      return null
     }
   }
 
@@ -160,10 +248,22 @@ function OwnerReport() {
     getEmployess()
   }, [])
 
+  useEffect(() => {
+    dateFilter?.today === true ? getDailyReports("this") :
+      dateFilter?.yesterday === true ? getDailyReports("previous") :
+        dateFilter?.thisWeek === true ? getWeeklyReports("this") :
+          dateFilter?.lastWeek === true ? getWeeklyReports("previous") :
+            dateFilter?.thisMonth === true ? getMonthlyReports("this") :
+              dateFilter?.lastMonth === true ? getMonthlyReports("previous") :
+                dateFilter?.thisYear === true ? getYearlyReports("this") :
+                  dateFilter?.lastYear === true ? getYearlyReports("previous") :
+                    getReports()
+  }, [employeeId])
+
   const user = users?.map(user => ({ label: user.email, value: user.email, id: user._id }))
   const defaultValue = user.length > 0 ? [{ value: user[0].value }] : [];
 
-  console.log({reportData});
+  console.log(dateFilter);
 
   return (
     <div>
@@ -191,6 +291,7 @@ function OwnerReport() {
                   <div className="summaryTodayDiv">
                     <p
                       onClick={() => {
+                        getDailyReports("this")
                         setDateFilter({
                           today: true,
                           yesterday: false,
@@ -205,6 +306,7 @@ function OwnerReport() {
                       style={{ color: dateFilter.today === true && "#28659C", fontWeight: dateFilter.today === true && "600" }}>Today</p>
                     <p
                       onClick={() => {
+                        getDailyReports("previous")
                         setDateFilter({
                           today: false,
                           yesterday: true,
@@ -328,7 +430,7 @@ function OwnerReport() {
             <div className="crossButtonDiv">
               <SelectBox
                 onChange={(e) => {
-                  getReports(e.id)
+                  setEmployeeId(e.id)
                 }}
                 options={user}
                 closeMenuOnSelect={true}
@@ -379,21 +481,22 @@ function OwnerReport() {
               <p>± Employees / ± Projects</p>
               <div className="durationDiv">
                 <p>Duration</p>
-                <p>Money</p>
                 <p>Activity</p>
               </div>
             </div>
-            {/* <div className="asadMehmoodDiv">
-                                {console.log(data)}
-                                <div>
-                                    <p><img src={addButton} /><span>Fatima Zohra</span></p>
-                                </div>
-                                <div className="durationDiv">
-                                    <p>36h 52m</p>
-                                    <p>$27.64</p>
-                                    <p>48 %</p>
-                                </div>
-                            </div> */}
+            {reportData?.allUsers?.map((data, index) => {
+              return (
+                <div className="asadMehmoodDiv">
+                  <div>
+                    <p><img src={addButton} /><span>{data?.employee}</span></p>
+                  </div>
+                  <div className="durationDiv">
+                    <p>{data?.Duration}</p>
+                    <p>{Math.floor(data?.Activity)} %</p>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>
