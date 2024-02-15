@@ -29,29 +29,17 @@ function OwnerReport() {
 
   const year = new Date().getFullYear()
   let token = localStorage.getItem('token');
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
-  const today = startDate?.getFullYear();
-  const startCurrentMonth = (startDate?.getMonth() + 1).toString().padStart(2, '0');
-  const startCurrentDate = startDate?.getDate().toString().padStart(2, '0');
-  const startTodayDate = `${today}-${startCurrentMonth}-${startCurrentDate}`;
-  const endtoday = endDate?.getFullYear();
-  const endCurrentMonth = (endDate?.getMonth() + 1).toString().padStart(2, '0');
-  const endCurrentDate = endDate?.getDate().toString().padStart(2, '0');
-  const endTodayDate = `${endtoday}-${endCurrentMonth}-${endCurrentDate}`;
-  const [todayDate, setTodayDate] = useState("");
-  const [data, setData] = useState(todayDate);
-  const [yesterdayDate, setYesterdayDate] = useState('');
-  const [latestDate, setLatestDate] = useState('');
-  const [weekDate, setWeekDate] = useState("");
-  const [monthDate, setMonthDate] = useState('');
   const [dateFilter, setDateFilter] = useState({
     today: false,
-    thisWeek: false,
-    thisMonth: false,
     yesterday: false,
+    thisWeek: false,
     lastWeek: false,
+    thisMonth: false,
+    lastMonth: false,
     thisYear: false,
+    lastYear: false,
   })
   const [users, setUsers] = useState([]);
   const [reportData, setReportData] = useState(null);
@@ -62,63 +50,27 @@ function OwnerReport() {
   const items = JSON.parse(localStorage.getItem('items'));
   const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
 
-  async function getSummaryData() {
-    try {
-      const response = await fetch(`${apiUrl}/timetrack/hours`, { headers })
-      const json = await response.json();
-      console.log(json);
-      setData(json?.data?.totalHours?.daily)
-      setLatestDate(json?.data?.totalHours?.daily)
-      setYesterdayDate(json?.data?.totalHours?.yesterday)
-      setWeekDate(json?.data?.totalHours?.weekly)
-      setMonthDate(json?.data?.totalHours?.monthly)
-    } catch (err) {
-    }
-  }
-
-  useEffect(() => {
-    getSummaryData();
-  }, [])
-
   const getData = async () => {
+    setLoading(true)
     try {
-      const response = await fetch(`${apiUrl}/timetrack/totalDate?startDate=${startTodayDate}&endDate=${endTodayDate}`, {
-        method: "GET",
-        headers
-      })
-      const json = await response.json()
-      console.log(json);
-      setData(json.data?.totalHours)
-      if (json.message) {
-        setData(json.message)
+      const response = await axios.get(`${apiUrl}/timetrack/totalDate?startDate=${new Date(startDate).toLocaleDateString()}&endDate=${new Date(endDate).toLocaleDateString()}`, { headers })
+      if (response.status === 200) {
+        console.log(response);
+        setLoading(false)
+        setReportData(response.data?.data)
       }
     }
     catch (error) {
+      setLoading(false)
       console.log(error);
     }
   }
 
   useEffect(() => {
-    if (startTodayDate != "" && endTodayDate != "") {
+    if (startDate && endDate) {
       getData();
     }
-  }, [startTodayDate, endTodayDate]);
-
-  const yearlyGetData = async (yearly) => {
-    console.log(yearly);
-    try {
-      const response = await fetch(`${apiUrl}/timetrack/year?year=current`, {
-        method: "GET",
-        headers
-      }).then((sucess) =>
-        sucess.json()
-      ).catch((error) => {
-        error.json()
-      })
-      console.log(response);
-    }
-    catch (error) { }
-  }
+  }, [startDate, endDate]);
 
   const animatedComponents = makeAnimated();
 
@@ -156,6 +108,54 @@ function OwnerReport() {
     }
   }
 
+  const getWeeklyReports = async (type) => {
+    setLoading(true)
+    try {
+      const response = await axios.get(`${apiUrl}/owner/week?weekSpecifier=${type}`, { headers })
+      if (response.status) {
+        console.log(response);
+        setReportData(response.data.data)
+        setLoading(false)
+      }
+    }
+    catch (err) {
+      setLoading(false)
+      console.log(err);
+    }
+  }
+
+  const getMonthlyReports = async (type) => {
+    setLoading(true)
+    try {
+      const response = await axios.get(`${apiUrl}/owner/month?monthSpecifier=${type}`, { headers })
+      if (response.status) {
+        console.log(response);
+        setReportData(response.data.data)
+        setLoading(false)
+      }
+    }
+    catch (err) {
+      setLoading(false)
+      console.log(err);
+    }
+  }
+
+  const getYearlyReports = async (type) => {
+    setLoading(true)
+    try {
+      const response = await axios.get(`${apiUrl}/owner/year?yearSpecifier=${type}`, { headers })
+      if (response.status) {
+        console.log(response);
+        setReportData(response.data.data)
+        setLoading(false)
+      }
+    }
+    catch (err) {
+      setLoading(false)
+      console.log(err);
+    }
+  }
+
   useEffect(() => {
     getEmployess()
   }, [])
@@ -163,7 +163,7 @@ function OwnerReport() {
   const user = users?.map(user => ({ label: user.email, value: user.email, id: user._id }))
   const defaultValue = user.length > 0 ? [{ value: user[0].value }] : [];
 
-  console.log(reportData);
+  console.log({reportData});
 
   return (
     <div>
@@ -185,83 +185,143 @@ function OwnerReport() {
               <div className="calenderInnerDiv">
                 <div className="dateDiv">
 
-                  <div> <button> <DatePicker className="bg-transparent border-0 text-center " selected={startDate} onChange={date => setStartDate(date)} /></button>
+                  <div> <button> <DatePicker placeholderText={new Date().toLocaleDateString()} className="bg-transparent border-0 text-center " selected={startDate} onChange={date => setStartDate(date)} /></button>
                   </div>
 
 
-                  <div><img src={blueArrow} /></div>
+                  <div>  ►  </div>
                   <div>
 
-                    <button>  <DatePicker className="bg-transparent border-0 text-center " selected={endDate} onChange={date => setEndDate(date)} /></button>
+                    <button>  <DatePicker placeholderText={new Date().toLocaleDateString()} className="bg-transparent border-0 text-center " selected={endDate} onChange={date => setEndDate(date)} /></button>
 
                   </div>
                 </div>
                 <div className="dayDiv">
                   <div className="summaryTodayDiv">
-                    <p onClick={() => setDateFilter((prevFilters) => {
-                      return {
-                        today: true,
-                        yesterday: false,
-                        thisWeek: false,
-                        lastWeek: false,
-                        thisMonth: false,
-                        thisYear: false,
-                      }
-                    })} style={{ color: dateFilter.today === true && "#28659C", fontWeight: dateFilter.today === true && "600" }}>Today</p>
-                    <p onClick={() => setDateFilter((prevFilters) => {
-                      return {
-                        today: false,
-                        yesterday: true,
-                        thisWeek: false,
-                        lastWeek: false,
-                        thisMonth: false,
-                        thisYear: false,
-                      }
-                    })} style={{ color: dateFilter.yesterday === true && "#28659C", fontWeight: dateFilter.yesterday === true && "600" }}>Yesterday</p>
+                    <p
+                      onClick={() => {
+                        setDateFilter({
+                          today: true,
+                          yesterday: false,
+                          thisWeek: false,
+                          lastWeek: false,
+                          thisMonth: false,
+                          lastMonth: false,
+                          thisYear: false,
+                          lastYear: false,
+                        })
+                      }}
+                      style={{ color: dateFilter.today === true && "#28659C", fontWeight: dateFilter.today === true && "600" }}>Today</p>
+                    <p
+                      onClick={() => {
+                        setDateFilter({
+                          today: false,
+                          yesterday: true,
+                          thisWeek: false,
+                          lastWeek: false,
+                          thisMonth: false,
+                          lastMonth: false,
+                          thisYear: false,
+                          lastYear: false,
+                        })
+                      }}
+                      style={{ color: dateFilter.yesterday === true && "#28659C", fontWeight: dateFilter.yesterday === true && "600" }}>Yesterday</p>
                   </div>
                   <div className="summaryTodayDiv">
-                    <p onClick={() => setDateFilter((prevFilters) => {
-                      return {
-                        today: false,
-                        thisWeek: true,
-                        yesterday: false,
-                        lastWeek: false,
-                        thisMonth: false,
-                        thisYear: false,
-                      }
-                    })} style={{ color: dateFilter.thisWeek === true && "#28659C", fontWeight: dateFilter.thisWeek === true && "600" }}>This Week</p>
-                    <p onClick={() => setDateFilter((prevFilters) => {
-                      return {
-                        today: false,
-                        lastWeek: true,
-                        thisWeek: false,
-                        yesterday: false,
-                        thisMonth: false,
-                        thisYear: false,
-                      }
-                    })} style={{ color: dateFilter.lastWeek === true && "#28659C", fontWeight: dateFilter.lastWeek === true && "600" }}>Last Week</p>
+                    <p
+                      onClick={() => {
+                        getWeeklyReports("this")
+                        setDateFilter({
+                          today: false,
+                          yesterday: false,
+                          thisWeek: true,
+                          lastWeek: false,
+                          thisMonth: false,
+                          lastMonth: false,
+                          thisYear: false,
+                          lastYear: false,
+                        })
+                      }}
+                      style={{ color: dateFilter.thisWeek === true && "#28659C", fontWeight: dateFilter.thisWeek === true && "600" }}>This Week</p>
+                    <p
+                      onClick={() => {
+                        getWeeklyReports("previous")
+                        setDateFilter({
+                          today: false,
+                          yesterday: false,
+                          thisWeek: false,
+                          lastWeek: true,
+                          thisMonth: false,
+                          lastMonth: false,
+                          thisYear: false,
+                          lastYear: false,
+                        })
+                      }}
+                      style={{ color: dateFilter.lastWeek === true && "#28659C", fontWeight: dateFilter.lastWeek === true && "600" }}>Last Week</p>
                   </div>
                   <div className="summaryTodayDiv">
-                    <p onClick={() => setDateFilter((prevFilters) => {
-                      return {
-                        today: false,
-                        thisMonth: true,
-                        lastWeek: false,
-                        thisWeek: false,
-                        yesterday: false,
-                        thisYear: false,
-                      }
-                    })} style={{ color: dateFilter.thisMonth === true && "#28659C", fontWeight: dateFilter.thisMonth === true && "600" }}>This Month</p>
-                    <p onClick={() => setDateFilter((prevFilters) => {
-                      return {
-                        today: false,
-                        thisMonth: false,
-                        lastWeek: false,
-                        thisWeek: false,
-                        yesterday: false,
-                        thisYear: true,
-                      }
-                    })} style={{ color: dateFilter.thisYear === true && "#28659C", fontWeight: dateFilter.thisYear === true && "600" }}>This Year</p>
+                    <p
+                      onClick={() => {
+                        getMonthlyReports("this")
+                        setDateFilter({
+                          today: false,
+                          yesterday: false,
+                          thisWeek: false,
+                          lastWeek: false,
+                          thisMonth: true,
+                          lastMonth: false,
+                          thisYear: false,
+                          lastYear: false,
+                        })
+                      }}
+                      style={{ color: dateFilter.thisMonth === true && "#28659C", fontWeight: dateFilter.thisMonth === true && "600" }}>This Month</p>
+                    <p
+                      onClick={() => {
+                        getMonthlyReports("previous")
+                        setDateFilter({
+                          today: false,
+                          yesterday: false,
+                          thisWeek: false,
+                          lastWeek: false,
+                          thisMonth: false,
+                          lastMonth: true,
+                          thisYear: false,
+                          lastYear: false,
+                        })
+                      }}
+                      style={{ color: dateFilter.lastMonth === true && "#28659C", fontWeight: dateFilter.lastMonth === true && "600" }}>Last Month</p>
+                  </div>
+                  <div className="summaryTodayDiv">
+                    <p
+                      onClick={() => {
+                        getYearlyReports("this")
+                        setDateFilter({
+                          today: false,
+                          yesterday: false,
+                          thisWeek: false,
+                          lastWeek: false,
+                          thisMonth: false,
+                          lastMonth: false,
+                          thisYear: true,
+                          lastYear: false,
+                        })
+                      }}
+                      style={{ color: dateFilter.thisYear === true && "#28659C", fontWeight: dateFilter.thisYear === true && "600" }}>This Year</p>
+                    <p
+                      onClick={() => {
+                        getYearlyReports("previous")
+                        setDateFilter({
+                          today: false,
+                          yesterday: false,
+                          thisWeek: false,
+                          lastWeek: false,
+                          thisMonth: false,
+                          lastMonth: false,
+                          thisYear: false,
+                          lastYear: true,
+                        })
+                      }}
+                      style={{ color: dateFilter.lastYear === true && "#28659C", fontWeight: dateFilter.lastYear === true && "600" }}>Last Year</p>
                   </div>
 
                 </div>
