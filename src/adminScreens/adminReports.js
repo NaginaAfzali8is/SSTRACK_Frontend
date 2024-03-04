@@ -48,7 +48,7 @@ function AdminReports() {
         Authorization: 'Bearer ' + token,
     }
     const items = JSON.parse(localStorage.getItem('items'));
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "https://gold-cloudy-moose.cyclic.app/api/v1";
 
     const getData = async () => {
         setLoading(true)
@@ -249,14 +249,14 @@ function AdminReports() {
 
     useEffect(() => {
         dateFilter?.today === true ? getDailyReports("this") :
-            dateFilter?.yesterday === true ? getDailyReports("previous") :
-                dateFilter?.thisWeek === true ? getWeeklyReports("this") :
-                    dateFilter?.lastWeek === true ? getWeeklyReports("previous") :
-                        dateFilter?.thisMonth === true ? getMonthlyReports("this") :
-                            dateFilter?.lastMonth === true ? getMonthlyReports("previous") :
-                                dateFilter?.thisYear === true ? getYearlyReports("this") :
-                                    dateFilter?.lastYear === true ? getYearlyReports("previous") :
-                                        getReports()
+        dateFilter?.yesterday === true ? getDailyReports("previous") :
+        dateFilter?.thisWeek === true ? getWeeklyReports("this") :
+        dateFilter?.lastWeek === true ? getWeeklyReports("previous") :
+        dateFilter?.thisMonth === true ? getMonthlyReports("this") :
+        dateFilter?.lastMonth === true ? getMonthlyReports("previous") :
+        dateFilter?.thisYear === true ? getYearlyReports("this") :
+        dateFilter?.lastYear === true ? getYearlyReports("previous") :
+        getReports()
     }, [employeeId])
 
     const user = users?.map(user => ({ label: user.email, value: user.email, id: user._id }))

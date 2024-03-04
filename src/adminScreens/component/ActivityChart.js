@@ -36,4 +36,4 @@ function ActivityChart(props) {
     return <Doughnut data={data} />;
 }
 
-export default ActivityChart
+export default ActivityChart;

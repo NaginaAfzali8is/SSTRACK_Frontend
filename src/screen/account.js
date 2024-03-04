@@ -27,7 +27,7 @@ function Account() {
     const [verify, setVerify] = useState(false);
     let token = localStorage.getItem('token');
     const navigate = useNavigate('');
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "https://gold-cloudy-moose.cyclic.app/api/v1";
     const items = JSON.parse(localStorage.getItem('items'));
     let headers = {
         Authorization: 'Bearer ' + token,
