@@ -12,6 +12,7 @@ import useLoading from "../hooks/useLoading";
 import axios from "axios";
 import offline from "../images/not-active.svg";
 import Pusher from 'pusher-js';
+import moment from 'moment-timezone';
 
 function UserDasboard() {
 
@@ -78,6 +79,13 @@ function UserDasboard() {
     //     console.log(JSON.stringify(data));
     // });
 
+    const items = JSON.parse(localStorage.getItem('items'));
+
+    const offsetInMinutes = moment.tz(items?.timezone).utcOffset();
+    const offsetInHours = offsetInMinutes / 60;
+    const offsetSign = offsetInHours >= 0 ? '+' : '-';
+    const formattedOffset = `${offsetSign}${Math.abs(offsetInHours)}`;
+
     return (
         <div>
             <div className="container">
@@ -86,8 +94,8 @@ function UserDasboard() {
                         <h5>Employee Dashboard</h5>
                     </div>
                     <div className="headerTop">
-                        <h6>All times are UTC + 5</h6>
-                        <img src={setting} />
+                        <h6>All times are UTC {formattedOffset}</h6>
+                        <img src={setting} alt="setting.png" style={{ cursor: "pointer" }} onClick={() => navigate("/account")} />
                     </div>
                 </div>
                 <div className="mainwrapper">

@@ -5241,11 +5241,12 @@ input.checkboxes:checked {
 }
 
 .download-action-container .download-button {
+  text-align: left;
   font-size: 18px;
   font-weight: 500;
   border: none !important;
   background-color: #0E4772 !important;
-  width: 250px;
+  width: 240px;
   /* max-width: 100%; */
   border: none;
   color: white !important;

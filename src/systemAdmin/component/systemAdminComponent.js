@@ -104,7 +104,7 @@ function SystemAdminComponent(props) {
                     <p className="employeeDetailName1">{props?.fixComponent?.owner?.name}</p>
                     <p className="employeeDetailName2">{props?.fixComponent?.owner?.email}</p>
                     <div style={{ margin: "30px 0" }}>
-                        <p className="employeeDetail">Employess</p>
+                        <p className="employeeDetail">Employees</p>
                     </div>
                     {/* {loading ? (
                         <Skeleton count={1} width="100%" height="600px" style={{ margin: "0" }} />

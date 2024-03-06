@@ -1,37 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import DownloadProduct from '../images/ss-track-banner.svg';
-import { BsWindows } from 'react-icons/bs'
+import { BsWindows, BsApple } from 'react-icons/bs'
 import axios from 'axios'
 
 const Download = () => {
 
     const [downloadOS, setDownloadOS] = useState("mac")
-    const [loading, setLoading] = useState(false)
+    const [loading1, setLoading1] = useState(false)
+    const [loading2, setLoading2] = useState(false)
     const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
 
-    const handleDownload = async () => {
-        setLoading(true)
+    const handleDownload = async (type) => {
+        console.log(type);
+        setLoading1(type === "WIN" ? true : false)
+        setLoading2(type === "MAC" ? true : false)
         try {
             const res = await axios.get(`${apiUrl}/timetrack/updatedFile`)
             if (res.status === 200) {
-                setLoading(false)
                 var url = res.data.data.url;
                 var anchor = document.createElement('a');
                 anchor.href = url;
                 anchor.download = 'screenshot-time.exe';
                 setTimeout(() => {
-                    setLoading(false)
+                    setLoading1(false)
+                    setLoading2(false)
                 }, 1000)
                 document.body.appendChild(anchor);
                 anchor.click();
                 document.body.removeChild(anchor);
             }
             else {
-                setLoading(false)
+                setLoading1(false)
+                setLoading2(false)
                 console.log("download link error 1 =====>", res);
             }
         } catch (error) {
-            setLoading(false)
+            setLoading1(false)
+            setLoading2(false)
             console.log("download link error 2 =====>", error);
         }
     }
@@ -42,6 +47,8 @@ const Download = () => {
             behavior: "smooth"
         })
     }, [])
+
+    console.log(loading1);
 
     return (
         <>
@@ -62,7 +69,7 @@ const Download = () => {
                         <div>
                             {/* <h4>Download employee deskstop application for {downloadOS === "mac" ? "mac OS" : "windows"}</h4> */}
                             <h4>Download employee desktop application for windows</h4>
-                            <p>This application is <span style={{ fontWeight: "700", color: "#7ACB59" }}>for employess, managers</span></p>
+                            <p>This application is <span style={{ fontWeight: "700", color: "#7ACB59" }}>for employees, managers</span></p>
                             <p>Company administrators can review the tracked hours and screenshots on this website.</p>
                             <img width={300} src={DownloadProduct} alt="" />
                             <div style={{ margin: "30px 0" }}>
@@ -71,6 +78,11 @@ const Download = () => {
                                 <p>This is a Windows desktop application designed for employees. It allows an employee to start and stop tracking their work time and captures screenshots of their computer during work hours.</p>
                                 <p>Once the stop button is activated, it ceases to take screenshots. Your work time and screenshots can be reviewed in My Home, where you also have the option to delete any screenshots.</p>
                             </div>
+                            {/* <div style={{ margin: "30px 0" }}>
+                                <h4>Installation Steps</h4>
+                                <p>This is a Windows desktop application designed for employees. It allows an employee to start and stop tracking their work time and captures screenshots of their computer during work hours.</p>
+                                <p>Once the stop button is activated, it ceases to take screenshots. Your work time and screenshots can be reviewed in My Home, where you also have the option to delete any screenshots.</p>
+                            </div> */}
                             <div>
                                 <h4>Post-installation</h4>
                                 <p>Once the application is installed, launch it and click "Start" to begin monitoring your time and capturing screenshots.</p>
@@ -84,12 +96,22 @@ const Download = () => {
                                 </div>
                             ) : ( */}
                             <div>
-                                <p>Need windows version ?</p>
-                                <button className={loading ? "disable-download-button" : "download-button"} disabled={loading ? true : false} onClick={handleDownload}>
-                                    {loading ? "Downloading..." : (
+                                <p>Choose your OS ?</p>
+                                <button className={loading1 ? "disable-download-button" : "download-button"} disabled={loading1 ? true : false} onClick={() => handleDownload("WIN")}>
+                                    {loading1 ? "Downloading..." : (
                                         <>
-                                            <BsWindows color="white" size={20} />
+                                            <BsWindows color="white" size={18} style={{ margin: "-5px 10px 0 0" }} />
                                             Download for windows
+                                        </>
+                                    )}
+                                </button>
+                                <br />
+                                <br />
+                                <button className={loading2 ? "disable-download-button" : "download-button"} disabled={loading2 ? true : false} onClick={() => handleDownload("MAC")}>
+                                    {loading2 ? "Downloading..." : (
+                                        <>
+                                            <BsApple color="white" size={18} style={{ margin: "-5px 10px 0 0" }} />
+                                            Download for mac
                                         </>
                                     )}
                                 </button>
