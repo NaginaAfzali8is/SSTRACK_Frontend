@@ -152,7 +152,11 @@ function Profile() {
                         <div className="saveCancelButton">
                             <button disabled={loading} onClick={updateData} className={loading ? "disabledAccountButton2" : "saveButton"}>{loading ? <FerrisWheelSpinner loading={loading} size={28} color="#6DBB48" /> : "save"}</button>
                             <p>Or</p>
-                            <button className="cancelButton">Cancel</button>
+                            <button onClick={() => navigate(
+                                items?.userType === "owner" ? "/owner-account" :
+                                items?.userType === "admin" ? "/adminaccount" :
+                                items?.userType === "user" ? "/account" : ""
+                            )} className="cancelButton">Cancel</button>
                         </div>
                     </div>
                 </div>
