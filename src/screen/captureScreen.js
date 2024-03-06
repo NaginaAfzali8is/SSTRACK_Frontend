@@ -9,10 +9,12 @@ function CaptureScreen() {
     const [videoStream, setVideoStream] = useState(null);
     const [captureInterval, setCaptureInterval] = useState(null);
     const [type, setType] = useState("");
+    const [totalInterval, setTotalInterval] = useState("");
     const [imgFile, setImgFile] = useState(null);
     const [modal, setModal] = useState({});
     const location = useLocation();
-    const API_URL = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
+    const API_URL = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    // const API_URL = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     const user = JSON.parse(localStorage.getItem("items"))
 
     let token = localStorage.getItem('token');
@@ -36,70 +38,69 @@ function CaptureScreen() {
         return () => clearInterval(intervalId);
     }, [type]);
 
-    const [percentage, setPercentage] = useState(localStorage.getItem('percentage') || '');
+    // const [percentage, setPercentage] = useState(localStorage.getItem('percentage') || '');
 
-    const updatePercentage = (newPercentage) => {
-        setPercentage(newPercentage);
-        localStorage.setItem('percentage', newPercentage);
-    };
+    // const updatePercentage = (newPercentage) => {
+    //     setPercentage(newPercentage);
+    //     localStorage.setItem('percentage', newPercentage);
+    // };
 
-    const sendScreenshot = useCallback(async () => {
-        console.log({
-            activityPercentage: percentage,
-            description: localStorage.getItem('activeTab'),
-            description2: "Google chrome",
-            startTime: new Date(),
-            createdAt: new Date(),
-            file: imgFile
-        });
-        try {
-            const model = {
-                activityPercentage: percentage,
-                description: localStorage.getItem('activeTab'),
-                description2: "Google chrome",
-                startTime: new Date(),
-                createdAt: new Date(),
-                file: imgFile
-            };
-            const response = await fetch(`${API_URL}/timetrack/capture-screenshot/${screenshotCapture?.timeEntryId}/screenshots`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    ...headers
-                },
-                method: "PATCH",
-                mode: 'cors',
-                body: JSON.stringify(model)
-            });
-            console.log("capture ss response", response);
-        } catch (error) {
-            console.error("Error in captureScreenshot:", error);
-        }
-    }, [percentage, screenshotCapture?.timeEntryId, headers]);
+    // const sendScreenshot = useCallback(async () => {
+    //     console.log({
+    //         activityPercentage: percentage,
+    //         description: localStorage.getItem('activeTab'),
+    //         description2: "Google chrome",
+    //         startTime: new Date(),
+    //         createdAt: new Date(),
+    //         file: imgFile
+    //     });
+    //     try {
+    //         const model = {
+    //             activityPercentage: percentage,
+    //             description: localStorage.getItem('activeTab'),
+    //             description2: "Google chrome",
+    //             startTime: new Date(),
+    //             createdAt: new Date(),
+    //             file: imgFile
+    //         };
+    //         const response = await fetch(`${API_URL}/timetrack/capture-screenshot/${screenshotCapture?.timeEntryId}/screenshots`, {
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 ...headers
+    //             },
+    //             method: "PATCH",
+    //             mode: 'cors',
+    //             body: JSON.stringify(model)
+    //         });
+    //         console.log("capture ss response", response);
+    //     } catch (error) {
+    //         console.error("Error in captureScreenshot:", error);
+    //     }
+    // }, [percentage, screenshotCapture?.timeEntryId, headers]);
 
-    const [lastScreenshotTime, setLastScreenshotTime] = useState(new Date());
+    // const [lastScreenshotTime, setLastScreenshotTime] = useState(new Date());
 
+    // useEffect(() => {
+    //     let intervalId;
+    //     console.log("Effect triggered. Type:", type);
+    //     if (type === "startTimer") {
+    //         intervalId = setInterval(() => {
+    //             updatePercentage(localStorage.getItem('percentage'));
+    //             // Check if 1 minute has passed and call sendScreenshot
+    //             if (new Date() - lastScreenshotTime >= 120000) {
+    //                 console.log("Sending screenshot...");
+    //                 sendScreenshot();
+    //                 setLastScreenshotTime(new Date()); // Update lastScreenshotTime
+    //             }
+    //         }, 5000);
+    //     }
+    //     // Cleanup function that runs when the component unmounts or when `type` changes
+    //     return () => {
+    //         console.log("Clearing interval...");
+    //         clearInterval(intervalId);
+    //     };
+    // }, [sendScreenshot, type, lastScreenshotTime]);
 
-    useEffect(() => {
-        let intervalId;
-        console.log("Effect triggered. Type:", type);
-        if (type === "startTimer") {
-            intervalId = setInterval(() => {
-                updatePercentage(localStorage.getItem('percentage'));
-                // Check if 1 minute has passed and call sendScreenshot
-                if (new Date() - lastScreenshotTime >= 50000) {
-                    console.log("Sending screenshot...");
-                    sendScreenshot();
-                    setLastScreenshotTime(new Date()); // Update lastScreenshotTime
-                }
-            }, 5000);
-        }
-        // Cleanup function that runs when the component unmounts or when `type` changes
-        return () => {
-            console.log("Clearing interval...");
-            clearInterval(intervalId);
-        };
-    }, [sendScreenshot, type, lastScreenshotTime]);
-        
     useEffect(() => {
         const token = screenshotCapture?.token;
         const decoded = jwtDecode(token);
@@ -109,22 +110,32 @@ function CaptureScreen() {
             const startScreenCapture = () => {
                 if (videoStream) {
                     setCaptureInterval(
-                        setInterval(() => {
-                            captureFrame(videoStream)
-                                .then((base64Image) => {
-                                    const base64 = base64Image.split(',')[1];
-                                })
-                                .catch((error) => console.error('Error capturing frame:', error));
-                        }, 40000)
+                        captureFrame(videoStream)
+                            .then((base64Image) => {
+                                const base64 = base64Image.split(',')[1];
+                                localStorage.setItem("imgFile", base64)
+                                const base64String = localStorage.getItem("imgFile");
+                                const byteCharacters = atob(base64String);
+                                const byteNumbers = new Array(byteCharacters.length);
+                                for (let i = 0; i < byteCharacters.length; i++) {
+                                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                                }
+                                const byteArray = new Uint8Array(byteNumbers);
+                                const blob = new Blob([byteArray], { type: 'image/jpeg' }); // Adjust the MIME type if necessary
+                                const imageUrl = URL.createObjectURL(blob);
+                                setImgFile(imageUrl)
+                                console.log({ imageUrl });
+                            })
+                            .catch((error) => console.error('Error capturing frame:', error))
                     );
                 } else {
                     navigator.mediaDevices
                         .getDisplayMedia({ video: true })
                         .then((stream) => {
                             window.open(
-                                user?.userType === "owner" ? "https://www.screenshottime.com/company-owner" :
-                                    user?.userType === "admin" ? "https://www.screenshottime.com/admindashboard" :
-                                        user?.userType === "user" ? "https://www.screenshottime.com/userdashboard" : ""
+                                user?.userType === "owner" ? "https://www.sstrack.io/company-owner" :
+                                    user?.userType === "admin" ? "https://www.sstrack.io/admindashboard" :
+                                        user?.userType === "user" ? "https://www.sstrack.io/userdashboard" : ""
                             )
                             setVideoStream(stream);
                             setCaptureInterval(
@@ -132,10 +143,21 @@ function CaptureScreen() {
                                     captureFrame(stream)
                                         .then((base64Image) => {
                                             const base64 = base64Image.split(',')[1];
-                                            setImgFile(base64)
+                                            localStorage.setItem("imgFile", base64)
+                                            const base64String = localStorage.getItem("imgFile");
+                                            const byteCharacters = atob(base64String);
+                                            const byteNumbers = new Array(byteCharacters.length);
+                                            for (let i = 0; i < byteCharacters.length; i++) {
+                                                byteNumbers[i] = byteCharacters.charCodeAt(i);
+                                            }
+                                            const byteArray = new Uint8Array(byteNumbers);
+                                            const blob = new Blob([byteArray], { type: 'image/jpeg' }); // Adjust the MIME type if necessary
+                                            const imageUrl = URL.createObjectURL(blob);
+                                            console.log({ imageUrl });
+                                            setImgFile(imageUrl)
                                         })
                                         .catch((error) => console.error('Error capturing frame:', error));
-                                }, 40000)
+                                }, 50000)
                             );
                         })
                         .catch((error) => console.error('Error capturing screen:', error));
@@ -178,6 +200,12 @@ function CaptureScreen() {
         }
     }, [type])
 
+    useEffect(() => {
+        const updateTotalInterval = () => setTotalInterval(localStorage.getItem("totalInterval"));
+        const intervalId = setInterval(updateTotalInterval, 1000);
+        return () => clearInterval(intervalId);
+    }, [type]);
+
     return (
         <div style={{
             display: "flex",
@@ -186,6 +214,7 @@ function CaptureScreen() {
             flexDirection: "column",
             height: "100vh"
         }}>
+            <img src={imgFile} width={800} />
             <div style={{ margin: "0 0 20px 0" }}>
                 <img src={logo} />
             </div>

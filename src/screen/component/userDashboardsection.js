@@ -90,21 +90,21 @@ function UserDashboardSection(params) {
                     <div className={location.pathname === "/userdashboard" ? "active-tab" : "ownerSectionUser"}>
                         <p style={{ margin: 0 }} onClick={() => navigate('/userdashboard')} >Dashboard</p>
                     </div>
-                    <div className={location.pathname === "/userdetail" ? "active-tab" : "ownerSectionUser"}>
-                        <p style={{ margin: 0 }} onClick={() => navigate('/userdetail')}>User timeline</p>
+                    <div className={location.pathname === "/userdashboard/userdetail" ? "active-tab" : "ownerSectionUser"}>
+                        <p style={{ margin: 0 }} onClick={() => navigate('/userdashboard/userdetail')}>My timeline</p>
                     </div>
-                    <div className={location.pathname === "/usersummary" ? "active-tab" : "ownerSectionUser"}>
+                    {/* <div className={location.pathname === "/usersummary" ? "active-tab" : "ownerSectionUser"}>
                         <p style={{ margin: 0 }} onClick={() => navigate('/usersummary')}>Reports</p>
-                    </div>
-                </div >
+                    </div> */}
+                </div>
                 <div>
                     <div className="ownerSectionCompany d-flex align-items-center cursor-default">
                         <div><img src={circle} /></div>
                         <p className="m-0">{items?.company}</p>
                     </div>
                 </div>
-            </div >
-        </div >
+            </div>
+        </div>
     )
 }
 

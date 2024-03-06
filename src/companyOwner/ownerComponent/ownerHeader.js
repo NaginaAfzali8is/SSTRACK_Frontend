@@ -5,18 +5,22 @@ import dashboard from "../../images/dashboard.webp";
 import account from "../../images/myaccount.webp";
 import logout from "../../images/logout.webp";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setLogout } from "../../store/timelineSlice";
 
 
 function OwnerHeader() {
 
     const items = JSON.parse(localStorage.getItem('items'));
     const [showContent, setShowContent] = useState(false);
+    const dispatch = useDispatch()
 
     const navigate = useNavigate("");
 
     function logOut() {
         localStorage.removeItem("items");
         localStorage.removeItem("token");
+        dispatch(setLogout())
         navigate("/signin")
     }
 

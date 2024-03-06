@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from '../../images/popHeadLogo.png';
+import logo from '../../images/ss-track-logo.svg';
 import line from '../../images/line.webp';
 import dashboard from "../../images/dashboard.webp";
 import account from "../../images/myaccount.webp";
@@ -9,16 +9,20 @@ import AdminHead from "../../screen/component/adminHeadSection";
 import UserDashboardSection from "../../screen/component/userDashboardsection";
 import OwnerSection from "../../companyOwner/ownerComponent/ownerSection";
 import SystemAdminHeader from "../../systemAdmin/component/systemAdminHeader";
+import { useDispatch } from "react-redux";
+import { setLogout } from "../../store/timelineSlice";
 
 function UserHeader() {
 
     const user = JSON.parse(localStorage.getItem('items'));
     const [showContent, setShowContent] = useState(false);
     const navigate = useNavigate("");
+    const dispatch = useDispatch()
 
     function logOut() {
         localStorage.removeItem("items");
         localStorage.removeItem("token");
+        dispatch(setLogout())
         navigate("/signin")
         setShowContent(false)
     }
@@ -127,8 +131,7 @@ function UserHeader() {
             {user?.userType === "owner" ? <OwnerSection /> :
              user?.userType === "admin" ? <AdminHead /> :
              user?.userType === "user" ? <UserDashboardSection /> :
-             user?.userType === "system Admin" ? <SystemAdminHeader /> : ""
-            }
+             user?.userType === "system Admin" ? <SystemAdminHeader /> : ""}
             {/* <img className="line" src={line} /> */}
         </section>
     )

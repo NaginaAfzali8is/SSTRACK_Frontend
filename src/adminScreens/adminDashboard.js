@@ -20,6 +20,9 @@ import useLoading from "../hooks/useLoading";
 import axios from "axios";
 import noResultFound from '../images/no-result-found.svg'
 import Pusher from 'pusher-js';
+import { useDispatch, useSelector } from "react-redux";
+import { searchUsers } from "../store/timelineSlice";
+import { GetTimelineUsersAdmin } from "../middlewares/timeline";
 
 function AdminDashboard() {
 
@@ -30,11 +33,13 @@ function AdminDashboard() {
     const [activeUser, setActiveUser] = useState(null)
     const [searchResults, setSearchResults] = useState(null)
     const navigate = useNavigate();
-    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
+    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
     const token = localStorage.getItem("token");
     const headers = {
         Authorization: "Bearer " + token,
     };
+    const dispatch = useDispatch()
+    const timeline = useSelector((state) => state.timeline)
 
     // Enable pusher logging - don't include this in production
     // Pusher.logToConsole = true;
@@ -65,60 +70,22 @@ function AdminDashboard() {
     //     console.log(JSON.stringify(data));
     // });
 
-    async function getData() {
-        setLoading(true)
-        try {
-            setLoading2(true)
-            const response = await axios.get(`${apiUrl}/superAdmin/allEmployeesworkinghour`, { headers });
-            console.log("response", response);
-            if (response.status) {
-                setLoading(false)
-                setTimeout(() => {
-                    setLoading2(false)
-                }, 1000);
-                const onlineUsers = response.data?.onlineUsers?.length > 0 ? response.data?.onlineUsers : []
-                const offlineUsers = response.data?.offlineUsers?.length > 0 ? response.data?.offlineUsers : []
-                const allUsers = [...onlineUsers, ...offlineUsers];
-                setData(allUsers.filter((f) => {
-                    return f.isArchived === false && f.UserStatus === false
-                }))
-            }
-        } catch (err) {
-            setError(true)
-            setLoading(false)
-            setTimeout(() => {
-                setLoading2(false)
-            }, 1000);
-            console.log(err);
-        }
-    }
-
     useEffect(() => {
-        getData();
-    }, [apiUrl]);
+        if (timeline && timeline?.length === 0) {
+            dispatch(GetTimelineUsersAdmin(headers))
+        }
+    }, [])
 
     function moveOnlineUsers(userId) {
-        navigate("/adminuser", {
+        navigate("/admindashboard/adminuser", {
             state: userId,
         });
     }
 
     function handleSearchEmployee(e) {
-        setLoading2(true)
-        const searchData = data?.filter((user, index) => {
-            return user.userName.toLowerCase().includes(e.target.value.toLowerCase().trim())
-        })
-        setSearchResults(searchData)
-        setTimeout(() => {
-            setLoading2(false)
-        }, 1000);
+        const searchValue = e?.target?.value;
+        dispatch(searchUsers(searchValue));
     }
-
-    useEffect(() => {
-        if (data !== null && data.length > 0) {
-            setSearchResults(data)
-        }
-    }, [data])
 
     return (
         <div>
@@ -157,18 +124,11 @@ function AdminDashboard() {
                             </div>
                         </div>
                         <div className="bgColorChangeGreen" style={{ marginTop: "20px" }}>
-                            {loading ? <Skeleton count={1} height="100vh" style={{ margin: "0 0 10px 0" }} /> : searchResults !== null && searchResults?.length > 0 ? searchResults?.sort((a, b) => {
-                                const timestampA = b.recentScreenshot?.createdAt || 0;
-                                const timestampB = a.recentScreenshot?.createdAt || 0;
-                                if (timestampA === 0 && timestampB === 0) return 0;
-                                if (timestampA === 0) return -1;
-                                if (timestampB === 0) return 1;
-                                return timestampA - timestampB;
-                            }).map((user, index) => {
+                            {loading ? <Skeleton count={1} height="100vh" style={{ margin: "0 0 10px 0" }} /> : timeline?.length > 0 ? timeline?.map((user, index) => {
                                 return loading2 ? (
                                     <Skeleton count={1} height="107px" style={{ margin: "0 0 10px 0" }} />
                                 ) : (
-                                    <div className="dashsheadings" key={user.userId}>
+                                    <div className="dashsheadings" key={user.userId} onClick={() => moveOnlineUsers(user.userId)}>
                                         <div className="companyNameverified">
                                             <img src={user?.userId === activeUser?._id && activeUser?.isActive === true ? check : user?.isActive === true ? check : offline} alt="Verified" />
                                             <h5 className="dashCompanyName">{user?.userName}</h5>
@@ -177,11 +137,7 @@ function AdminDashboard() {
                                             <img
                                                 onClick={() => moveOnlineUsers(user.userId)}
                                                 className="screenShotPreview"
-                                                src={
-                                                    lastScreenshot?.user_id === user?.userId ?
-                                                        lastScreenshot?.key :
-                                                        user?.recentScreenshot ? user?.recentScreenshot?.key : screenshot
-                                                }
+                                                src={lastScreenshot?.user_id === user?.userId ? lastScreenshot?.key : user?.recentScreenshot ? user?.recentScreenshot?.key : screenshot}
                                                 alt="Screenshot"
                                             />
                                             <p className="dashheadingtop">

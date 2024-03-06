@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import DownloadProduct from '../images/banner.png';
+import React, { useEffect, useState } from 'react';
+import DownloadProduct from '../images/ss-track-banner.svg';
 import { BsWindows } from 'react-icons/bs'
 import axios from 'axios'
 
@@ -7,7 +7,7 @@ const Download = () => {
 
     const [downloadOS, setDownloadOS] = useState("mac")
     const [loading, setLoading] = useState(false)
-    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
+    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
 
     const handleDownload = async () => {
         setLoading(true)
@@ -36,6 +36,13 @@ const Download = () => {
         }
     }
 
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }, [])
+
     return (
         <>
             <div className='download-container'>
@@ -53,18 +60,20 @@ const Download = () => {
                     </div>
                     <div className='download-card'>
                         <div>
-                            <h4>Download employee deskstop application for {downloadOS === "mac" ? "mac OS" : "windows"}</h4>
-                            <p>This application is <span style={{ fontWeight: "700", color: "#7ACB59" }}>only for employess, not managers</span></p>
-                            <p>Company managers can see the recorded time and screenshots right on this website.</p>
+                            {/* <h4>Download employee deskstop application for {downloadOS === "mac" ? "mac OS" : "windows"}</h4> */}
+                            <h4>Download employee desktop application for windows</h4>
+                            <p>This application is <span style={{ fontWeight: "700", color: "#7ACB59" }}>for employess, managers</span></p>
+                            <p>Company administrators can review the tracked hours and screenshots on this website.</p>
                             <img width={300} src={DownloadProduct} alt="" />
                             <div style={{ margin: "30px 0" }}>
-                                <h4>What is this ?</h4>
-                                <p>This is a {downloadOS === "mac" ? "mac OS" : "Windows"} desktop application for employess. it is started and stopped by an employee to track time and take their computer screenshot during work.</p>
-                                <p>After the stop button is pressed - no screenshot are being taken. You can review your time and screenshots at My Home. you can also delete your screenshot there.</p>
+                                <h4>Description</h4>
+                                {/* <p>This is a {downloadOS === "mac" ? "mac OS" : "Windows"} desktop application for employess. it is started and stopped by an employee to track time and take their computer screenshot during work.</p> */}
+                                <p>This is a Windows desktop application designed for employees. It allows an employee to start and stop tracking their work time and captures screenshots of their computer during work hours.</p>
+                                <p>Once the stop button is activated, it ceases to take screenshots. Your work time and screenshots can be reviewed in My Home, where you also have the option to delete any screenshots.</p>
                             </div>
                             <div>
-                                <h4>After install</h4>
-                                <p>After install run the application and press "Start" to start your time tracking and screenshot monitoring</p>
+                                <h4>Post-installation</h4>
+                                <p>Once the application is installed, launch it and click "Start" to begin monitoring your time and capturing screenshots.</p>
                             </div>
                         </div>
                         <div className='download-action-container'>

@@ -9,6 +9,7 @@ import Modal from 'react-bootstrap/Modal';
 import user from "../images/user-account.webp";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 import axios from "axios";
+import moment from "moment-timezone";
 
 function AccountAdmin() {
 
@@ -19,7 +20,7 @@ function AccountAdmin() {
     const [verify, setVerify] = useState(false);
     let token = localStorage.getItem('token');
     const navigate = useNavigate('');
-    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
+    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
     const items = JSON.parse(localStorage.getItem('items'));
 
     let headers = {
@@ -97,6 +98,11 @@ function AccountAdmin() {
         }
     }
 
+    const offsetInMinutes = moment.tz(items.timezone).utcOffset();
+    const offsetInHours = offsetInMinutes / 60;
+    const offsetSign = offsetInHours >= 0 ? '+' : '-';
+    const formattedOffset = `${offsetSign}${Math.abs(offsetInHours)}`;
+
     return (
         <div>
             <SnackbarProvider />
@@ -157,7 +163,7 @@ function AccountAdmin() {
                             <br />
                             {items?.timezone}
                             <br />
-                            UTC+{items.timezoneOffset}
+                            UTC {formattedOffset}
                         </p>
                         <div className="accountDiv">
                             <div onClick={() => navigate('/profile')} className="accountEditDiv"><div><img src={edit} /></div><p>Edit Profile</p></div>

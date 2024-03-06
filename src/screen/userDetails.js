@@ -31,6 +31,7 @@ import perc_100 from "../images/FullGreen.svg"
 import { ImCross } from "react-icons/im";
 import edit from '../images/EditTimeZone.webp';
 import { CaptureScreenshot } from "./component/captureScreenshot";
+import moment from "moment-timezone";
 
 function UserDetails() {
 
@@ -76,6 +77,11 @@ function UserDetails() {
     const [splitActivity, setSplitActivity] = useState(false);
     const [changeEdit, setEdit] = useState(false);
 
+    const [totalPercentageByDay, setTotalPercentageByDay] = useState(null)
+    const [activeMonth, setActiveMonth] = useState(new Date().toLocaleDateString())
+    const [current_day, set_current_day] = useState(null)
+    const [current_month, set_current_month] = useState(null)
+
     const userId = items?._id;
     const currentMonths = (new Date().getMonth() + 1).toString().padStart(2, '0');
     const currentDate = new Date().getDate().toString().padStart(2, '0');
@@ -86,7 +92,7 @@ function UserDetails() {
     const currentMonth = new Date().getMonth();
     const currentDay = new Date().getDay();
 
-    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
+    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
     let token = localStorage.getItem('token');
     let headers = {
         Authorization: 'Bearer ' + token,
@@ -99,6 +105,8 @@ function UserDetails() {
     const prevMonth = () => {
         setDate((prevDate) => {
             const prevMonthDate = new Date(prevDate.getFullYear(), prevDate.getMonth() - 1);
+            setActiveMonth(prevMonthDate.toLocaleDateString())
+            setTotalPercentageByDay(null)
             return prevMonthDate;
         });
     };
@@ -106,6 +114,8 @@ function UserDetails() {
     const nextMonth = () => {
         setDate((prevDate) => {
             const nextMonthDate = new Date(prevDate.getFullYear(), prevDate.getMonth() + 1);
+            setActiveMonth(nextMonthDate.toLocaleDateString())
+            setTotalPercentageByDay(null)
             return nextMonthDate;
         });
     };
@@ -154,37 +164,46 @@ function UserDetails() {
             const clickDay = new Date(key).getFullYear();
             const clickMonth = (new Date(key).getMonth() + 1).toString().padStart(2, '0');
             const clickDate = new Date(key).getDate().toString().padStart(2, '0');
-            const formattedsDate = `${clickDay}-${clickMonth}-${clickDate}`;
-            setFormattedDate(formattedsDate);
-            setActiveButton(key)
             const clickDa = new Date(key).getDay();
             const clickMon = new Date(key).getMonth();
             // console.log(clickDa);
             setClickDay(clickDa)
             setMonth(clickMon)
-            // console.log(formattedDate)
+            const formattedsDate = `${clickDay}-${clickMonth}-${clickDate}`;
+            setFormattedDate(formattedsDate);
+            setActiveButton(key)
         };
 
         // Generate cells for each day in the current month
-        for (let i = 1; i <= daysInMonth; i++) {
+        // ...
+
+        // Generate cells for each day in the current month
+        for (let i = 0; i < daysInMonth; i++) {
             const isWeekend = currentDay.getDay() === 0 || currentDay.getDay() === 6;
             const isFirstDayOfWeek = currentDay.getDay() === 1;
-            const isLastDayOfWeek = currentDay.getDay() === 0 || i === daysInMonth;
-            const dayKey = currentDay.toString(); // Generate a unique key using the string representation of the date
+            const isLastDayOfWeek = currentDay.getDay() === 0 || i === daysInMonth - 1;
+            const dayKey = currentDay.toString();
             const isCurrentDate = currentDay.getDate() === new Date().getDate() && currentDay.getMonth() === new Date().getMonth();
 
+            const dayFormatted = `${currentDay.getFullYear()}-${(currentDay.getMonth() + 1).toString().padStart(2, '0')}-${currentDay.getDate().toString().padStart(2, '0')}`;
+
+            // Generate a unique key using the string representation of the date
             days.push(
                 <div
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", border: "1px solid #ebeaea" }}
                     className={`col cell ${isWeekend ? "week day week first" : "day"} ${dayKey === activeButton ? "active" : isCurrentDate ? "active2" : ""}`}
                     key={dayKey}
                     onClick={() => handleClick(dayKey)}
                 >
                     <p className="weekName">{currentDay.toLocaleString("en-US", { weekday: "short" })}</p>
                     <p className="Weekdate">{currentDay.getDate()}</p>
-                    <p className="nonetaken">{currentDay.toLocaleString("en-US", { weekday: "short" })}</p>
+                    {/* <p className="nonetaken">{currentDay.toLocaleString("en-US", { weekday: "short" })}</p> */}
+                    <div style={{ padding: "2px" }}>
+                        <div style={{ width: `${totalPercentageByDay === null ? 0 : totalPercentageByDay[i]?.percentage}%`, background: 'linear-gradient(180deg,#cdeb8e 0,#a5c956)', height: '10px' }}></div>
+                    </div>
                 </div>
             );
+
             currentDay.setDate(currentDay.getDate() + 1);
         }
 
@@ -311,6 +330,75 @@ function UserDetails() {
         return matchingEntry ? "#A8C96A" : '#EFF9EC';
     };
 
+    async function getAllDays() {
+        try {
+            const response = await axios.get(`${apiUrl}/timetrack/hoursbyday?date=${activeMonth}`, { headers });
+            const totalHours = response.data.data.totalHoursByDay;
+            console.log("totalHours of active month", response.data);
+            const currentDate = new Date();
+            const currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+            const currentYear = currentDate.getFullYear();
+            const maxHours = 6;
+            let percentagesByDay = [];
+            const processMonth = (totalHours, month, year) => {
+                const filteredHours = totalHours.filter(th => {
+                    const dateParts = th.date.split('-').map(part => part);
+                    return "0" + dateParts[1] === month && dateParts[2] === year;
+                });
+
+                console.log(`filteredHoursss for ${month}-${year}`, filteredHours);
+
+                filteredHours.forEach(th => {
+                    const timeMatches = th.totalHours.match(/(\d+)h\s*(\d*)m/);
+                    let totalMinutes = 0;
+
+                    if (timeMatches) {
+                        const hours = parseInt(timeMatches[1], 10) || 0;
+                        const minutes = parseInt(timeMatches[2], 10) || 0;
+                        totalMinutes = hours * 60 + minutes;
+                    }
+
+                    const totalHoursDecimal = totalMinutes / 60;
+                    const widthPercentage = (totalMinutes / (maxHours * 60)) * 100;
+                    const widthPercentageExact = (totalHoursDecimal / maxHours) * 100;
+
+                    percentagesByDay.push({
+                        date: th.date,
+                        totalMinutes: totalMinutes,
+                        percentage: Math.min(widthPercentage, 100),
+                        percentageExact: Math.min(widthPercentageExact, 100),
+                    });
+                });
+            };
+            // Assuming you have the totalHours data available
+            // Process data for the first month of the new year
+            let isFirstMonthProcessed = false;
+
+            for (let year = currentDate.getFullYear(); year >= 2022; year--) {
+                for (let month = 12; month >= 1; month--) {
+                    processMonth(totalHours, month.toString().padStart(2, '0'), year.toString());
+
+                    // Break out of the loop after processing the first month
+                    if (month === 1 && !isFirstMonthProcessed) {
+                        isFirstMonthProcessed = true;
+                        break;
+                    }
+                }
+            }
+
+            console.log({ percentagesByDay });
+            setTotalPercentageByDay(percentagesByDay);
+
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getAllDays()
+    }, [activeMonth]);
+
     // var pusher = new Pusher('334425b3c859ed2f1d2b', {
     //     cluster: 'ap2'
     // });
@@ -436,7 +524,12 @@ function UserDetails() {
             }
         })
     }, [])
-    
+
+    const offsetInMinutes = moment.tz(items?.timezone).utcOffset();
+    const offsetInHours = offsetInMinutes / 60;
+    const offsetSign = offsetInHours >= 0 ? '+' : '-';
+    const formattedOffset = `${offsetSign}${Math.abs(offsetInHours)}`;
+
     return (
         <div>
 
@@ -591,7 +684,7 @@ function UserDetails() {
                             <h5><img src={circle} alt="" /> {data?.name}</h5>
                         </div>
                         <div className="headerTop">
-                            <p>{data?.timezone}</p>
+                            <p>All times are UTC {formattedOffset}</p>
                             <img src={setting} alt="setting.png" style={{ cursor: "pointer" }} onClick={() => navigate("/account")} />
                         </div>
                     </div>
@@ -600,7 +693,7 @@ function UserDetails() {
                             <div className="calendar-container">
                                 <div className="header">
                                     <img src={left} onClick={prevMonth} alt="Previous Month" />
-                                    <h2 className="monthName">{date.toLocaleString("en-US", { month: "long" })}</h2>
+                                    <h2 className="monthName">{date.toLocaleString("en-US", { month: "long", year: "numeric" })}</h2>
                                     <img src={right} onClick={nextMonth} alt="Next Month" />
                                 </div>
                             </div>
@@ -754,35 +847,38 @@ function UserDetails() {
                                                     ) : (
                                                         <div className="projectAdd" onMouseOver={() => setShowDeleteButton(true)} onMouseOut={() => setShowDeleteButton(false)}>
                                                             <div className="timelineDiv">
-                                                                <p className="notes">
-                                                                    {elements?.time}
+                                                                <div>
                                                                     <OverlayTrigger placement="top" overlay={<Tooltip>{elements?.description}</Tooltip>}>
-                                                                        <a className="websiteLink" href="#">{elements?.description}</a>
+                                                                        <p className="notes">
+                                                                            <a className="websiteLink" href="#">{elements?.time} {elements?.description}</a>
+                                                                        </p>
                                                                     </OverlayTrigger>
-                                                                </p>
-                                                                <img src={deleteIcon} alt="" style={{ marginRight: 15 }} onClick={() => handleOpenDeleteModal(element, elements)} />
-                                                                {elements?.visitedUrls?.length === 0 ?
-                                                                    <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
-                                                                        <div className="circular-progress">
-                                                                            <CircularProgressBar activityPercentage={100} size={30} emptyUrl={0} />
-                                                                        </div>
-                                                                    </OverlayTrigger>
-                                                                    :
-                                                                    elements?.visitedUrls?.map((e) => {
-                                                                        return e?.activityPercentage === 0 ? (
-                                                                            <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
-                                                                                <div className="circular-progress">
-                                                                                    <CircularProgressBar activityPercentage={100} size={30} emptyUrl={0} />
-                                                                                </div>
-                                                                            </OverlayTrigger>
-                                                                        ) : (
-                                                                            <OverlayTrigger placement="top" overlay={<Tooltip>{Math.floor(e?.activityPercentage)} %</Tooltip>}>
-                                                                                <div className="circular-progress">
-                                                                                    <CircularProgressBar activityPercentage={e?.activityPercentage} size={30} />
-                                                                                </div>
-                                                                            </OverlayTrigger>
-                                                                        )
-                                                                    })}
+                                                                </div>
+                                                                <div style={{ display: "flex" }}>
+                                                                    <img src={deleteIcon} alt="" style={{ marginRight: 15 }} onClick={() => handleOpenDeleteModal(element, elements)} />
+                                                                    {elements?.visitedUrls?.length === 0 ?
+                                                                        <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
+                                                                            <div className="circular-progress">
+                                                                                <CircularProgressBar activityPercentage={0} size={30} emptyUrl={0} />
+                                                                            </div>
+                                                                        </OverlayTrigger>
+                                                                        :
+                                                                        elements?.visitedUrls?.map((e) => {
+                                                                            return e?.activityPercentage === 0 ? (
+                                                                                <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
+                                                                                    <div className="circular-progress">
+                                                                                        <CircularProgressBar activityPercentage={0} size={30} emptyUrl={0} />
+                                                                                    </div>
+                                                                                </OverlayTrigger>
+                                                                            ) : (
+                                                                                <OverlayTrigger placement="top" overlay={<Tooltip>{Math.floor(e?.activityPercentage)} %</Tooltip>}>
+                                                                                    <div className="circular-progress">
+                                                                                        <CircularProgressBar activityPercentage={e?.activityPercentage} size={30} />
+                                                                                    </div>
+                                                                                </OverlayTrigger>
+                                                                            )
+                                                                        })}
+                                                                </div>
                                                             </div>
                                                             <div className="screenShotImg">
                                                                 <img className="screenshotiimage" onClick={() => openModal(element, elements?.key, index)} src={elements?.key} alt="ScreenShotImg.png" />
