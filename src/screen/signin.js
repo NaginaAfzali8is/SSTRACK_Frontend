@@ -21,7 +21,7 @@ function SignIn() {
     password: ""
   });
   const [loading, setLoading] = useState(false)
-  const apiUrl = "https://gold-cloudy-moose.cyclic.app/api/v1";
+  const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
 
   const loginUser = async (e) => {
     e.preventDefault();

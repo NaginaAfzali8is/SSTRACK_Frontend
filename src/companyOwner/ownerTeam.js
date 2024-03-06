@@ -37,7 +37,7 @@ function OwnerTeam() {
     const [activeId, setActiveId] = useState(null)
     const [mainId, setMainId] = useState(null)
     const [users, setUsers] = useState(null);
-    const apiUrl = "https://gold-cloudy-moose.cyclic.app/api/v1";
+    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
     const token = localStorage.getItem('token');
     const headers = {
         Authorization: "Bearer " + token,

@@ -25,7 +25,7 @@
 //     let headers = {
 //         Authorization: 'Bearer ' + token,
 //     }
-//     const apiUrl = "https://gold-cloudy-moose.cyclic.app/api/v1";
+//     const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
 
 //     async function createUserGroup() {
 //         try {
@@ -224,7 +224,7 @@ function AdminTeam() {
     const [resendEmail, setResendEmail] = useState("")
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
-    const apiUrl = "https://gold-cloudy-moose.cyclic.app/api/v1";
+    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
     const token = localStorage.getItem('token');
     const headers = {
         Authorization: "Bearer " + token,

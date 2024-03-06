@@ -22,7 +22,7 @@ function CompanyOwner() {
     const [error, setError] = useState(false)
     const [activeUser, setActiveUser] = useState(null)
     const navigate = useNavigate()
-    const apiUrl = "https://gold-cloudy-moose.cyclic.app/api/v1";
+    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
     const token = localStorage.getItem('token');
     const [data, setData] = useState(null)
     const [searchResults, setSearchResults] = useState(null)

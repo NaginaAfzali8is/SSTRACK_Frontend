@@ -16,6 +16,7 @@ import { json, useNavigate } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 import axios from "axios";
+import moment from "moment-timezone";
 
 function Account() {
 
@@ -27,7 +28,7 @@ function Account() {
     const [verify, setVerify] = useState(false);
     let token = localStorage.getItem('token');
     const navigate = useNavigate('');
-    const apiUrl = "https://gold-cloudy-moose.cyclic.app/api/v1";
+    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
     const items = JSON.parse(localStorage.getItem('items'));
     let headers = {
         Authorization: 'Bearer ' + token,
@@ -104,6 +105,11 @@ function Account() {
         }
     }
 
+    const offsetInMinutes = moment.tz(items?.timezoneOffset).utcOffset();
+    const offsetInHours = offsetInMinutes / 60;
+    const offsetSign = offsetInHours >= 0 ? '+' : '-';
+    const formattedOffset = `${offsetSign}${Math.abs(offsetInHours)}`;
+
     console.log(updatePassword)
 
     return (
@@ -166,7 +172,7 @@ function Account() {
                             <br />
                             {items?.timezone}
                             <br />
-                            UTC+{items.timezoneOffset}
+                            UTC {formattedOffset}
                         </p>
                         <div className="accountDiv">
                             <div onClick={() => navigate('/profile')} className="accountEditDiv"><div><img src={edit} /></div><p>Edit Profile</p></div>

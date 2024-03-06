@@ -26,7 +26,7 @@ function Setting() {
     const [loading, setLoading] = useState(false)
     const [loading2, setLoading2] = useState(false)
     const [employess, setEmployess] = useState(null);
-    const apiUrl = "https://gold-cloudy-moose.cyclic.app/api/v1";
+    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
     let token = localStorage.getItem('token');
     let user = JSON.parse(localStorage.getItem('items'));
     let headers = {

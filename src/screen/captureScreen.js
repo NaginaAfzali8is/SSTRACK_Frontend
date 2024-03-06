@@ -13,7 +13,7 @@ function CaptureScreen() {
     const [imgFile, setImgFile] = useState(null);
     const [modal, setModal] = useState({});
     const location = useLocation();
-    const API_URL = "https://gold-cloudy-moose.cyclic.app/api/v1";
+    const API_URL = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
     // const API_URL = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     const user = JSON.parse(localStorage.getItem("items"))
 
