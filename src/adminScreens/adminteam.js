@@ -25,7 +25,7 @@
 //     let headers = {
 //         Authorization: 'Bearer ' + token,
 //     }
-//     const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+//     const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
 
 //     async function createUserGroup() {
 //         try {
@@ -188,8 +188,7 @@ import React, { useEffect, useState } from "react";
 import UserHeader from "../screen/component/userHeader";
 import OwnerSection from "../companyOwner/ownerComponent/ownerSection";
 import groupCompany from "../images/Group.webp";
-import archiveIcon from "../images/archive.svg";
-import inviteIcon from "../images/invitation.svg";
+import search from "../images/searchIcon.webp";
 import line from "../images/Line 3.webp";
 import OwnerTeamComponent from "../companyOwner/ownerTeamComponent";
 import AdminHead from "../screen/component/adminHeadSection";
@@ -218,13 +217,15 @@ function AdminTeam() {
     const [payrate, setPayrate] = useState(null)
     const [inviteStatus, setInviteStatus] = useState("")
     const [isUserArchive, setIsUserArchive] = useState(false)
+    const [isArchived, setIsArchived] = useState(false)
     const [activeId, setActiveId] = useState(null)
     const [mainId, setMainId] = useState(null)
     const [email, setEmail] = useState("")
     const [resendEmail, setResendEmail] = useState("")
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const [searchUsers, setSearchUsers] = useState(null);
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     const token = localStorage.getItem('token');
     const headers = {
         Authorization: "Bearer " + token,
@@ -241,15 +242,19 @@ function AdminTeam() {
             const json = await response.json();
             setUsers(() => {
                 const filterCompanies = json?.convertedEmployees?.filter((employess, index) => {
-                    return user.company === employess.company && user.email !== employess.email && employess.userType !== "owner"
+                    return user.company === employess.company && employess.userType !== "owner"
                 })
                 return filterCompanies
             })
             setLoading(false)
-            setLoading2(false)
+            setTimeout(() => {
+                setLoading2(false)
+            }, 1000);
         } catch (err) {
             setLoading(false)
-            setLoading2(false)
+            setTimeout(() => {
+                setLoading2(false)
+            }, 1000);
             console.log(err);
         }
     }
@@ -259,10 +264,9 @@ function AdminTeam() {
     }, [])
 
     async function archived_unarchived_users() {
-        setShow2(false)
         try {
             const res = await axios.patch(`${apiUrl}/superAdmin/archived/${mainId}`, {
-                isArchived: isUserArchive
+                isArchived: isUserArchive ? false : true
             }, {
                 headers: headers
             })
@@ -395,6 +399,14 @@ function AdminTeam() {
         }
     }
 
+    useEffect(() => {
+        if (users !== null) {
+            setSearchUsers(users)
+        }
+    }, [users])
+
+    console.log(searchUsers);
+
     return (
         <div>
             {show ? <Modal show={show} onHide={() => setShow(false)} animation={false} centered>
@@ -419,28 +431,19 @@ function AdminTeam() {
             </Modal> : null}
             {show2 ? <Modal show={show2} onHide={() => setShow2(false)} animation={false} centered>
                 <Modal.Body>
-                    <p style={{ marginBottom: "20px", fontWeight: "600", fontSize: "20px" }}>{!isUserArchive ? "Unarchive" : "Archive"} {selectedUser?.name} ?</p>
+                    <p style={{ marginBottom: "20px", fontWeight: "600", fontSize: "20px" }}>Archive {selectedUser?.name} ?</p>
                     <p>The user:</p>
-                    {!isUserArchive ? (
-                        <ul>
-                            <li>Will be able to track time for your company</li>
-                            <li>Will appear in the list of users on your home or timeline</li>
-                            <li>Their data will not be retained and accessible in reports</li>
-                            <li>You will be charged for this user</li>
-                        </ul>
-                    ) : (
-                        <ul>
-                            <li>Will not be able to track time for your company</li>
-                            <li>Will not appear in the list of users on your home or timeline</li>
-                            <li>Their data will be retained and accessible in reports</li>
-                            <li>You will not be charged for this user</li>
-                        </ul>
-                    )}
-                    {!isUserArchive && <p>You can restore this user any time</p>}
+                    <ul>
+                        <li>Will not be able to track time for your company</li>
+                        <li>Will not appear in the list of users on your home or timeline</li>
+                        <li>Their data will be retained and accessible in reports</li>
+                        <li>You will not be charged for this user</li>
+                    </ul>
+                    <p>You can restore this user any time</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <button className="teamActionButton" onClick={archived_unarchived_users}>
-                        {!isUserArchive ? "UN-ARCHIVE" : "ARCHIVE"}
+                        ARCHIVE
                     </button>
                     <button className="teamActionButton" onClick={() => setShow2(false)}>
                         CANCEL
@@ -478,32 +481,45 @@ function AdminTeam() {
                     <div className="ownerTeamContainer">
                         <div className="d-flex gap-3">
                             <div style={{ width: "500px" }}>
-                                <p className="addUserButton" onClick={() => navigate('/admindashboard/admin-user-signup')}>+ Create user</p>
+
                                 <div style={{
                                     marginTop: "20px",
                                     display: "flex",
-                                    justifyContent: "space-between"
                                 }}>
-                                    <input value={email} onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Add employee by email" style={{
-                                        fontSize: "18px",
-                                        padding: "6px 10px",
-                                        width: "100%",
-                                        border: "1px solid #cacaca",
-                                        outline: "none",
-                                        borderTopLeftRadius: '5px',
-                                        borderBottomLeftRadius: '5px',
-                                    }} />
-                                    <button style={{
-                                        backgroundColor: "#7acb59",
-                                        borderTopRightRadius: "4px",
-                                        borderBottomRightRadius: "4px",
-                                        padding: "10px 25px",
-                                        color: "white",
-                                        border: "none"
-                                    }} onClick={handleSendInvitation}>
-                                        INVITE
-                                    </button>
+                                    <button style={{ width: "150px", margin: "0 10px 0 0" }} className="addUserButton" onClick={() => navigate('/admin-user-signup')}>CREATE</button>
+                                    <button className="addUserButton" onClick={() => setShow3(true)}>CREATE VIA LINK</button>
                                 </div>
+
+                                {/* <div className="searchDiv">
+                                <input
+                                    placeholder="Enter user email"
+                                    value={invitationEmail}
+                                    onChange={(e) => {
+                                        setInvitationEmail(e.target.value)
+                                    }}
+                                />
+                                <button className="send-invite-btn" onClick={() => {
+                                    handleSendInvitation()
+                                }}>Send invite</button>
+                            </div> */}
+
+                                {/* <div className="add-user-div">
+                                <div><img className="searchLogo" src={search} /></div>
+                                <input
+                                    placeholder="Search"
+                                    onChange={(e) => {
+                                        const { value } = e.target;
+                                        setLoading2(true)
+                                        const filterUsers = users.filter((user) => {
+                                            return user?.name?.toLowerCase().includes(value.toLowerCase())
+                                        });
+                                        setSearchUsers(filterUsers)
+                                        setTimeout(() => {
+                                            setLoading2(false)
+                                        }, 1000);
+                                    }}
+                                />
+                            </div> */}
 
                                 <div className="companyFont">
                                     <p style={{
@@ -517,63 +533,38 @@ function AdminTeam() {
                                         backgroundColor: "#28659C",
                                         color: "white",
                                         fontSize: "600",
-                                        width: "30px",
-                                        height: "30px",
+                                        width: "40px",
+                                        height: "40px",
                                         borderRadius: "100%",
                                         display: "flex",
                                         justifyContent: "center",
                                         alignItems: "center"
                                     }}>
-                                        {users?.length}
+                                        {searchUsers?.filter((d, i) => d.isArchived === false && d.inviteStatus === false)?.length}
                                     </div>
                                 </div>
                                 <div style={{
-                                    height: users?.length >= 5 && 300,
-                                    overflowY: users?.length >= 5 && "scroll",
+                                    height: searchUsers?.filter((d, i) => d.isArchived === false && d.inviteStatus === false).length >= 5 && 300,
+                                    overflowY: searchUsers?.filter((d, i) => d.isArchived === false && d.inviteStatus === false).length >= 5 && "scroll",
                                     marginTop: 20
                                 }}>
-                                    {users?.map((e, i) => {
-                                        return (
+                                    {loading ? <Skeleton count={1} height="40vh" style={{ margin: "10px 0 0 0" }} /> : users && searchUsers?.filter((d, i) => d.isArchived === false && d.inviteStatus === false)?.map((e, i) => {
+                                        return loading2 ? (
+                                            <Skeleton count={1} height="56px" style={{ margin: "10px 0 0 0" }} />
+                                        ) : (
                                             <div className={`adminTeamEmployess ${activeId === e._id ? "activeEmploy" : ""} align-items-center gap-1`} onClick={() => {
                                                 setMainId(e._id)
                                                 setActiveId(e._id)
-                                                setIsUserArchive(e?.isArchived ? false : true)
+                                                setIsUserArchive(false)
                                                 setInviteStatus(false)
                                                 setPayrate(e)
                                                 setSelectedUser(e)
                                             }}>
-                                                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: '100%' }}>
-                                                    <div style={{ display: "flex", alignItems: "center" }}>
-                                                        <div className="groupContentMainImg">
-                                                            <p>{i + 1}</p>
-                                                        </div>
-                                                        <p className="groupContent">{e?.inviteStatus === true ? e?.email : e?.name}</p>
+                                                <div style={{ display: "flex", alignItems: "center" }}>
+                                                    <div className="groupContentMainImg">
+                                                        <p>{i + 1}</p>
                                                     </div>
-                                                    {e?.inviteStatus === true ? (
-                                                        <div style={{
-                                                            marginRight: "3px",
-                                                            padding: "3px 10px",
-
-                                                            borderRadius: "3px",
-                                                            color: "#fff",
-                                                            fontSize: "12px",
-                                                            lineHeight: 1.4,
-                                                        }}>
-                                                            <img width={30} src={inviteIcon} />
-                                                        </div>
-                                                    ) : e?.isArchived === true ? (
-                                                        <div style={{
-                                                            marginRight: "3px",
-                                                            padding: "3px 10px",
-
-                                                            borderRadius: "3px",
-                                                            color: "#fff",
-                                                            fontSize: "12px",
-                                                            lineHeight: 1.4,
-                                                        }}>
-                                                            <img width={30} src={archiveIcon} />
-                                                        </div>
-                                                    ) : null}
+                                                    <p className="groupContent">{e?.name}</p>
                                                 </div>
                                                 {e?.userType === "owner" ? <div>
                                                     <AiFillStar color="#e7c741" size={20} />
@@ -583,7 +574,7 @@ function AdminTeam() {
                                     })}
                                 </div>
 
-                                {/* <div className="archiveFont">
+                                <div className="archiveFont">
                                     <p style={{
                                         margin: 0,
                                         padding: 0,
@@ -595,8 +586,8 @@ function AdminTeam() {
                                         backgroundColor: "#727272",
                                         color: "white",
                                         fontSize: "600",
-                                        width: "30px",
-                                        height: "30px",
+                                        width: "40px",
+                                        height: "40px",
                                         borderRadius: "100%",
                                         display: "flex",
                                         justifyContent: "center",
@@ -610,8 +601,10 @@ function AdminTeam() {
                                     overflowY: searchUsers?.filter((d, i) => d.isArchived === true && d.inviteStatus === false).length >= 5 && "scroll",
                                     marginTop: 20
                                 }}>
-                                    {users && searchUsers?.filter((d, i) => d.isArchived === true && d.inviteStatus === false)?.map((e, i) => {
-                                        return (
+                                    {loading ? <Skeleton count={1} height="20vh" style={{ margin: "10px 0 0 0" }} /> : users && searchUsers?.filter((d, i) => d.isArchived === true && d.inviteStatus === false)?.map((e, i) => {
+                                        return loading2 ? (
+                                            <Skeleton count={1} height="56px" style={{ margin: "10px 0 0 0" }} />
+                                        ) : (
                                             <div className={`adminTeamEmployess ${activeId === e._id ? "activeEmploy" : ""} align-items-center gap-1`} onClick={() => {
                                                 setMainId(e._id)
                                                 setActiveId(e._id)
@@ -630,9 +623,9 @@ function AdminTeam() {
                                             </div>
                                         )
                                     })}
-                                </div> */}
+                                </div>
 
-                                {/* <div className="archiveFont">
+                                <div className="archiveFont">
                                     <p style={{
                                         margin: 0,
                                         padding: 0,
@@ -644,8 +637,8 @@ function AdminTeam() {
                                         backgroundColor: "#727272",
                                         color: "white",
                                         fontSize: "600",
-                                        width: "30px",
-                                        height: "30px",
+                                        width: "40px",
+                                        height: "40px",
                                         borderRadius: "100%",
                                         display: "flex",
                                         justifyContent: "center",
@@ -659,8 +652,10 @@ function AdminTeam() {
                                     overflowY: searchUsers?.filter((d, i) => d.inviteStatus === true).length >= 5 && "scroll",
                                     marginTop: 20
                                 }}>
-                                    {users && searchUsers?.filter((d, i) => d.inviteStatus === true)?.map((e, i) => {
-                                        return (
+                                    {loading ? <Skeleton count={1} height="20vh" style={{ margin: "10px 0 0 0" }} /> : users && searchUsers?.filter((d, i) => d.inviteStatus === true)?.map((e, i) => {
+                                        return loading2 ? (
+                                            <Skeleton count={1} height="56px" style={{ margin: "10px 0 0 0" }} />
+                                        ) : (
                                             <div className={`adminTeamEmployess ${activeId === e._id ? "activeEmploy" : ""} align-items-center gap-1`} onClick={() => {
                                                 setMainId(e._id)
                                                 setActiveId(e._id)
@@ -680,7 +675,7 @@ function AdminTeam() {
                                             </div>
                                         )
                                     })}
-                                </div> */}
+                                </div>
 
                             </div>
 
@@ -692,6 +687,8 @@ function AdminTeam() {
                                     fixId={mainId}
                                     archived_unarchived_users={() => setShow2(true)}
                                     deleteUser={() => setShow(true)}
+                                    isArchived={isArchived}
+                                    setIsArchived={setIsArchived}
                                     isUserArchive={isUserArchive}
                                     inviteStatus={inviteStatus}
                                     handleSendInvitation={handleSendInvitation}

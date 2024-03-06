@@ -36,9 +36,6 @@ import perc_60 from "../images/Yellow.svg"
 import perc_80 from "../images/LightGreen.svg"
 import perc_100 from "../images/FullGreen.svg"
 import { CaptureScreenshot } from "../screen/component/captureScreenshot";
-import { useDispatch, useSelector } from "react-redux";
-import { GetTimelineUserOwner } from "../middlewares/timeline";
-import { selectUserTimeline } from "../store/timelineSlice";
 
 function CompanyIndividualUser() {
 
@@ -94,17 +91,15 @@ function CompanyIndividualUser() {
     const [totalPercentageByDay, setTotalPercentageByDay] = useState(null)
     const [activeMonth, setActiveMonth] = useState(new Date().toLocaleDateString())
 
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     let token = localStorage.getItem('token');
     let items = JSON.parse(localStorage.getItem('items'));
     let headers = {
         Authorization: "Bearer " + token,
     }
 
-    const dispatch = useDispatch()
-    const userTimeline = useSelector((state) => state.userTimeline)
-    const showUserTimeline = useSelector((state) => state.showTimelineData)
-    const [deleteActivity, setDeleteActivity] = useState(false)
+    console.log("token", token);
+    console.log("userId", userId);
 
     // var pusher = new Pusher('334425b3c859ed2f1d2b', {
     //     cluster: 'ap2'
@@ -228,27 +223,32 @@ function CompanyIndividualUser() {
     };
 
     const fetchData = async () => {
-        // const findTimeline = userTimeline?.find((f) => f.formattedDate === formattedDate)
-        // dispatch(selectUserTimeline({ findTimeline, formattedDate }))
         try {
-            const response = await axios.get(`${apiUrl}/owner/sorted-datebased/${userId}?date=${encodeURIComponent(formattedDate)}`, { headers });
+            const response = await axios.get(`${apiUrl}/superAdmin/sorted-datebased/${userId}?date=${encodeURIComponent(formattedDate)}`, { headers });
+            setLoading(true)
             if (response.data) {
                 setData(response.data.data);
                 setTimeBill(response.data.data.timeBill);
                 setTimeEntries(response?.data?.data?.groupedScreenshots || []);
                 setTimeTrackingId(response.data.data.TimeTrackingId)
                 setTrimActivity({ ...trimActivity, totalHours: response?.data?.data?.totalHours.daily })
+                setTimeout(() => {
+                    setLoading(false)
+                }, 100);
                 console.log(response);
             }
         }
         catch (error) {
+            setTimeout(() => {
+                setLoading(false)
+            }, 100);
             console.log(error);
         }
     };
 
     async function getAllDays() {
         try {
-            const response = await axios.get(`${apiUrl}/owner/hoursbyday/${userId}?date=${activeMonth}`, { headers });
+            const response = await axios.get(`${apiUrl}/superAdmin/hoursbyday/${userId}?date=${activeMonth}`, { headers });
             const totalHours = response.data.data.totalHoursByDay;
             console.log("totalHours of active month", response.data);
             const currentDate = new Date();
@@ -259,19 +259,25 @@ function CompanyIndividualUser() {
             const processMonth = (totalHours, month, year) => {
                 const filteredHours = totalHours.filter(th => {
                     const dateParts = th.date.split('-').map(part => part);
-                    return "0" + dateParts[1] === month && dateParts[2] === year;
+                    return dateParts[1] === month && dateParts[2] == year;
                 });
+
+                console.log(`filteredHoursss for ${month}-${year}`, filteredHours);
+
                 filteredHours.forEach(th => {
                     const timeMatches = th.totalHours.match(/(\d+)h\s*(\d*)m/);
                     let totalMinutes = 0;
+
                     if (timeMatches) {
                         const hours = parseInt(timeMatches[1], 10) || 0;
                         const minutes = parseInt(timeMatches[2], 10) || 0;
                         totalMinutes = hours * 60 + minutes;
                     }
+
                     const totalHoursDecimal = totalMinutes / 60;
                     const widthPercentage = (totalMinutes / (maxHours * 60)) * 100;
                     const widthPercentageExact = (totalHoursDecimal / maxHours) * 100;
+
                     percentagesByDay.push({
                         date: th.date,
                         totalMinutes: totalMinutes,
@@ -287,6 +293,7 @@ function CompanyIndividualUser() {
                     processMonth(totalHours, month.toString().padStart(2, '0'), year.toString());
                 }
             }
+            console.log(percentagesByDay);
             setTotalPercentageByDay(percentagesByDay);
         }
         catch (error) {
@@ -297,10 +304,6 @@ function CompanyIndividualUser() {
     useEffect(() => {
         fetchData();
     }, [formattedDate]);
-
-    // useEffect(() => {
-    //     dispatch(GetTimelineUserOwner({ userId, formattedDate, headers }))
-    // }, []);
 
     useEffect(() => {
         getAllDays()
@@ -313,46 +316,64 @@ function CompanyIndividualUser() {
         console.log(index);
     };
 
+    const getColorForTime = (hoursWorked) => {
+        // Define your color thresholds based on hours worked
+        const colorThresholds = [
+            { minHours: 0, maxHours: 4, color: '#EFF9EC' },   // Color for 0-4 hours
+            { minHours: 4, maxHours: 8, color: '#A8C96A' },   // Color for 4-8 hours
+            { minHours: 8, maxHours: 12, color: '#FF5733' },  // Color for 8-12 hours
+        ];
+
+        // Find the first color threshold that matches the hours worked
+        const matchedThreshold = colorThresholds.find(threshold => hoursWorked >= threshold.minHours && hoursWorked < threshold.maxHours);
+
+        // Return the color of the matched threshold or a default color
+        return matchedThreshold ? matchedThreshold.color : '#EFF9EC';
+    };
+
     const renderTimeIntervals = () => {
         const intervals = [];
+        let totalHoursWorked = 0;
+
         for (let hour = 0; hour <= 23; hour++) {
             const isPM = hour >= 12;
             const formattedHour = hour <= 12 ? hour : hour - 12;
+
             intervals.push(
                 <div key={hour} className="time-slot">
                     <div className="hour-color">
                         {formattedHour === 0 ? 12 : formattedHour} {isPM ? 'pm' : 'am'}
-                        <div className="minute-container">
-                            {Array.from({ length: 60 }, (_, minute) => {
-                                const timeWithMinutes = `${hour}:${minute < 10 ? '0' + minute : minute}`;
-                                const color = getColorForTime(timeWithMinutes);
-                                return (
-                                    <div
-                                        key={minute}
-                                        className={`time-interval ${color !== 'transparent' ? 'red' : ''}`}
-                                        style={{ background: color }}
-                                    >
-                                        {minute}
-                                    </div>
-                                );
-                            })}
-                        </div>
+                        {renderMinuteContainers(hour, totalHoursWorked)}
                     </div>
                 </div>
             );
+
+            // Increment totalHoursWorked for each hour
+            totalHoursWorked += 1;
         }
+
         return intervals;
     };
 
-    const getColorForTime = (time) => {
-        const matchingEntry = data?.groupedScreenshots?.find(entry => {
-            const [startTime, endTime] = entry?.time?.split(' - ');
-            const startTimeFormatted = new Date(`${encodeURIComponent(formattedDate)} ${startTime}`).getTime();
-            const endTimeFormatted = new Date(`${encodeURIComponent(formattedDate)} ${endTime}`).getTime();
-            const currentTimeFormatted = new Date(`${encodeURIComponent(formattedDate)} ${time}`).getTime();
-            return currentTimeFormatted >= startTimeFormatted && currentTimeFormatted <= endTimeFormatted;
-        });
-        return matchingEntry ? "#A8C96A" : '#EFF9EC';
+    const renderMinuteContainers = (hour, totalHoursWorked) => {
+        return (
+            <div className="minute-container">
+                {Array.from({ length: 60 }, (_, minute) => {
+                    const hoursWorked = totalHoursWorked + minute / 60;
+                    const color = getColorForTime(hoursWorked);
+
+                    return (
+                        <div
+                            key={minute}
+                            className={`time-interval ${color !== 'transparent' ? 'red' : ''}`}
+                            style={{ background: color }}
+                        >
+                            {minute}
+                        </div>
+                    );
+                })}
+            </div>
+        );
     };
 
     const goBackToPreviousImage = () => {
@@ -438,8 +459,8 @@ function CompanyIndividualUser() {
                         horizontal: "right"
                     }
                 })
-                fetchData()
             }
+            fetchData()
         } catch (error) {
             console.log(error);
             enqueueSnackbar("network error", {
@@ -467,55 +488,31 @@ function CompanyIndividualUser() {
         setShowOfflineTime(false)
         setShowTrimActivity(false)
         setShowSplitActivity(false)
+        const formattedStartTime = formattedDate + " " + trimActivity?.startTime;
+        const formattedEndTime = formattedDate + " " + trimActivity?.endTime;
         const timeEntryId = trimActivity?.timeentryId
-        if (deleteActivity === false) {
-            const formattedStartTime = formattedDate + " " + trimActivity?.startTime;
-            const formattedEndTime = formattedDate + " " + trimActivity?.endTime;
-            try {
-                const response = await axios.patch(`${apiUrl}/superAdmin/trim-activity/${userId}/${timeEntryId}`, {
-                    startTime: formattedStartTime,
-                    endTime: formattedEndTime,
-                }, {
-                    headers: {
-                        Authorization: 'Bearer ' + token
-                    }
-                });
-                if (response.status === 200) {
-                    enqueueSnackbar(response.data.data.message, {
-                        variant: "success",
-                        anchorOrigin: {
-                            vertical: "top",
-                            horizontal: "right"
-                        }
-                    })
-                    fetchData()
-                    console.log(response);
+        try {
+            const response = await axios.patch(`${apiUrl}/superAdmin/trim-activity/${userId}/${timeEntryId}`, {
+                startTime: formattedStartTime,
+                endTime: formattedEndTime,
+            }, {
+                headers: {
+                    Authorization: 'Bearer ' + token
                 }
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        else {
-            try {
-                const response = await axios.delete(`${apiUrl}/superAdmin/time-tracking/${timeTrackingId}/activity/${timeEntryId}`, {
-                    headers: {
-                        Authorization: 'Bearer ' + token
+            });
+            if (response.status === 200) {
+                enqueueSnackbar(response.data.data.message, {
+                    variant: "success",
+                    anchorOrigin: {
+                        vertical: "top",
+                        horizontal: "right"
                     }
-                });
-                if (response.status === 200) {
-                    enqueueSnackbar(response.data.message, {
-                        variant: "success",
-                        anchorOrigin: {
-                            vertical: "top",
-                            horizontal: "right"
-                        }
-                    })
-                    fetchData()
-                    console.log(response);
-                }
-            } catch (error) {
-                console.log(error);
+                })
+                fetchData()
+                console.log(response);
             }
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -541,6 +538,7 @@ function CompanyIndividualUser() {
                         horizontal: "right"
                     }
                 })
+                fetchData()
                 console.log(response);
             }
         } catch (error) {
@@ -577,6 +575,7 @@ function CompanyIndividualUser() {
                         horizontal: "right"
                     }
                 })
+                fetchData()
                 console.log(response);
             }
         } catch (error) {
@@ -589,14 +588,7 @@ function CompanyIndividualUser() {
         set_current_month(months[currentMonth])
     }, [])
 
-    const offsetInMinutes = moment.tz(items?.timezone).utcOffset();
-    const offsetInHours = offsetInMinutes / 60;
-    const offsetSign = offsetInHours >= 0 ? '+' : '-';
-    const formattedOffset = `${offsetSign}${Math.abs(offsetInHours)}`;
-
-    const handleDivClick = () => {
-        setDeleteActivity(!deleteActivity);
-    };
+    console.log(trimActivity);
 
     return (
         <div>
@@ -644,7 +636,7 @@ function CompanyIndividualUser() {
                             <p>-{trimActivity?.totalHours ? trimActivity?.totalHours : "0h 0m"}</p>
                         </div>
                         <p className="sevenAm">eg 7am to 9:10am or 17:30 to 22:00</p>
-                        {/* <div>
+                        <div>
                             <select className="projectOption" defaultValue="">
                                 <option>Infiniti Solutions</option>
                                 <option>Y8HR</option>
@@ -652,11 +644,11 @@ function CompanyIndividualUser() {
                                 <option>Geox HR</option>
                                 <option>Click HR</option>
                             </select>
-                        </div> */}
+                        </div>
                         <textarea placeholder="Note (optional)" rows="5" ></textarea>
                         <div className="deleteActivityPart">
-                            <div style={{ cursor: "pointer", display: "flex", alignItems: "center" }} onClick={handleDivClick}>
-                                <input id="editcheck" type="checkbox" checked={deleteActivity} onChange={(e) => setDeleteActivity(e.target.checked)} />
+                            <div style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
+                                <input id="editcheck" type="checkbox" />
                                 <p style={{ margin: "0 0 0 10px", padding: 0 }}>Delete this activity</p>
                             </div>
                             <p style={{ margin: 0, cursor: "pointer" }} onClick={() => {
@@ -667,7 +659,7 @@ function CompanyIndividualUser() {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className="teamActionButton" onClick={handleTrimActivity}>
+                    <button disabled={trimActivity?.startTime < startTime || trimActivity?.endTime > endTime} className={`${trimActivity?.startTime < startTime || trimActivity?.endTime > endTime ? "teamActionButtonDisabled" : "teamActionButton"}`} onClick={handleTrimActivity}>
                         SAVE CHANGES
                     </button>
                     <button className="teamActionButton" onClick={() => {
@@ -761,7 +753,7 @@ function CompanyIndividualUser() {
                             <h5><img src={circle} alt="" /> {data?.name}</h5>
                         </div>
                         <div className="headerTop">
-                            <p>All times are UTC {formattedOffset}</p>
+                            <p>All times are UTC + {items.timezoneOffset}</p>
                             <img
                                 src={setting}
                                 alt="setting.png"
@@ -777,7 +769,7 @@ function CompanyIndividualUser() {
                             <div className="calendar-container">
                                 <div className="header">
                                     <img src={left} onClick={prevMonth} alt="Previous Month" />
-                                    <h2 className="monthName">{date.toLocaleString("en-US", { month: "long", year: "numeric" })}</h2>
+                                    <h2 className="monthName">{date.toLocaleString("en-US", { month: "long" })}</h2>
                                     <img src={right} onClick={nextMonth} alt="Next Month" />
                                 </div>
                             </div>
@@ -945,38 +937,35 @@ function CompanyIndividualUser() {
                                                 ) : (
                                                     <div className="projectAdd" onMouseOver={() => setShowDeleteButton(true)} onMouseOut={() => setShowDeleteButton(false)}>
                                                         <div className="timelineDiv">
-                                                            <div>
+                                                            <p className="notes" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                                                                {elements?.time}
                                                                 <OverlayTrigger placement="top" overlay={<Tooltip>{elements?.description}</Tooltip>}>
-                                                                    <p className="notes">
-                                                                        <a className="websiteLink" href="#">{elements?.time} {elements?.description}</a>
-                                                                    </p>
+                                                                    <a className="websiteLink" href="#">{elements?.description}</a>
                                                                 </OverlayTrigger>
-                                                            </div>
-                                                            <div style={{ display: "flex" }}>
-                                                                <img src={deleteIcon} alt="" style={{ marginRight: 5 }} onClick={() => handleOpenDeleteModal(element, elements)} />
-                                                                {elements?.visitedUrls?.length === 0 ?
-                                                                    <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
-                                                                        <div className="circular-progress">
-                                                                            <CircularProgressBar activityPercentage={0} size={30} emptyUrl={0} />
-                                                                        </div>
-                                                                    </OverlayTrigger>
-                                                                    :
-                                                                    elements?.visitedUrls?.map((e) => {
-                                                                        return e?.activityPercentage === 0 ? (
-                                                                            <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
-                                                                                <div className="circular-progress">
-                                                                                    <CircularProgressBar activityPercentage={0} size={30} emptyUrl={0} />
-                                                                                </div>
-                                                                            </OverlayTrigger>
-                                                                        ) : (
-                                                                            <OverlayTrigger placement="top" overlay={<Tooltip>{Math.floor(e?.activityPercentage)} %</Tooltip>}>
-                                                                                <div className="circular-progress">
-                                                                                    <CircularProgressBar activityPercentage={e?.activityPercentage} size={30} />
-                                                                                </div>
-                                                                            </OverlayTrigger>
-                                                                        )
-                                                                    })}
-                                                            </div>
+                                                            </p>
+                                                            <img src={deleteIcon} alt="" style={{ marginRight: 15 }} onClick={() => handleOpenDeleteModal(element, elements)} />
+                                                            {elements?.visitedUrls?.length === 0 ?
+                                                                <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
+                                                                    <div className="circular-progress">
+                                                                        <CircularProgressBar activityPercentage={100} size={30} emptyUrl={0} />
+                                                                    </div>
+                                                                </OverlayTrigger>
+                                                                :
+                                                                elements?.visitedUrls?.map((e) => {
+                                                                    return e?.activityPercentage === 0 ? (
+                                                                        <OverlayTrigger placement="top" overlay={<Tooltip>0 %</Tooltip>}>
+                                                                            <div className="circular-progress">
+                                                                                <CircularProgressBar activityPercentage={100} size={30} emptyUrl={0} />
+                                                                            </div>
+                                                                        </OverlayTrigger>
+                                                                    ) : (
+                                                                        <OverlayTrigger placement="top" overlay={<Tooltip>{Math.floor(e?.activityPercentage)} %</Tooltip>}>
+                                                                            <div className="circular-progress">
+                                                                                <CircularProgressBar activityPercentage={e?.activityPercentage} size={30} />
+                                                                            </div>
+                                                                        </OverlayTrigger>
+                                                                    )
+                                                                })}
                                                         </div>
                                                         <div className="screenShotImg">
                                                             <img className="screenshotiimage" onClick={() => openModal(element, elements?.key, index)} src={elements?.key} alt="ScreenShotImg.png" />
@@ -1016,10 +1005,10 @@ function CompanyIndividualUser() {
                             }))}
                         </div>
 
-                        {/* <div className="historyButton">
+                        <div className="historyButton">
                             <img className="historyImg" src={historyIcon} alt="HistoryIcon.png" />
                             <p className="historyOfChanges">History of Changes</p>
-                        </div> */}
+                        </div>
                     </div>
                 </div>
                 <img className="userDetailLine" src={line} />

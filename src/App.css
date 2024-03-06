@@ -52,33 +52,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.cdnfonts.com/css/euclid-circular-a');
 
-@font-face {
-  font-family: "Euclid-light";
-  src: url(./font/Euclid/Euclid\ Circular\ B\ Light.ttf);
-}
-
-@font-face {
-  font-family: "Euclid-medium";
-  src: url(./font/Euclid/Euclid\ Circular\ B\ Medium.ttf);
-}
-
-@font-face {
-  font-family: "Euclid-regular";
-  src: url(./font/Euclid/Euclid\ Circular\ B\ Regular.ttf);
-}
-
-@font-face {
-  font-family: "Euclid-bold";
-  src: url(./font/Euclid/Euclid\ Circular\ B\ Bold.ttf);
-}
-
-@font-face {
-  font-family: "Euclid-semibold";
-  src: url(./font/Euclid/Euclid\ Circular\ B\ SemiBold.ttf);
-}
-
 * {
-  font-family: "Euclid-medium";
+  font-family: 'Poppins', sans-serif !important;
 }
 
 .App {
@@ -831,8 +806,8 @@ nav li a {
 }
 
 .dashCompanyName {
-  /* margin: 0; */
-  font-size: 25px;
+  margin: 0;
+  font-size: 20px;
   font-weight: 500;
   margin-left: 10px;
   color: #0E4772;
@@ -1306,7 +1281,6 @@ nav li a {
   font-size: 18px;
   font-weight: 400;
   margin: 0;
-  width: 230px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1433,7 +1407,7 @@ nav li a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 10px;
+  padding: 10px 20px;
 }
 
 .websiteLink {
@@ -1462,7 +1436,7 @@ nav li a {
   width: 100%;
   height: auto;
   background-color: #E8F4FC;
-  /* padding: 9px 30px 17px 30px; */
+  padding: 9px 30px 17px 30px;
   /* border-radius: 10px; */
   /* margin-top: 10px; */
 }
@@ -2078,7 +2052,7 @@ nav li a {
 }
 
 .dateDiv button {
-  background-color: #F5F5F5;
+  background-color: #E6F1F9;
   border: none;
   padding: 10px 20px;
   justify-content: space-between;
@@ -2118,12 +2092,12 @@ nav li a {
 }
 
 .crossButtonDiv {
-  /* display: flex; */
-  /* justify-content: space-between; */
-  /* background-color: #E6F1F9; */
-  /* padding: 10px; */
-  /* border-radius: 5px; */
-  margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  background-color: #E6F1F9;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 20px;
 }
 
 .downArrowDiv {
@@ -2148,7 +2122,9 @@ nav li a {
 }
 
 .summaryButton {
-  text-align: end;
+  display: flex;
+  align-items: center;
+  gap: 25px;
   margin-top: 50px;
   font-size: 18px;
   font-weight: 400;
@@ -2156,12 +2132,13 @@ nav li a {
 }
 
 .summaryButton button {
+
   background: #E6F1F9;
   border-radius: 5.22222px;
   border: none;
   color: #0E4772;
-  padding: 10px;
-  width: 180px;
+  padding: 10px 20px;
+  width: 200px;
 }
 
 .summaryButton button.activeButton {
@@ -2196,15 +2173,6 @@ nav li a {
   font-size: 62px;
   font-weight: 500;
   color: #7ACB59;
-  margin: 0;
-  text-align: center;
-}
-
-.report-percentage {
-  font-size: 21px;
-  font-weight: 500;
-  color: #0E4772;
-  margin: -20px 0 0 0;
   text-align: center;
 }
 
@@ -2236,12 +2204,11 @@ nav li a {
 .asadMehmoodDiv {
   display: flex;
   justify-content: space-between;
-  background-color: #f1f1f1 !important;
+  color: #28659C;
   align-items: center;
-  padding: 20px 30px;
+  padding: 0px 30px;
   border-radius: 5px;
   margin-top: 30px;
-  cursor: pointer;
 }
 
 .asadMehmoodDiv span {
@@ -2258,17 +2225,16 @@ nav li a {
   margin-bottom: 0px;
   font-size: 21px;
   font-weight: 500;
-  color: black;
 }
 
 .durationDiv {
   display: flex;
   justify-content: space-evenly;
-  width: 300px
+  width: 500px
 }
 
 .durationDiv p {
-  margin: 0;
+  margin-bottom: 0px;
 }
 
 .admin1Line {
@@ -2563,17 +2529,13 @@ input[type=checkbox]:checked:before {
 }
 
 .fiveSection {
-  display: flex;
+  display: grid;
   align-items: center;
+  grid-template-columns: 26% 26% 26%;
   justify-content: space-between;
+  /* gap: 20px; */
   align-items: flex-start;
-  text-align: left;
   margin-top: 100px;
-  padding: 40px;
-}
-
-.fiveSection div {
-  width: 500px;
 }
 
 /* .reportImage{
@@ -2581,7 +2543,6 @@ input[type=checkbox]:checked:before {
   display: block;
   margin: auto;
 } */
-
 .wifi {
   display: block;
   margin: 0 auto;
@@ -2599,7 +2560,6 @@ input[type=checkbox]:checked:before {
   font-size: 20px;
   font-weight: 400;
   color: #0E4772;
-  margin: 0;
   text-align: center;
 }
 
@@ -2732,7 +2692,7 @@ input[type=checkbox]:checked:before {
   background-color: transparent;
   padding: 5px 10px;
   margin-top: 10px;
-  /* margin-right: 10px; */
+  margin-right: 10px;
   cursor: pointer;
 }
 
@@ -4902,16 +4862,12 @@ input.checkboxes:checked {
 
 }
 
-/* .summaryDiv {
+.summaryDiv {
   background-color: #8BAFC0;
   height: 300px;
   width: 700px;
   opacity: 0.5;
-} */
 
-.summaryDiv canvas {
-  width: 300px;
-  height: 300px;
 }
 
 .summaryDiv p {
@@ -4921,11 +4877,7 @@ input.checkboxes:checked {
 }
 
 .summaryTodayDiv p {
-  cursor: pointer !important;
-}
-
-.summaryTodayDiv p:hover {
-  text-decoration: underline;
+  cursor: default;
 }
 
 .backgroundColor {
@@ -4970,10 +4922,9 @@ input.checkboxes:checked {
 }
 
 .hour-color {
-  /* background-color: #EFF9EC; */
-  border: 1.5px solid #e3e3e3;
+  background-color: #EFF9EC;
+  border: 1px solid #e3e3e3;
   text-align: center;
-  color: #0E4772;
 }
 
 /* Customize the scrollbar for webkit-based browsers */
@@ -5033,13 +4984,13 @@ input.checkboxes:checked {
 
 }
 
-/* .summaryDiv {
+.summaryDiv {
   background-color: #8BAFC0;
   height: 300px;
   width: 700px;
   opacity: 0.5;
 
-} */
+}
 
 .summaryDiv p {
   font-size: 24px;

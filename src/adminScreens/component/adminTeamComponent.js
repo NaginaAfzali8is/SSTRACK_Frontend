@@ -36,7 +36,7 @@ function AdminTeamComponent(props) {
     const { fixId, archived_unarchived_users, deleteUser, isUserArchive, inviteStatus, handleSendInvitation, payrate, reSendInvitation } = props
     const [role, setRole] = useState("")
 
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     let token = localStorage.getItem("token");
     let headers = {
         Authorization: "Bearer " + token,
@@ -321,7 +321,6 @@ function AdminTeamComponent(props) {
     }, [settings])
 
     console.log(settings);
-    console.log({inviteStatus});
 
     return (
         <div>
@@ -338,7 +337,7 @@ function AdminTeamComponent(props) {
                                         <p><img className="paueIcon" src={pause} alt="pauseIcon.png" />Pause</p>
                                     </div>
                                     <div className="archiveMain" onClick={archived_unarchived_users}>
-                                        <p><img className="paueIcon" src={archive} alt="Archive.png" />{isUserArchive === false ? "Unarchive" : "Archive"}</p>
+                                        <p><img className="paueIcon" src={archive} alt="Archive.png" />{isUserArchive ? "UnArchive" : "Archive"}</p>
                                     </div>
                                 </>
                             )}
@@ -356,7 +355,7 @@ function AdminTeamComponent(props) {
                             <CurrencyConverter userId={fixId} payrate={payrate} />
                         </div>
                     </div>
-                    {loading ? <Skeleton count={1} width="100px" height="24px" style={{ margin: "0 0 16px 0" }} /> : inviteStatus === false && <p onClick={() => {
+                    {loading ? <Skeleton count={1} width="100px" height="24px" style={{ margin: "0 0 16px 0" }} /> : <p onClick={() => {
                         setViewTimeline(!viewTimeline)
                     }} style={{
                         fontWeight: "600",
@@ -364,7 +363,7 @@ function AdminTeamComponent(props) {
                         cursor: "pointer",
                         textDecoration: "underline"
                     }}>{viewTimeline === true ? "Hide" : "View"} timeline</p>}
-                    {inviteStatus === false && viewTimeline ? (
+                    {viewTimeline ? (
                         <div style={{
                             display: "flex", alignItems: "center", justifyContent: "space-between", backgroundColor: "white",
                             boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
@@ -489,7 +488,7 @@ function AdminTeamComponent(props) {
                             height: "43px",
                             fontSize: "17px",
                             fontWeight: 600,
-                        }}>save</button>}
+                        }}>update</button>}
                     </div>
                 </>
             ) : (

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import logo from "../images/logo.webp";
-import banner from '../images/ss-track-banner.svg';
+import banner from '../images/banner.png';
 import start from "../images/button.webp";
 import line from '../images/greenline.webp';
 // import banners from './images/banner.png';
@@ -46,8 +46,7 @@ import { AiFillWindows, AiFillApple } from 'react-icons/ai'
 import { BsWindows, BsApple } from 'react-icons/bs'
 import { ImArrowUpRight2 } from 'react-icons/im'
 import { TbSquareRoundedArrowRightFilled } from 'react-icons/tb'
-import detailedTimeline from '../images/connecting-employess-with-manager.png'
-import connectingemployees from '../images/connecting-employess-with-manager2.avif'
+import connectingEmployess from '../images/connecting-employess-with-manager.png'
 import simpleAccess from '../images/simple-access.jpg'
 import effortlessTimeTrack from '../images/effortless-time-track.jpg'
 import screenshot from '../images/screenshot.jpg'
@@ -57,12 +56,15 @@ import axios from "axios";
 function Home() {
 
   const { token } = useParams()
+  let token2 = localStorage.getItem('token');
+  const params = useParams()
   const navigate = useNavigate()
   const location = useLocation()
   const [downloadOS, setDownloadOS] = useState("mac")
   const [accessToken, setAccessToken] = useState('');
   const section1Ref = useRef(null);
   const section2Ref = useRef(null);
+  const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
   const [page, setPage] = useState(1)
   const [feedback, setFeedback] = useState([
     {
@@ -71,13 +73,13 @@ function Home() {
         {
           username: "Olivia Rhye",
           designation: "Expect Best",
-          feedback: "“sstrack.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          feedback: "“ss.track allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
           img: olivia,
         },
         {
           username: "Phoenix Baker",
           designation: "Engineering Manager",
-          feedback: "“sstrack.io makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you sstrack.io!”",
+          feedback: "“ss.track makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you ss.track!”",
           img: pheonix,
         },
         {
@@ -89,13 +91,13 @@ function Home() {
         {
           username: "Candice Wu",
           designation: "Backend Developer",
-          feedback: "“sstrack.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          feedback: "“ss.track allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
           img: candice,
         },
         {
           username: "Phoenix Baker",
           designation: "Product Designer",
-          feedback: "“sstrack.io makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you sstrack.io!”",
+          feedback: "“ss.track makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you ss.track!”",
           img: pheonix,
         },
         {
@@ -118,19 +120,19 @@ function Home() {
         {
           username: "Phoenix Baker",
           designation: "Engineering Manager",
-          feedback: "“sstrack.io makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you sstrack.io!”",
+          feedback: "“ss.track makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you ss.track!”",
           img: pheonix,
         },
         {
           username: "Olivia Rhye",
           designation: "Expect Best",
-          feedback: "“sstrack.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          feedback: "“ss.track allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
           img: olivia,
         },
         {
           username: "Phoenix Baker",
           designation: "Product Designer",
-          feedback: "“sstrack.io makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you sstrack.io!”",
+          feedback: "“ss.track makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you ss.track!”",
           img: pheonix,
         },
         {
@@ -142,13 +144,12 @@ function Home() {
         {
           username: "Candice Wu",
           designation: "Backend Developer",
-          feedback: "“sstrack.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
+          feedback: "“ss.track allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”",
           img: candice,
         },
       ]
     },
   ])
-  const apiUrl = process.env.REACT_APP_API_URL;
 
   const scrollToSection1 = () => {
     section1Ref.current.scrollIntoView({ behavior: 'smooth' });
@@ -158,24 +159,41 @@ function Home() {
     section2Ref.current.scrollIntoView({ behavior: 'smooth' });
   };
 
-  console.log(location);
-  console.log(token);
-
   async function signin() {
-    const decoded = jwtDecode(token);
-    localStorage.setItem("items", JSON.stringify(decoded));
-    localStorage.setItem("token", token);
-    console.log(token);
-    console.log(decoded);
-    if (decoded._id) {
-      if (decoded.userType === "admin") {
-        navigate(`/admindashboard`)
+    if (token) {
+      const decoded = jwtDecode(token);
+      localStorage.setItem("items", JSON.stringify(decoded));
+      localStorage.setItem("token", token);
+      console.log(token);
+      console.log(decoded);
+      if (decoded._id) {
+        if (decoded.userType === "admin") {
+          navigate(`/admindashboard`)
+        }
+        else if (decoded.userType === "user") {
+          navigate(`/userdashboard`)
+        }
+        else if (decoded.userType === "owner") {
+          navigate(`/company-owner`)
+        }
       }
-      else if (decoded.userType === "user") {
-        navigate(`/userdashboard`)
-      }
-      else if (decoded.userType === "owner") {
-        navigate(`/company-owner`)
+    }
+    else if (token2) {
+      const decoded = jwtDecode(token);
+      localStorage.setItem("items", JSON.stringify(decoded));
+      localStorage.setItem("token", token);
+      console.log(token);
+      console.log(decoded);
+      if (decoded._id) {
+        if (decoded.userType === "admin") {
+          navigate(`/admindashboard`)
+        }
+        else if (decoded.userType === "user") {
+          navigate(`/userdashboard`)
+        }
+        else if (decoded.userType === "owner") {
+          navigate(`/company-owner`)
+        }
       }
     }
   }
@@ -183,8 +201,6 @@ function Home() {
   useEffect(() => {
     signin()
   }, [])
-
-  console.log(page);
 
   return (
 
@@ -212,19 +228,19 @@ function Home() {
           <div className="container">
 
             <div>
-              <p className='ethical'>Monitor employee hours and screen captures online.</p>
-              <p className='employee'>Discover how much time and money your remote or office team dedicates to each task.</p>
+              <p className='ethical'>Track employess' <span style={{ fontWeight: "600" }}>time</span> and <span style={{ fontWeight: "600" }}>screenshots</span>. See it on the web.</p>
+              <p className='employee'>Get a clear picture of time and money your remote or office team spends on each task.</p>
             </div>
             <div className='cardSection'>
               <div className='box'>
                 <img src={ss1} alt="" style={{ width: "200px", height: "200px", borderRadius: "100%", objectFit: "cover", border: "10px solid #7ACB59" }} />
-                <p className='trackEffort'>Manage employee time logs and screen captures digitally.</p>
-                <p className='trackEffortPera'>Employees independently manage the start and stop of their tracking using a streamlined desktop app.</p>
+                <p className='trackEffort'>Track employess' time and screenshots</p>
+                <p className='trackEffortPera'>Employees start and stop the tracking themselves within a lightweight desktop app.</p>
                 {/* <img className='arrow' src={arrow} /> */}
               </div>
               <div className='box'>
                 <img src={ss2} alt="" style={{ width: "200px", height: "200px", borderRadius: "100%", objectFit: "cover", border: "10px solid #7ACB59" }} />
-                <p className='trackEffort'>Access it online</p>
+                <p className='trackEffort'>See it on the web</p>
                 <p className='trackEffortPera'>The tracked time, screenshots and activity are all sent to the web for the employee. </p>
                 {/* <img className='arrow' src={arrow} /> */}
               </div>
@@ -251,7 +267,7 @@ function Home() {
             Over million hours tracked each month <br />
             15M+ screenshots monthly
           </p>
-          {/* <button className="joinButton">Join them now</button> */}
+          <button className="joinButton">Join them now</button>
 
           <div className="feedbackDiv">
 
@@ -270,14 +286,25 @@ function Home() {
               )
             }) : null)}
 
-            {/* <div className="feedbackBox" style={{ marginLeft: "20px", marginRight: "20px" }}>
+            {/* <div className="feedbackBox">
+              <div>
+                <img className="olivia" src={olivia} />
+              </div>
+              <div className="oliviaDiv">
+                <p className="oliviafont">Olivia Rhye</p>
+                <p className="oliviaGreen">Expect Best</p>
+                <p className="oliviaPera">“scrin.io allows us to look over completed work by remote staff, shows when my staff is working and keeps a backup of work produced. Highly recommend!”</p>
+              </div>
+            </div>
+
+            <div className="feedbackBox" style={{ marginLeft: "20px", marginRight: "20px" }}>
               <div>
                 <img className="olivia" src={pheonix} />
               </div>
               <div className="oliviaDiv">
                 <p className="oliviafont">Phoenix Baker</p>
                 <p className="oliviaGreen">Engineering Manager</p>
-                <p className="oliviaPera">“sstrack.io makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you sstrack.io!”</p>
+                <p className="oliviaPera">“scrin.io makes it easy for us to manage the staff at different branch offices of Visas Avenue. The different locations of work is not a hurdle anymore. Thank you scrin.io!”</p>
               </div>
             </div>
 
@@ -299,7 +326,7 @@ function Home() {
               <div className="oliviaDiv">
                 <p className="oliviafont">Candice Wu</p>
                 <p className="oliviaGreen">Backend Developer</p>
-                <p className="oliviaPera">“sstrack.io is the most efficient way to track hours, manage projects, and most importantly your people! With one scroll through the home page, you'll know what everyone is working on.”</p>
+                <p className="oliviaPera">“scrin.io is the most efficient way to track hours, manage projects, and most importantly your people! With one scroll through the home page, you'll know what everyone is working on.”</p>
               </div>
             </div>
 
@@ -310,7 +337,7 @@ function Home() {
               <div className="oliviaDiv">
                 <p className="oliviafont">Natali Craig</p>
                 <p className="oliviaGreen">Product Designer</p>
-                <p className="oliviaPera">“I've been using sstrack.io for several years and it has been a great tool. As my company grows, it’s easy to add people and get reports sent to me every week.”</p>
+                <p className="oliviaPera">“I've been using scrin.io for several years and it has been a great tool. As my company grows, it’s easy to add people and get reports sent to me every week.”</p>
               </div>
             </div>
 
@@ -321,7 +348,7 @@ function Home() {
               <div className="oliviaDiv">
                 <p className="oliviafont">Drew Cano</p>
                 <p className="oliviaGreen">UX Researcher</p>
-                <p className="oliviaPera">“sstrack.io is price competitive and the most reliable tool on the market. It tracks screens, prevents cheating, and doesn’t provide unnecessary features.”</p>
+                <p className="oliviaPera">“scrin.io is price competitive and the most reliable tool on the market. It tracks screens, prevents cheating, and doesn’t provide unnecessary features.”</p>
               </div>
             </div> */}
 
@@ -337,33 +364,36 @@ function Home() {
             </div>
           </div>
 
-          {/* <div className="trialDiv">
+          <div className="trialDiv">
             <div className="freeTrialDiv">
               <div>
                 <p className="startedFont">Start your 30-day free trial</p>
-                <p className="unitedFont">Become part of the 4,000+ startups thriving with Untitled.</p>
+                <p className="unitedFont">Join over 4,000+ startups already growing with Untitled.</p>
               </div>
+              {/* <div className="startedButtonDiv">
+                <button className="learnMoreButton">Learn More</button>
+                <button className="startedButton">Get Started</button>
+              </div> */}
+
             </div>
-          </div> */}
+          </div>
         </div>
       </section>
 
-      <section className="deanDiv container" id="section1">
+      <section className="deanDiv container">
         <div>
           <img className="deanBanner" src={banner} />
         </div>
         <div>
           <p className="employetime">Employees track time</p>
-          <p className="managerFont">
-            A manager invites employees to sstrack.io, where they download a streamlined desktop application, choose a project to work on, and hit the Start button. This initiates tracking, sending data to the web instantly until they press the Stop button.
-          </p>
+          <p className="managerFont">A manager invites employees to scrin.io. Employees install a lightweight desktop app, select a project they work on and press the Start button. Tracking starts and data is sent to the web in real time until the Stop button is pressed.</p>
         </div>
       </section>
       <section className="deanDiv container">
         <div>
-          <p className="employetime">Managers view it on the web</p>
-          <p className="managerFont">Within their sstrack.io dashboards, both the employee and manager have access to insights on the employee's working periods, task duration, screen captures taken at random moments, activity metrics, applications operated, along with the websites visited and their respective browsing times.</p>
-          {/* <button className="startedButton">Explore</button> */}
+          <p className="employetime">Managers see it on the web</p>
+          <p className="managerFont">In their dashboards on scrin.io, both employee and manager will see when the employee was working, how much time they spent on each task, screenshots of their screens taken at random intervals, their activity level, what applications were used, and what websites were open and for how long.</p>
+          <button className="startedButton">See demo</button>
         </div>
         <div>
           <img className="deanBanner" src={dean} />
@@ -391,7 +421,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="fiveSection" style={{ backgroundColor: "whitesmoke" }}>
+      <section className="fiveSection container">
         <div>
           <img className="wifi" src={wifi} />
           <p className="internetFont">Track without Internet</p>
@@ -405,7 +435,7 @@ function Home() {
         <div>
           <img className="wifi" src={innerSetting} />
           <p className="internetFont">Integrate using Web API</p>
-          <p className="internetPera">Connect your existing software to sstrack.io via API to retrieve tracked time and notes.</p>
+          <p className="internetPera">Connect your existing software to scrin.io via API to retrieve tracked time and notes.</p>
         </div>
       </section>
 
@@ -420,19 +450,19 @@ function Home() {
 
               <div style={{ display: "flex", alignItems: 'center', justifyContent: "space-between" }} className="how-it-work-container">
                 <div>
-                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Connecting Employees with Managers - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SSTRACK.IO</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
+                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Connecting Employees with Managers - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SCREENSHOTTIME.COM</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
                   <p className="features-working">When you sign up as a company owner or join as admin, you can invite employees to join. As an admin, you can add your team members. When employees log in, they can easily start keeping track of time and share screenshots for their work.</p>
                 </div>
                 <div>
-                  <img style={{ width: "300px", height: "300px", objectFit: 'contain' }} src={connectingemployees} alt="" />
+                  <img style={{ width: "300px", height: "300px", objectFit: 'contain' }} src={"https://s-strackfrontend-git-main-naginaafzali8is.vercel.app/static/media/connecting-employess-with-manager2.c85cdf9caabc87c15aa3.avif"} alt="" />
                 </div>
               </div>
 
               <div style={{ display: "flex", alignItems: 'center', justifyContent: "space-between" }} className="how-it-work-container">
                 <div>
-                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Simple Access with Log In - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SSTRACK.IO</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
+                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Simple Access with Log In - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SCREENSHOTTIME.COM</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
                   <p className="features-working">
-                    Employees just need to install the SSTRACK.IO app on their computer. After logging in, they can click "Start" to begin tracking time and taking screenshots for their tasks. The app automatically sends this info to our website.
+                    Employees just need to install the SCREENSHOTTIME.COM app on their computer. After logging in, they can click "Start" to begin tracking time and taking screenshots for their tasks. The app automatically sends this info to our website.
                   </p>
                 </div>
                 <div>
@@ -442,7 +472,7 @@ function Home() {
 
               <div style={{ display: "flex", alignItems: 'center', justifyContent: "space-between" }} className="how-it-work-container">
                 <div>
-                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Effortless Time Tracking - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SSTRACK.IO</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
+                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Effortless Time Tracking - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SCREENSHOTTIME.COM</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
                   <p className="features-working">
                     Our app records work hours and takes screenshots in the background. It does this randomly and stops when the user clicks "Stop." This feature is great for keeping tabs on in-office employees without being sneaky. Employees always know the app is running.
                   </p>
@@ -454,9 +484,9 @@ function Home() {
 
               <div style={{ display: "flex", alignItems: 'center', justifyContent: "space-between" }} className="how-it-work-container">
                 <div>
-                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Clear View - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SSTRACK.IO</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
+                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Clear View - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SCREENSHOTTIME.COM</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
                   <p className="features-working">
-                    Our app sends time and screenshot info to our website, so admins can see what's happening in real-time. Admins don't need to install anything else; they can check everything online on SSTRACK.IO. The dashboard shows how long employees worked, who's active now, and the latest screenshots.
+                    Our app sends time and screenshot info to our website, so admins can see what's happening in real-time. Admins don't need to install anything else; they can check everything online on SCREENSHOTTIME.COM. The dashboard shows how long employees worked, who's active now, and the latest screenshots.
                   </p>
                 </div>
                 <div>
@@ -466,13 +496,13 @@ function Home() {
 
               <div style={{ display: "flex", alignItems: 'center', justifyContent: "space-between" }} className="how-it-work-container">
                 <div>
-                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Detailed Timeline - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SSTRACK.IO</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
+                  <p className="features-title"> <ImArrowUpRight2 size={20} /> Detailed Timeline - <span style={{ fontWeight: "700", color: "#7ACB59", margin: "0" }}>SCREENSHOTTIME.COM</span> <TbSquareRoundedArrowRightFilled size={50} color="#7ACB59" /> </p>
                   <p className="features-working">
                     The employee timeline gives a detailed view: time and money spent on each task, how active the user was, which apps were used, and visited websites. It also includes screenshots taken randomly (up to 30 per hour) throughout the day. This gives a complete picture of the employee's day.
                   </p>
                 </div>
                 <div>
-                  <img style={{ width: "300px", height: "300px", objectFit: 'contain' }} src={detailedTimeline} alt="" />
+                  <img style={{ width: "300px", height: "300px", objectFit: 'contain' }} src={connectingEmployess} alt="" />
                 </div>
               </div>
 
@@ -488,7 +518,7 @@ function Home() {
             <div className="firstFormPart">
               <h3 className="contactUs">Contact us</h3>
               <p className="query">For any questions or feedback please feel free to contact us using
-                the form below, or email us at <span style={{ color: "#7ACB59" }}>info@SSTRACK.IO</span></p>
+                the form below, or email us at <span style={{ color: "#7ACB59" }}>info@screenshottime.com</span></p>
             </div>
             <form className="fullForm">
               <div>
@@ -562,7 +592,7 @@ function Home() {
               }}>
                 <IoMdMail color="#09A144" size={20} />
               </div>
-              <p style={{ margin: "0", fontWeight: '600' }}>info@SSTRACK.IO</p>
+              <p style={{ margin: "0", fontWeight: '600' }}>info@screenshottime.com</p>
             </div>
           </div>
           <div>
@@ -574,7 +604,7 @@ function Home() {
       <section className="eightSection">
         <div className="container">
           <p className="employeeTracking">Start employee time tracking!</p>
-          <button className="startnowButton" onClick={() => navigate("/download")}>Start Now</button>
+          <button className="startnowButton">Start Now</button>
           <p className="creditCancel">No credit card required. Cancel anytime.</p>
         </div>
         <div>

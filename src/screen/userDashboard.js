@@ -24,7 +24,7 @@ function UserDasboard() {
     let headers = {
         Authorization: 'Bearer ' + token,
     }
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
 
     async function getData() {
         setLoading(true)
@@ -103,14 +103,14 @@ function UserDasboard() {
                         {loading || data.length === 0 ? (
                             <Skeleton count={1} height="107px" style={{ margin: "0 0 10px 0" }} />
                         ) : (
-                            <div onClick={() => navigate('/userdashboard/userdetail')} className={`dashsheadings ${data.isActive === true ? "activeColorChange" : "bgColorChange"}`} key={data.userId}>
+                            <div className={`dashsheadings ${data.isActive === true ? "activeColorChange" : "bgColorChange"}`} key={data.userId}>
                                 <div className="companyNameverified">
                                     <img src={activeUser?.isActive ? check : data?.data?.isActive ? check : offline} alt="Verified" />
                                     <h5 className="dashCompanyName">{data?.data?.name}</h5>
                                 </div>
                                 <div className="companyNameverified lastActive" style={{ width: "100%" }}>
                                     <img
-                                        onClick={() => navigate('/userdashboard/userdetail')}
+                                        onClick={() => navigate('/userdetail')}
                                         className="screenShotPreview"
                                         src={lastScreenshot?.key ? lastScreenshot?.key : data?.data?.lastScreenshot?.key ? data?.data?.lastScreenshot?.key : screenshot}
                                         alt="Screenshot"

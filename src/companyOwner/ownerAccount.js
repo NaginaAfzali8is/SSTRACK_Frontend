@@ -9,7 +9,6 @@ import user from "../images/user-account.webp";
 import Modal from 'react-bootstrap/Modal';
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 import axios from "axios";
-import moment from "moment-timezone";
 
 function OwnerAccount() {
 
@@ -20,7 +19,7 @@ function OwnerAccount() {
     const [verify, setVerify] = useState(false);
     let token = localStorage.getItem('token');
     const navigate = useNavigate('');
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     const items = JSON.parse(localStorage.getItem('items'));
 
     let headers = {
@@ -98,12 +97,6 @@ function OwnerAccount() {
         }
     }
 
-    const offsetInMinutes = moment.tz(items?.timezoneOffset).utcOffset();
-    const offsetInHours = offsetInMinutes / 60;
-    const offsetSign = offsetInHours >= 0 ? '+' : '-';
-    const formattedOffset = `${offsetSign}${Math.abs(offsetInHours)}`;
-    console.log(moment.tz(items?.timezoneOffset).utcOffset());
-
     return (
         <div>
             <SnackbarProvider />
@@ -164,7 +157,7 @@ function OwnerAccount() {
                             <br />
                             {items?.timezone}
                             <br />
-                            UTC {formattedOffset}
+                            UTC+{items.timezoneOffset}
                         </p>
                         <div className="accountDiv">
                             <div onClick={() => navigate('/profile')} className="accountEditDiv"><div><img src={edit} /></div><p>Edit Profile</p></div>

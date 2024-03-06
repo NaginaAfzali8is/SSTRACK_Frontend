@@ -33,7 +33,7 @@ function Signup() {
     });
     const [err, setErr] = useState("");
     const [error, setError] = useState("");
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "https://zany-sneakers-hare.cyclic.cloud/api/v1";
     const [timezone, setSelectedTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone)
     const [currentTimezone, setCurrentTimeZone] = useState('')
 
@@ -100,15 +100,15 @@ function Signup() {
     }
 
     const handleStartDateChange = (selectedtimezone) => {
-        // Assuming selectedtimezone is an object with a 'value' property representing the time zone name
-        const timezoneName = selectedtimezone.value;
-        const offsetInMinutes = moment.tz(timezoneName).utcOffset();
-        const offsetInHours = offsetInMinutes / 60;
-        setSelectedTimezone(timezoneName);
-        setCurrentTimeZone(timezoneName);
-        fillModel("timezoneOffset", offsetInHours);
-        fillModel("timezone", timezoneName);
-        console.log(timezoneName);
+        // const localTime = moment().tz(selectedtimezone.value).format("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        // const mynewtime = localTime + selectedtimezone?.label
+        // console.log(mynewtime);
+        // console.log(localTime);
+        console.log("timezone", selectedtimezone);
+        setSelectedTimezone(selectedtimezone);
+        setCurrentTimeZone(selectedtimezone)
+        fillModel("timezoneOffset", selectedtimezone?.offset)
+        fillModel("timezone", selectedtimezone?.value)
     };
 
     let fillModel = (key, val) => {
@@ -118,14 +118,10 @@ function Signup() {
 
     useEffect(() => {
         const defaultTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const offsetInMinutes = moment.tz(defaultTimezone).utcOffset();
-        const offsetInHours = offsetInMinutes / 60;
         setSelectedTimezone(defaultTimezone);
         setCurrentTimeZone(defaultTimezone);
-        fillModel("timezoneOffset", offsetInHours);
+        fillModel("timezoneOffset", 5);
         fillModel("timezone", defaultTimezone);
-        fillModel("email", "");
-        fillModel("password", "");
     }, []);
 
     console.log(model);
