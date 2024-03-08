@@ -20,7 +20,7 @@ function OwnerAccount() {
     const [verify, setVerify] = useState(false);
     let token = localStorage.getItem('token');
     const navigate = useNavigate('');
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "http://54.158.251.164:9093/api/v1";
     const items = JSON.parse(localStorage.getItem('items'));
 
     let headers = {

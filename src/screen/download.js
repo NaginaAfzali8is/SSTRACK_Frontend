@@ -8,7 +8,7 @@ const Download = () => {
     const [downloadOS, setDownloadOS] = useState("mac")
     const [loading1, setLoading1] = useState(false)
     const [loading2, setLoading2] = useState(false)
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "http://54.158.251.164:9093/api/v1";
 
     const handleDownload = async (type) => {
         console.log(type);

@@ -37,7 +37,7 @@ function CreateAccount() {
     });
     const [err, setErr] = useState("");
     const [error, setError] = useState("");
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "http://54.158.251.164:9093/api/v1";
     const [timezone, setSelectedTimezone] = useState(
         Intl.DateTimeFormat().resolvedOptions().timeZone
     )

@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 function VerificationCode() {
 
     const navigate = useNavigate()
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "http://54.158.251.164:9093/api/v1";
     const [code, setCode] = useState("")
     const [inputIndex, setIndex] = useState(0)
     const [loading, setLoading] = useState(false)

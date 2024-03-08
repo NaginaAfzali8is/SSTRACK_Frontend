@@ -30,7 +30,7 @@ function Profile() {
         'Content-Type': 'application/json'
     }
 
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "http://54.158.251.164:9093/api/v1";
 
     let fillModel = (key, val) => {
         console.log(val);

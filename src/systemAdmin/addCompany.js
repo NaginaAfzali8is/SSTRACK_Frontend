@@ -15,7 +15,7 @@ const AddCompany = () => {
     const navigate = useNavigate();
     let token = localStorage.getItem('adminToken');
     const [timezone, setSelectedTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone)
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "http://54.158.251.164:9093/api/v1";
     const [model, setModel] = useState({
         userType: 'owner',
     });

@@ -94,7 +94,7 @@ function CompanyIndividualUser() {
     const [totalPercentageByDay, setTotalPercentageByDay] = useState(null)
     const [activeMonth, setActiveMonth] = useState(new Date().toLocaleDateString())
 
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "http://54.158.251.164:9093/api/v1";
     let token = localStorage.getItem('token');
     let items = JSON.parse(localStorage.getItem('items'));
     let headers = {

@@ -15,7 +15,7 @@ function SystemAdminLogin() {
         password: ""
     });
     const [loading, setLoading] = useState(false)
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "http://54.158.251.164:9093/api/v1";
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('items'));
 

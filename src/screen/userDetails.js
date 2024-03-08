@@ -92,7 +92,7 @@ function UserDetails() {
     const currentMonth = new Date().getMonth();
     const currentDay = new Date().getDay();
 
-    const apiUrl = "https://combative-fox-jumpsuit.cyclic.app/api/v1";
+    const apiUrl = "http://54.158.251.164:9093/api/v1";
     let token = localStorage.getItem('token');
     let headers = {
         Authorization: 'Bearer ' + token,
