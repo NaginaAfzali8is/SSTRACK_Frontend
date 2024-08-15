@@ -26,7 +26,7 @@ const CompanyEmployess = (props) => {
         const findUser = employees.find((f) => f.effectiveSettings[data.key] === false)
         try {
             const res = await axios.patch(
-                `https://myuniversallanguages.com:9093/api/v1/owner/settingsE/${data.employee._id}`,
+                `https://ss-track-xi.vercel.app/api/v1/owner/settingsE/${data.employee._id}`,
                 {
                     userId: data.employee._id,
                     effectiveSettings: {

@@ -84,7 +84,7 @@ function UserDetails() {
 
 
 
-    const apiUrl = "https://myuniversallanguages.com:9093/api/v1";
+    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
     let token = localStorage.getItem('token');
     let items = JSON.parse(localStorage.getItem('items'));
     let headers = {

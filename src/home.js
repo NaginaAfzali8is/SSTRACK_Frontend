@@ -62,7 +62,7 @@ import card2 from '../images/card2.gif'
 import card3 from '../images/card3.gif'
 
 
-const SOCKET_SERVER_URL = 'https://myuniversallanguages.com:9093';
+const SOCKET_SERVER_URL = 'https://ss-track-xi.vercel.app';
 function Home() {
 
   const { token } = useParams()

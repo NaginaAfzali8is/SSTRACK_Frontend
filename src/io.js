@@ -12,7 +12,7 @@
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-      const newSocket = io('https://myuniversallanguages.com:9093', {
+      const newSocket = io('https://ss-track-xi.vercel.app', {
         transports: ['websocket'], // Add this line to force WebSocket transport
       });
 

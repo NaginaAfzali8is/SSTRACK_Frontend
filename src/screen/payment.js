@@ -39,7 +39,7 @@ const Payment = () => {
 
 
 
-    const planUpgradeApiUrl = "https://myuniversallanguages.com:9093/api/v1";
+    const planUpgradeApiUrl = "https://ss-track-xi.vercel.app/api/v1";
 
 
     const postNewPlans = async () => {
@@ -111,7 +111,7 @@ const Payment = () => {
                     headers: headers,
 
                 });
-                const planUpgradeApiUrl = "https://myuniversallanguages.com:9093/api/v1";
+                const planUpgradeApiUrl = "https://ss-track-xi.vercel.app/api/v1";
                 try {
                     const response = await axios.post(`${planUpgradeApiUrl}/owner/upgrade`, {
                         // tokenId: paymentMethod.id,

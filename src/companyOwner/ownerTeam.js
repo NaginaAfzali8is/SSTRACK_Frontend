@@ -23,7 +23,7 @@ import { useQuery } from 'react-query';
 
 import { useSocket } from '../io'; // Correct import
 
-const apiUrl = "https://myuniversallanguages.com:9093/api/v1";
+const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
 
 
 function OwnerTeam() {
@@ -44,7 +44,7 @@ function OwnerTeam() {
     const socket = useSocket()
     const [mainId, setMainId] = useState(null)
     const [users, setUsers] = useState(null);
-    const apiUrl = "https://myuniversallanguages.com:9093/api/v1";
+    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
     const token = localStorage.getItem('token');
     const headers = {
         Authorization: "Bearer " + token,
