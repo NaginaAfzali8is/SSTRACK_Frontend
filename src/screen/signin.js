@@ -82,8 +82,8 @@ function SignIn() {
   useEffect(() => {
     // Get URL parameters
     const params = new URLSearchParams(window.location.search);
-     email = params.get("email");
-     password = params.get("password");
+         email = params.get("email");
+         password = params.get("password");
     console.log(email, password, "email password");
 
     // If both email and password are present in the URL, set them and trigger login
@@ -100,7 +100,7 @@ function SignIn() {
       });
     }
   }, []);
-  
+
   return (
     <div>
       <SnackbarProvider />
