@@ -62,7 +62,7 @@ import card2 from '../images/card2.gif'
 import card3 from '../images/card3.gif'
 
 
-const SOCKET_SERVER_URL = 'https://ss-track-xi.vercel.app';
+// const SOCKET_SERVER_URL = 'https://ss-track-xi.vercel.app';
 function Home() {
 
   const { token } = useParams()
@@ -82,32 +82,32 @@ function Home() {
   const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // or 'error'
   const [socket, setSocket] = useState(null);
 
-  useEffect(() => {
-    const newSocket = io(SOCKET_SERVER_URL);
+  // useEffect(() => {
+  //   const newSocket = io(SOCKET_SERVER_URL);
 
-    // Socket.io event listeners
-    newSocket.on('connect', () => {
-      console.log('Connected to server');
-    });
+  //   // Socket.io event listeners
+  //   newSocket.on('connect', () => {
+  //     console.log('Connected to server');
+  //   });
 
-    newSocket.on('disconnect', () => {
-      console.log('Disconnected from server');
-    });
+  //   newSocket.on('disconnect', () => {
+  //     console.log('Disconnected from server');
+  //   });
 
-    // Save socket instance in state
-    setSocket(newSocket);
+  //   // Save socket instance in state
+  //   setSocket(newSocket);
 
-    // Cleanup function
-    return () => {
-      newSocket.disconnect();
-    };
-  }, []);
+  //   // Cleanup function
+  //   return () => {
+  //     newSocket.disconnect();
+  //   };
+  // }, []);
 
-  const sendMessageToServer = () => {
-    if (socket) {
-      socket.emit('sendMessage', 'Hello, server!'); // Example: Emit a message to the server
-    }
-  };
+  // const sendMessageToServer = () => {
+  //   if (socket) {
+  //     socket.emit('sendMessage', 'Hello, server!'); // Example: Emit a message to the server
+  //   }
+  // };
 
 
   const [feedback, setFeedback] = useState([
@@ -972,10 +972,10 @@ function Home() {
         </div>
         {/* <Footer /> */}
       </section>
-      <div>
+      {/* <div>
         <h1>Socket.io Integration Example</h1>
         <button onClick={sendMessageToServer}>Send Message</button>
-      </div>
+      </div> */}
 
     </div >
 

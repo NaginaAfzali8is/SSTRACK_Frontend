@@ -79,7 +79,7 @@ function SignIn() {
     setModel(prevModel => ({ ...prevModel, [key]: val }));
   };
 
-  useEffect(() => {
+  useEffect( async() => {
     // Get URL parameters
     const params = new URLSearchParams(window.location.search);
     let email = params.get("email");
@@ -89,16 +89,22 @@ function SignIn() {
     // If both email and password are present in the URL, set them and trigger login
     if (email && password) {
       // setModel({ email, password });
-      handleLogin();
-    } else {
-      enqueueSnackbar("Email and password are required for auto-login", {
-        variant: "error",
-        anchorOrigin: {
-          vertical: "top",
-          horizontal: "right"
-        }
-      });
-    }
+      setLoading(true)
+        const response = await axios.post(`${apiUrl}/signin/`, {
+          email: model?.email,
+          password: model?.password,
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        })
+        const token = response.data.token;
+        const decoded = jwtDecode(token);
+        localStorage.setItem("items", JSON.stringify(decoded));
+        localStorage.setItem("token", response.data.token);
+      
+        setLoading(false)
+          }
   }, []);
   
   return (
