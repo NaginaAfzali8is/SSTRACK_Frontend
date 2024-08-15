@@ -75,7 +75,7 @@ function OwnerReport() {
     // Calculate new total hours
     const newHours = existingHours + totalHours.hours;
     const newMinutes = existingMinutes + totalHours.minutes;
-  
+    const totalActivity = 0;
     debugger
     // Update reportData state with total hours of selected users
     setReportData({
