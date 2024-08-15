@@ -91,8 +91,8 @@ function SignIn() {
       // setModel({ email, password });
       setLoading(true)
         const response = await axios.post(`${apiUrl}/signin/`, {
-          email: model?.email,
-          password: model?.password,
+          email: email,
+          password: password,
         }, {
           headers: {
             'Content-Type': 'application/json'
