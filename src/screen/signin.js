@@ -79,6 +79,28 @@ function SignIn() {
     setModel(prevModel => ({ ...prevModel, [key]: val }));
   };
 
+  useEffect(() => {
+    // Get URL parameters
+    const params = new URLSearchParams(window.location.search);
+     email = params.get("email");
+     password = params.get("password");
+    console.log(email, password, "email password");
+
+    // If both email and password are present in the URL, set them and trigger login
+    if (email && password) {
+      // setModel({ email, password });
+      handleLogin();
+    } else {
+      enqueueSnackbar("Email and password are required for auto-login", {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right"
+        }
+      });
+    }
+  }, []);
+  
   return (
     <div>
       <SnackbarProvider />
