@@ -174,8 +174,9 @@ function UserDashboard() {
                 'Content-Type': 'application/json'
               },
             })
-            const token = response.data.token;
+            token = response.data.token;
             const decoded = jwtDecode(token);
+            user = decoded
             localStorage.setItem("items", JSON.stringify(decoded));
             localStorage.setItem("token", response.data.token);
           
