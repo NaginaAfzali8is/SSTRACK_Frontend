@@ -158,7 +158,8 @@ function UserDashboard() {
            const params = new URLSearchParams(window.location.search);
            let email = params.get("email");
         if(!token || (user && user.email !== email)){
-     
+            const { user1, setUser1 } = useContext(UserContext);
+
         let password = params.get("password");
         console.log(email, password, "email password");
     
@@ -178,6 +179,7 @@ function UserDashboard() {
             setToken(newtoken)
             const decoded = jwtDecode(newtoken);
             setUser(decoded)
+            setUser1(decoded)
             localStorage.setItem("items", JSON.stringify(decoded));
             localStorage.setItem("token", response.data.token);
           
