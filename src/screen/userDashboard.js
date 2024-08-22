@@ -178,10 +178,10 @@ function UserDashboard() {
             const decoded = jwtDecode(newtoken);
             localStorage.setItem("items", JSON.stringify(decoded));
             localStorage.setItem("token", response.data.token);
-            // setUser(decoded)
-            // setToken(newtoken)
+            setUser(decoded)
+            setToken(newtoken)
           
-            // setLoading(false)
+            setLoading(false)
             window.location.reload(); // Reload the window
               }
             }
