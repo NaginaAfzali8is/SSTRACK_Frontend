@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import line from "../images/line.webp";
 import check from "../images/online.webp";
 import screenshot from "../images/white.svg";
@@ -15,7 +15,6 @@ import { io } from 'socket.io-client'; // Correct import
 import { useSocket } from '../io'; // Correct import
 import { useQuery } from 'react-query';
 import jwtDecode from "jwt-decode";
-import UserContext from "./userContext";
 
 const fetcher = (url, headers) => axios.get(url, { headers }).then((res) => res.data);
 
@@ -36,8 +35,6 @@ function UserDashboard() {
     const socket = useSocket()
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('items')));
-    const { user1, setUser1 } = useContext(UserContext);
-
     const headers = {
         Authorization: 'Bearer ' + token,
     };
@@ -161,7 +158,7 @@ function UserDashboard() {
            const params = new URLSearchParams(window.location.search);
            let email = params.get("email");
         if(!token || (user && user.email !== email)){
-
+     
         let password = params.get("password");
         console.log(email, password, "email password");
     
@@ -181,7 +178,6 @@ function UserDashboard() {
             setToken(newtoken)
             const decoded = jwtDecode(newtoken);
             setUser(decoded)
-            setUser1(decoded)
             localStorage.setItem("items", JSON.stringify(decoded));
             localStorage.setItem("token", response.data.token);
           
