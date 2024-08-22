@@ -33,8 +33,8 @@ function UserDashboard() {
     const [socketData, setSocketData] = useState(null); // State to store data from socket
     const navigate = useNavigate();
     const socket = useSocket()
-    const token = localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('items'));
+    const [token, setToken] = useState(localStorage.getItem('token'));
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('items')));
     const headers = {
         Authorization: 'Bearer ' + token,
     };
@@ -174,9 +174,10 @@ function UserDashboard() {
                 'Content-Type': 'application/json'
               },
             })
-            token = response.data.token;
-            const decoded = jwtDecode(token);
-            user = decoded
+            let newtoken = response.data.token;
+            setToken(newtoken)
+            const decoded = jwtDecode(newtoken);
+            setUser(decoded)
             localStorage.setItem("items", JSON.stringify(decoded));
             localStorage.setItem("token", response.data.token);
           
