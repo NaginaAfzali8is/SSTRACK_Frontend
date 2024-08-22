@@ -175,13 +175,13 @@ function UserDashboard() {
               },
             })
             let newtoken = response.data.token;
-            setToken(newtoken)
             const decoded = jwtDecode(newtoken);
-            setUser(decoded)
             localStorage.setItem("items", JSON.stringify(decoded));
             localStorage.setItem("token", response.data.token);
+            // setUser(decoded)
+            // setToken(newtoken)
           
-            setLoading(false)
+            // setLoading(false)
             window.location.reload(); // Reload the window
               }
             }
