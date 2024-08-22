@@ -63,8 +63,9 @@ export default function AppRouter() {
             <Route path="/privacy-policy2" element={<PrivacyPolicy2 />} />
 
             {/* Private Routes */}
+            <Route path="/dashboard" element={ <UserDashboard /> } />
 
-            <Route path="/dashboard" element={token ? <UserDashboard /> : <Navigate to="/" />} />
+            {/* <Route path="/dashboard" element={token ? <UserDashboard /> : <Navigate to="/" />} /> */}
             <Route path="/timeline" element={token ? <UserDetails /> : <Navigate to="/" />} />
             <Route path="/timeline/:id" element={token ? <UserDetails /> : <Navigate to="/" />} />
             <Route path="/account" element={token ? <Account /> : <Navigate to="/" />} />

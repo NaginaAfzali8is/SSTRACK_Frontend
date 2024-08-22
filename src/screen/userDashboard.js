@@ -150,6 +150,38 @@ function UserDashboard() {
         }
     }
 
+    
+    useEffect( async() => {
+           // Get URL parameters
+           const params = new URLSearchParams(window.location.search);
+           let email = params.get("email");
+        if(!token || (storedUser && storedUser.email !== email)){
+     
+        let password = params.get("password");
+        console.log(email, password, "email password");
+    
+        // If both email and password are present in the URL, set them and trigger login
+        if (email && password) {
+          // setModel({ email, password });
+          setLoading(true)
+            const response = await axios.post(`${apiUrl}/signin/`, {
+              email: email,
+              password: password,
+            }, {
+              headers: {
+                'Content-Type': 'application/json'
+              },
+            })
+            const token = response.data.token;
+            const decoded = jwtDecode(token);
+            localStorage.setItem("items", JSON.stringify(decoded));
+            localStorage.setItem("token", response.data.token);
+          
+            setLoading(false)
+              }
+            }
+            
+      }, []);
 
     const getTimeAgo = lastActiveTime => {
         const currentTime = new Date();
