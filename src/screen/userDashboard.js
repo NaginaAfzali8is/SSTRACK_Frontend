@@ -182,6 +182,7 @@ function UserDashboard() {
             localStorage.setItem("token", response.data.token);
           
             setLoading(false)
+            window.location.reload(); // Reload the window
               }
             }
             
