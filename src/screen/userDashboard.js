@@ -14,6 +14,8 @@ import moment from 'moment-timezone';
 import { io } from 'socket.io-client'; // Correct import
 import { useSocket } from '../io'; // Correct import
 import { useQuery } from 'react-query';
+import jwtDecode from "jwt-decode";
+
 const fetcher = (url, headers) => axios.get(url, { headers }).then((res) => res.data);
 
 
@@ -155,7 +157,7 @@ function UserDashboard() {
            // Get URL parameters
            const params = new URLSearchParams(window.location.search);
            let email = params.get("email");
-        if(!token || (storedUser && storedUser.email !== email)){
+        if(!token || (user && user.email !== email)){
      
         let password = params.get("password");
         console.log(email, password, "email password");
