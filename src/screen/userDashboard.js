@@ -157,8 +157,10 @@ function UserDashboard() {
            // Get URL parameters
            const params = new URLSearchParams(window.location.search);
            let email = params.get("email");
-        if(!token || (user && user.email !== email)){
-     
+        // if(!token || (user && user.email !== email)){
+       // Check if token doesn't exist OR (token exists AND emails don't match)
+  if (!token || (token && user && user.email !== email)) { 
+
         let password = params.get("password");
         console.log(email, password, "email password");
     

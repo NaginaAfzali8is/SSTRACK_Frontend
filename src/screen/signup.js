@@ -137,44 +137,6 @@ function Signup() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     const handleStartDateChange = (selectedtimezone) => {
         // Assuming selectedtimezone is an object with a 'value' property representing the time zone name
         const timezoneName = selectedtimezone.value;
