@@ -183,7 +183,7 @@ function UserDashboard() {
             setUser(decoded)
             setToken(newtoken)
           
-            s  // After successful login
+              // After successful login
             setLoading(false);
             setTimeout(() => {
               window.location.reload(); // Reload the window
