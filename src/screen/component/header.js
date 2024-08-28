@@ -70,7 +70,7 @@ const NavigationBar = ({ scrollToSection1, scrollToSection2 }) => {
                             ) : (
                                 <>
                                     <Button onClick={() => goToDashboard()} className="btn loginButton1" style={{ marginRight: '10px' }} type="button">Dashboard</Button>
-                                    <Button onClick={() => logOut()} className="btn signUpButton" type="button">Log out</Button>
+                                    {/* <Button onClick={() => logOut()} className="btn signUpButton" type="button">Log out</Button> */}
                                 </>
                             )}
                         </div>
