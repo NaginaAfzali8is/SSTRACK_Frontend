@@ -107,7 +107,7 @@ function OwnerHeader() {
                                     {items.name.charAt(0).toUpperCase()}
                                 </button>
                             </>
-                        ) : null}
+                        ) : ''}
                     </div>
                     {showContent && <div className="logoutDiv">
                         <div onClick={takeToDashboard}><div><img src={dashboard} /></div><p>Dashboard</p></div>

@@ -148,15 +148,16 @@ function UserHeader() {
                         </button> */}
                     </div>
                     <div ref={logoutDivRef}>
-                        <div className="d-flex amButton" role="search">
-                            <p>{user?.name.charAt(0).toUpperCase() + user?.name.slice(1)} ({userType})</p>
-                            <button onClick={() => setShowContent(!showContent)} className="userName">
-                                {capitalizedWord + wordsAfterSpace}
-                            </button>
-                            {/* <button onClick={() => updateData()} className="userName">
-                                {capitalizedWord}
-                            </button> */}
-                        </div>
+                    <div className="d-flex amButton" role="search">
+                        {user && user.name ? (
+                            <>
+                                <p>{user.name.charAt(0).toUpperCase() + user.name.slice(1)} ({userType})</p>
+                                <button onClick={() => setShowContent(!showContent)} className="userName">
+                                    {capitalizedWord + wordsAfterSpace}
+                                </button>
+                            </>
+                        ) : null}
+                    </div>
                         {showContent && <div className="logoutDiv">
                             <div onClick={takeToDashboard}>
                                 <div>
