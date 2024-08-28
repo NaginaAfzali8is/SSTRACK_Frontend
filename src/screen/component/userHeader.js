@@ -179,12 +179,12 @@ function UserHeader() {
                                     <p>Settings</p>
                                 </div>
                             )}
-                            <div onClick={logOut}>
+                            {/* <div onClick={logOut}>
                                 <div>
                                     <img src={logout} />
                                 </div>
                                 <p>Logout</p>
-                            </div>
+                            </div> */}
                         </div>}
                     </div>
                 </div>
