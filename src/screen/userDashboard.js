@@ -160,6 +160,7 @@ function UserDashboard() {
         // if(!token || (user && user.email !== email)){
        // Check if token doesn't exist OR (token exists AND emails don't match)
   if (!token || (token && user && user.email !== email)) { 
+    setLoading(true)
 
         let password = params.get("password");
         console.log(email, password, "email password");
@@ -167,7 +168,6 @@ function UserDashboard() {
         // If both email and password are present in the URL, set them and trigger login
         if (email && password) {
           // setModel({ email, password });
-          setLoading(true)
             const response = await axios.post(`${apiUrl}/signin/`, {
               email: email,
               password: password,
