@@ -99,9 +99,15 @@ function OwnerHeader() {
                     </ul>
                    
                 </div> */}
-                    <div className="d-flex amButton" role="s    earch">
-                        <p>{items?.name.charAt(0).toUpperCase() + items?.name.slice(1)} ({items?.userType})</p>
-                        <button onClick={() => setShowContent(!showContent)} className="userName">{items?.name.charAt(0).toUpperCase()}</button>
+                    <div className="d-flex amButton" role="search">
+                        {items && items.name ? (
+                            <>
+                                <p>{items.name.charAt(0).toUpperCase() + items.name.slice(1)} ({items.userType})</p>
+                                <button onClick={() => setShowContent(!showContent)} className="userName">
+                                    {items.name.charAt(0).toUpperCase()}
+                                </button>
+                            </>
+                        ) : null}
                     </div>
                     {showContent && <div className="logoutDiv">
                         <div onClick={takeToDashboard}><div><img src={dashboard} /></div><p>Dashboard</p></div>
