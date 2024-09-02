@@ -144,30 +144,30 @@ function OwnerTeam() {
     //       };
     //     }
     //   }, [socket, mainId, setUsers]);
-    useEffect(() => {
-        if (socket) {
-            console.log('Socket connection established:', socket.connected);
-            socket.on('user_archive', (userId) => {
-                console.log(`Received user archived update event: ${userId}`);
-                // Update the archive icon in real-time
-                const user = users.find((user) => user._id === userId);
-                if (user) {
-                    user.isArchived = true;
-                    setUsers([...users]);
-                }
-            });
+    // useEffect(() => {
+    //     if (socket) {
+    //         console.log('Socket connection established:', socket.connected);
+    //         socket.on('user_archive', (userId) => {
+    //             console.log(`Received user archived update event: ${userId}`);
+    //             // Update the archive icon in real-time
+    //             const user = users.find((user) => user._id === userId);
+    //             if (user) {
+    //                 user.isArchived = true;
+    //                 setUsers([...users]);
+    //             }
+    //         });
 
-            socket.on('user_unarchive', (userId) => {
-                console.log(`Received user unarchived update event: ${userId}`);
-                // Update the archive icon in real-time
-                const user = users.find((user) => user._id === userId);
-                if (user) {
-                    user.isArchived = false;
-                    setUsers([...users]);
-                }
-            });
-        }
-    }, [socket, users, setUsers]);
+    //         socket.on('user_unarchive', (userId) => {
+    //             console.log(`Received user unarchived update event: ${userId}`);
+    //             // Update the archive icon in real-time
+    //             const user = users.find((user) => user._id === userId);
+    //             if (user) {
+    //                 user.isArchived = false;
+    //                 setUsers([...users]);
+    //             }
+    //         });
+    //     }
+    // }, [socket, users, setUsers]);
 
     // When you archive a user on this device
     const archiveUser = (userId) => {
