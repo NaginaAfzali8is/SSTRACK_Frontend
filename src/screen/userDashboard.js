@@ -14,6 +14,8 @@ import moment from 'moment-timezone';
 import { io } from 'socket.io-client'; // Correct import
 import { useSocket } from '../io'; // Correct import
 import { useQuery } from 'react-query';
+import jwtDecode from "jwt-decode";
+
 const fetcher = (url, headers) => axios.get(url, { headers }).then((res) => res.data);
 
 
@@ -31,8 +33,10 @@ function UserDashboard() {
     const [socketData, setSocketData] = useState(null); // State to store data from socket
     const navigate = useNavigate();
     const socket = useSocket()
-    const token = localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('items'));
+    // const token = localStorage.getItem('token');
+    // const user = JSON.parse(localStorage.getItem('items'));
+    const [token, setToken] = useState(localStorage.getItem('token'));
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('items')));
     const headers = {
         Authorization: 'Bearer ' + token,
     };
@@ -150,6 +154,57 @@ function UserDashboard() {
         }
     }
 
+        
+    useEffect(() => {
+        const fetchData = async () => {
+          // Get URL parameters
+          const params = new URLSearchParams(window.location.search);
+          let email = params.get("email");
+      
+          // if(!token || (user && user.email !== email)){
+          // Check if token doesn't exist OR (token exists AND emails don't match)
+          if (!token || (token && user && user.email !== email)) { 
+            setLoading(true)
+      
+            let password = params.get("password");
+            console.log(email, password, "email password");
+      
+            // If both email and password are present in the URL, set them and trigger login
+            if (email && password) {
+              try {
+                const response = await axios.post(`${apiUrl}/signin/`, {
+                  email: email,
+                  password: password,
+                }, {
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                });
+      
+                let newtoken = response.data.token;
+                const decoded = jwtDecode(newtoken);
+                localStorage.setItem("items", JSON.stringify(decoded));
+                localStorage.setItem("token", response.data.token);
+                setUser(decoded);
+                setToken(newtoken);
+      
+                // After successful login
+                setLoading(false);
+                setTimeout(() => {
+                  window.location.reload(); // Reload the window
+                }, 0); // Schedule the reload after the current event loop cycle
+      
+              } catch (error) {
+                console.error("Error during login:", error);
+                setLoading(false);
+              }
+            }
+          }
+        };
+      
+        fetchData();
+      }, []);
+      
 
     const getTimeAgo = lastActiveTime => {
         const currentTime = new Date();
