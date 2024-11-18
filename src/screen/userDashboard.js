@@ -44,9 +44,9 @@ function UserDashboard() {
 
 
        // Define URLs based on user type
-       const userUrl = user?.userType === 'user' ? 'https://ss-track-xi.vercel.app/api/v1/timetrack/hours' : null;
-       const ownerUrl = (user?.userType === 'owner' || user?.userType === 'admin') ? 'https://ss-track-xi.vercel.app/api/v1/owner/getCompanyemployee' : null;
-       const managerUrl = user?.userType === 'manager' ? 'https://ss-track-xi.vercel.app/api/v1/manager/dashboard' : null;
+       const userUrl = user?.userType === 'user' ? 'https://sstrackinf.vercel.app/api/v1/timetrack/hours' : null;
+       const ownerUrl = (user?.userType === 'owner' || user?.userType === 'admin') ? 'https://sstrackinf.vercel.app/api/v1/owner/getCompanyemployee' : null;
+       const managerUrl = user?.userType === 'manager' ? 'https://sstrackinf.vercel.app/api/v1/manager/dashboard' : null;
    
        // Use React Query to fetch data
        const { data: userData, error: userError, isLoading: isUserLoading } = useQuery({
@@ -99,7 +99,7 @@ function UserDashboard() {
     const getManagerData = async () => {
         setLoading(true)
         try {
-            const response = await axios.get(`https://ss-track-xi.vercel.app/api/v1/manager/dashboard`, {
+            const response = await axios.get(`https://sstrackinf.vercel.app/api/v1/manager/dashboard`, {
                 headers: headers,
             })
             if (response.status) {
@@ -118,7 +118,7 @@ function UserDashboard() {
     const getOwnerData = async () => {
         setLoading(true)
         try {
-            const response = await axios.get(`https://ss-track-xi.vercel.app/api/v1/owner/getCompanyemployee`, {
+            const response = await axios.get(`https://sstrackinf.vercel.app/api/v1/owner/getCompanyemployee`, {
                 headers: headers,
             })
             if (response.status) {
@@ -155,55 +155,55 @@ function UserDashboard() {
     }
 
         
-    useEffect(() => {
-        const fetchData = async () => {
-          // Get URL parameters
-          const params = new URLSearchParams(window.location.search);
-          let email = params.get("email");
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //       // Get URL parameters
+    //       const params = new URLSearchParams(window.location.search);
+    //       let email = params.get("email");
       
-          // if(!token || (user && user.email !== email)){
-          // Check if token doesn't exist OR (token exists AND emails don't match)
-          if (!token || (token && user && user.email !== email)) { 
-            setLoading(true)
+    //       // if(!token || (user && user.email !== email)){
+    //       // Check if token doesn't exist OR (token exists AND emails don't match)
+    //       if (!token || (token && user && user.email !== email)) { 
+    //         setLoading(true)
       
-            let password = params.get("password");
-            console.log(email, password, "email password");
+    //         let password = params.get("password");
+    //         console.log(email, password, "email password");
       
-            // If both email and password are present in the URL, set them and trigger login
-            if (email && password) {
-              try {
-                const response = await axios.post(`${apiUrl}/signin/`, {
-                  email: email,
-                  password: password,
-                }, {
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                });
+    //         // If both email and password are present in the URL, set them and trigger login
+    //         if (email && password) {
+    //           try {
+    //             const response = await axios.post(`${apiUrl}/signin/`, {
+    //               email: email,
+    //               password: password,
+    //             }, {
+    //               headers: {
+    //                 'Content-Type': 'application/json'
+    //               },
+    //             });
       
-                let newtoken = response.data.token;
-                const decoded = jwtDecode(newtoken);
-                localStorage.setItem("items", JSON.stringify(decoded));
-                localStorage.setItem("token", response.data.token);
-                setUser(decoded);
-                setToken(newtoken);
+    //             let newtoken = response.data.token;
+    //             const decoded = jwtDecode(newtoken);
+    //             localStorage.setItem("items", JSON.stringify(decoded));
+    //             localStorage.setItem("token", response.data.token);
+    //             setUser(decoded);
+    //             setToken(newtoken);
       
-                // After successful login
-                setLoading(false);
-                setTimeout(() => {
-                  window.location.reload(); // Reload the window
-                }, 0); // Schedule the reload after the current event loop cycle
+    //             // After successful login
+    //             setLoading(false);
+    //             setTimeout(() => {
+    //               window.location.reload(); // Reload the window
+    //             }, 0); // Schedule the reload after the current event loop cycle
       
-              } catch (error) {
-                console.error("Error during login:", error);
-                setLoading(false);
-              }
-            }
-          }
-        };
+    //           } catch (error) {
+    //             console.error("Error during login:", error);
+    //             setLoading(false);
+    //           }
+    //         }
+    //       }
+    //     };
       
-        fetchData();
-      }, []);
+    //     fetchData();
+    //   }, []);
       
 
     const getTimeAgo = lastActiveTime => {
@@ -324,7 +324,7 @@ useEffect(() => {
 }, [managerData]);
 
 
-    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+    const apiUrl = "https://sstrackinf.vercel.app/api/v1";
 
     const fetchData = async () => {
         setLoading(true);
@@ -671,9 +671,9 @@ useEffect(() => {
 
 
 //        // Define URLs based on user type
-//        const userUrl = user?.userType === 'user' ? 'https://ss-track-xi.vercel.app/api/v1/timetrack/hours' : null;
-//        const ownerUrl = (user?.userType === 'owner' || user?.userType === 'admin') ? 'https://ss-track-xi.vercel.app/api/v1/owner/getCompanyemployee' : null;
-//        const managerUrl = user?.userType === 'manager' ? 'https://ss-track-xi.vercel.app/api/v1/manager/dashboard' : null;
+//        const userUrl = user?.userType === 'user' ? 'https://sstrackinf.vercel.app/api/v1/timetrack/hours' : null;
+//        const ownerUrl = (user?.userType === 'owner' || user?.userType === 'admin') ? 'https://sstrackinf.vercel.app/api/v1/owner/getCompanyemployee' : null;
+//        const managerUrl = user?.userType === 'manager' ? 'https://sstrackinf.vercel.app/api/v1/manager/dashboard' : null;
    
 //        // Use React Query to fetch data
 //        const { data: userData, error: userError, isLoading: isUserLoading } = useQuery({
@@ -726,7 +726,7 @@ useEffect(() => {
 //     const getManagerData = async () => {
 //         setLoading(true)
 //         try {
-//             const response = await axios.get(`https://ss-track-xi.vercel.app/api/v1/manager/dashboard`, {
+//             const response = await axios.get(`https://sstrackinf.vercel.app/api/v1/manager/dashboard`, {
 //                 headers: headers,
 //             })
 //             if (response.status) {
@@ -745,7 +745,7 @@ useEffect(() => {
 //     const getOwnerData = async () => {
 //         setLoading(true)
 //         try {
-//             const response = await axios.get(`https://ss-track-xi.vercel.app/api/v1/owner/getCompanyemployee`, {
+//             const response = await axios.get(`https://sstrackinf.vercel.app/api/v1/owner/getCompanyemployee`, {
 //                 headers: headers,
 //             })
 //             if (response.status) {
@@ -881,7 +881,7 @@ useEffect(() => {
 // }, [managerData]);
 
 
-//     const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+//     const apiUrl = "https://sstrackinf.vercel.app/api/v1";
 
 //     const fetchData = async () => {
 //         setLoading(true);

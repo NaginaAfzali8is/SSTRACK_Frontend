@@ -35,7 +35,7 @@ function EffectiveSettings() {
     const [loading, setLoading] = useState(false)
     const [loading2, setLoading2] = useState(false)
     const [employees, setEmployees] = useState(null);
-    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+    const apiUrl = "https://sstrackinf.vercel.app/api/v1";
     let token = localStorage.getItem('token');
     let user = JSON.parse(localStorage.getItem('items'));
     let headers = {

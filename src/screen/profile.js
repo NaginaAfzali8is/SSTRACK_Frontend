@@ -30,7 +30,7 @@ function Profile() {
         'Content-Type': 'application/json'
     }
 
-    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+    const apiUrl = "https://sstrackinf.vercel.app/api/v1";
 
     let fillModel = (key, val) => {
         console.log(val);

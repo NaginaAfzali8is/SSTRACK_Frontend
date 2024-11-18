@@ -9,7 +9,7 @@ import optVerifcation from '../images/opt-verifcation.svg';
 function VerificationCode() {
 
     const navigate = useNavigate();
-    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+    const apiUrl = "https://sstrackinf.vercel.app/api/v1";
     const { enqueueSnackbar } = useSnackbar();
     const [loading, setLoading] = useState(false);
     const [digits, setDigits] = useState("");

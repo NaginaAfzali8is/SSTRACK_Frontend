@@ -27,7 +27,7 @@ function UserHeader() {
         'Content-Type': 'application/json'
     }
 
-    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+    const apiUrl = "https://sstrackinf.vercel.app/api/v1";
 
     const logoutDivRef = useRef(null);
 
@@ -179,12 +179,12 @@ function UserHeader() {
                                     <p>Settings</p>
                                 </div>
                             )}
-                            {/* <div onClick={logOut}>
+                            <div onClick={logOut}>
                                 <div>
                                     <img src={logout} />
                                 </div>
                                 <p>Logout</p>
-                            </div> */}
+                            </div>
                         </div>}
                     </div>
                 </div>

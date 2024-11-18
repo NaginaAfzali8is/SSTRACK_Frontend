@@ -48,7 +48,7 @@ function AdminReports() {
         Authorization: 'Bearer ' + token,
     }
     const items = JSON.parse(localStorage.getItem('items'));
-    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+    const apiUrl = "https://sstrackinf.vercel.app/api/v1";
 
     const getData = async () => {
         setLoading(true)

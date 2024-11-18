@@ -84,7 +84,7 @@ function UserDetails() {
 
 
 
-    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+    const apiUrl = "https://sstrackinf.vercel.app/api/v1";
     let token = localStorage.getItem('token');
     let items = JSON.parse(localStorage.getItem('items'));
     let headers = {

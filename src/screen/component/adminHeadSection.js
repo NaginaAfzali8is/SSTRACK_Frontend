@@ -18,7 +18,7 @@
 //         Authorization: 'Bearer ' + token,
 //     }
 
-//     const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+//     const apiUrl = "https://sstrackinf.vercel.app/api/v1";
 
 //     async function getData() {
 //         try {

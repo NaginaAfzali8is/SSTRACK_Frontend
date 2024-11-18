@@ -12,7 +12,7 @@
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-      const newSocket = io('https://ss-track-xi.vercel.app', {
+      const newSocket = io('http:localhost:9093', {
         transports: ['websocket'], // Add this line to force WebSocket transport
       });
 

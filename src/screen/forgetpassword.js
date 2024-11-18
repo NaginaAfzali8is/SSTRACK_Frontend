@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 function ForgetPassword() {
 
-    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+    const apiUrl = "https://sstrackinf.vercel.app/api/v1";
 
     const [email, setEmail] = useState("")
     const [loading, setLoading] = useState(false)

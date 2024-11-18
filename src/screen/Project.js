@@ -35,8 +35,8 @@ const Project = () => {
     const [allowemp, setAllowemp] = useState([]);
     const [projectName, setProjectName] = useState("");
 
-    // const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
-    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+    // const apiUrl = "https://sstrackinf.vercel.app/api/v1";
+    const apiUrl = "https://sstrackinf.vercel.app/api/v1";
 
     const token = localStorage.getItem('token');
     const headers = {
@@ -51,7 +51,7 @@ const Project = () => {
     const fetchProject = async () => {
         console.log("me chlaaaaaaaa");
         const response = await axios.get(`${apiUrl}/superAdmin/getProjects`, { headers });
-        // const response = await axios.get(`http://localhost:9093/api/v1/superAdmin/getProjects`, { headers });
+        // const response = await axios.get(`https://sstrackinf.vercel.app/api/v1/superAdmin/getProjects`, { headers });
         return response.data;  // React Query will handle the response status internally
     };
 

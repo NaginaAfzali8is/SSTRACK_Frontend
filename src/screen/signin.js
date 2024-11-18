@@ -21,7 +21,7 @@ function SignIn() {
     password: ""
   }); 
   const [loading, setLoading] = useState(false)
-  const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+  const apiUrl = "https://sstrackinf.vercel.app/api/v1";
 
   const handleLogin = async (e) => {
     if (model?.email === "" || model?.password === "") {

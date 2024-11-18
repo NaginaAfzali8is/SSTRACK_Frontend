@@ -62,7 +62,7 @@ import card2 from '../images/card2.gif'
 import card3 from '../images/card3.gif'
 
 
-// const SOCKET_SERVER_URL = 'https://ss-track-xi.vercel.app';
+// const SOCKET_SERVER_URL = 'http:localhost:9093';
 function Home() {
 
   const { token } = useParams()

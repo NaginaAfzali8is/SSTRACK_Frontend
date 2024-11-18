@@ -16,7 +16,7 @@ function UpdatePassword() {
     const navigate = useNavigate()
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
-    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+    const apiUrl = "https://sstrackinf.vercel.app/api/v1";
     const params = useParams()
 
     const handleUpdatePassword = async () => {

@@ -21,7 +21,7 @@ function ManagerTeamComponent(props) {
     const [role, setRole] = useState("")
     const [data, setData] = useState();
     const { fixId, archived_unarchived_users, deleteUser, isUserArchive, inviteStatus, handleSendInvitation, payrate } = props
-    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+    const apiUrl = "https://sstrackinf.vercel.app/api/v1";
     const token = localStorage.getItem('token');
     const headers = {
         Authorization: "Bearer " + token,

@@ -39,7 +39,7 @@ function AdminTeamComponent(props) {
     const [role, setRole] = useState("")
     const [userIds, setUserIds] = useState([])
 
-    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+    const apiUrl = "https://sstrackinf.vercel.app/api/v1";
     let token = localStorage.getItem("token");
     let headers = {
         Authorization: "Bearer " + token,

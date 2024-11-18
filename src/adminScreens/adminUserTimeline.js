@@ -25,7 +25,7 @@ function AdminUserTimeline() {
     const navigate = useNavigate()
     const { loading, setLoading, loading2, setLoading2 } = useLoading()
     const [data, setData] = useState([]);
-    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+    const apiUrl = "https://sstrackinf.vercel.app/api/v1";
     const token = localStorage.getItem('token');
     const headers = {
         Authorization: "Bearer " + token,

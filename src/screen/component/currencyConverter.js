@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 
 const CurrencyConverter = ({ userId, payrate }) => {
 
-    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+    const apiUrl = "https://sstrackinf.vercel.app/api/v1";
     let token = localStorage.getItem("token");
     let headers = {
         Authorization: "Bearer " + token,

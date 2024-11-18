@@ -18,7 +18,7 @@ function SystemAdminComponent(props) {
     const companyId = props?.fixComponent?.owner?._id
     const companyName = props?.fixComponent?.owner?.company
     const company = data?.owner?.company;
-    const apiUrl = "https://ss-track-xi.vercel.app/api/v1";
+    const apiUrl = "https://sstrackinf.vercel.app/api/v1";
     let token = localStorage.getItem('adminToken');
     const companyStatus = props?.fixComponent?.owner?.isArchived;
     const [companyDetail, setCompanyDetail] = useState(null)
